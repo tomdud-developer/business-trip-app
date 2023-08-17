@@ -6,12 +6,13 @@ import com.tomdud.businesstripapp.businesstripapp.service.ReimbursementService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import org.eclipse.tags.shaded.org.apache.xpath.operations.Bool;
 
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@WebServlet(name = "ReceiptTypeServlet", value = {"/receipt-type/delete", "/receipt-type/edit"})
+@WebServlet(name = "ReceiptTypeServlet", value = {"/receipt-type/delete", "/receipt-type/edit", "/receipt-type/update", "/receipt-type/insert"})
 public class ReceiptTypeServlet extends HttpServlet {
 
     private static final Logger logger = Logger.getLogger(CalculateReimbursementServlet.class.getName());
@@ -38,8 +39,11 @@ public class ReceiptTypeServlet extends HttpServlet {
 
                 request.setAttribute("receiptType", receiptType);
                 request.getRequestDispatcher("/receipt-type-edit.jsp").forward(request, response);
-
-                //response.sendRedirect(request.getContextPath() + "/admin-panel");
+                break;
+            case "/receipt-type/insert":
+                logger.log(Level.INFO, "ReceiptTypeServlet::doGet - inserting new receipt");
+                request.setAttribute("receiptType", null);
+                request.getRequestDispatcher("/receipt-type-edit.jsp").forward(request, response);
                 break;
         }
 
@@ -47,6 +51,23 @@ public class ReceiptTypeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getServletPath();
+
+        logger.log(Level.INFO, "ReceiptTypeServlet::doPost - action - {0}", action);
+
+        switch (action) {
+            case "/receipt-type/update":
+                ReceiptType receiptType = receiptTypeService.getByName(request.getParameter("orgName"));
+                receiptType.setName(request.getParameter("name"));
+                receiptType.setEnableLimit(request.getParameter("enableLimit") != null);
+                receiptType.setLimit(Double.parseDouble(request.getParameter("limit")));
+
+                response.sendRedirect(request.getContextPath() + "/admin-panel");
+                break;
+            case "/receipt-type/insert":
+
+                break;
+        }
 
     }
 }

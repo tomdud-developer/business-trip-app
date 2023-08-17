@@ -10,37 +10,28 @@
 <body>
     <c:if test="${receiptType != null}"><h1>Receipt Type (${receiptType.name}) Edit Form</h1></c:if>
     <c:if test="${receiptType == null}"><h1>Receipt Type Insert Form</h1></c:if>
-    <div class="container" id="adminFormContainer">
-        <c:if test="${receiptType != null}"><form action="receipt-type/update" method="post"></c:if>
-        <c:if test="${receiptType == null}"><form action="receipt-type/insert" method="post"></c:if>
+    <div class="container" id="receiptFormContainer">
+        <c:if test="${receiptType != null}"><form action="update" method="post"></c:if>
+        <c:if test="${receiptType == null}"><form action="insert" method="post"></c:if>
             <div class="border p-3">
                 <h3 class="form-label">Receipt details</h3>
                 <div class="mb-3">
                     <div class="input-group">
                         <label for="name" class="input-group-text">Name</label>
                         <input type="text" id="name" name="name" value="${receiptType.name}" />
+                        <c:if test="${receiptType != null}">
+                            <input type="text" id="orgName" name="orgName" value="${receiptType.name}" style="display: none;"/>
+                        </c:if>
+                    </div>
 
-                        <label for="perDay" class="input-group-text">Daily allowance</label>
-                        <input type="number" step="0.01" id="perDay" name="perDay" value="${reimbursement.perDay}" />
-                        <label for="perDay" class="input-group-text">$/day</label>
-                    </div>
-                </div>
-                <div class="mb-3">
                     <div class="input-group">
                         <div class="input-group-text">
-                            <label style="margin-right: 5px">Maximum mileage limit enable/disable</label>
-                            <input class="form-check-input mt-0" type="checkbox" value="${reimbursement.enableMileageLimit}">
+                            <label style="margin-right: 5px">Limit status</label>
+                            <input class="form-check-input mt-0 form-check-input-lg" type="checkbox" id="enableLimit" name="enableLimit" value="${receiptType.enableLimit}">
+                            <label for="limit" class="input-group-text">Name</label>
+                            <input type="number" step="0.01" id="limit" name="limit" value="${receiptType.limit}" />
+                            <label for="limit" class="input-group-text">$</label>
                         </div>
-                        <input type="number" step="0.01" id="mileageLimit" name="mileageLimit" value="${reimbursement.mileageLimit}" />
-                        <label for="perKilometer" class="input-group-text">km</label>
-                    </div>
-                    <div class="input-group">
-                        <div class="input-group-text">
-                            <label style="margin-right: 5px">Total reimbursement limit enable/disable</label>
-                            <input class="form-check-input mt-0" type="checkbox" value="${reimbursement.enableTotalReimbursementLimit}">
-                        </div>
-                        <input type="number" step="0.01" id="totalReimbursementLimit" name="totalReimbursementLimit" value="${reimbursement.totalReimbursementLimit}" />
-                        <label for="perKilometer" class="input-group-text">$</label>
                     </div>
                 </div>
 
