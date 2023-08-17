@@ -18,7 +18,7 @@
                 <div class="mb-3">
                     <div class="input-group">
                         <label for="name" class="input-group-text">Name</label>
-                        <input type="text" id="name" name="name" value="${receiptType.name}" />
+                        <input type="text" id="name" name="name" value="${receiptType.name != null ? receiptType.name : ''}" />
                         <c:if test="${receiptType != null}">
                             <input type="text" id="orgName" name="orgName" value="${receiptType.name}" style="display: none;"/>
                         </c:if>
@@ -27,9 +27,9 @@
                     <div class="input-group">
                         <div class="input-group-text">
                             <label style="margin-right: 5px">Limit status</label>
-                            <input class="form-check-input mt-0 form-check-input-lg" type="checkbox" id="enableLimit" name="enableLimit" value="${receiptType.enableLimit}">
+                            <input class="form-check-input mt-0 form-check-input-lg" type="checkbox" id="enableLimit" name="enableLimit" value="${receiptType.enableLimit != null ? receiptType.enableLimit : false}">
                             <label for="limit" class="input-group-text">Name</label>
-                            <input type="number" step="0.01" id="limit" name="limit" value="${receiptType.limit}" />
+                            <input type="number" step="0.01" id="limit" name="limit" value="${receiptType.limit != null ? receiptType.limit : ''}" />
                             <label for="limit" class="input-group-text">$</label>
                         </div>
                     </div>

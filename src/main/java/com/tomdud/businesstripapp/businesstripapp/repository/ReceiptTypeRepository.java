@@ -55,4 +55,8 @@ public class ReceiptTypeRepository {
                 .collect(Collectors.toList())
                 .get(0);
     }
+
+    public void save(ReceiptType receiptType) {
+        repository.add(receiptType);
+    }
 }

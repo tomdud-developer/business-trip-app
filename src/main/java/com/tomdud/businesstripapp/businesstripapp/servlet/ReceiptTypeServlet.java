@@ -65,7 +65,14 @@ public class ReceiptTypeServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/admin-panel");
                 break;
             case "/receipt-type/insert":
+                ReceiptType receiptTypeToSave = new ReceiptType(
+                        request.getParameter("name"),
+                        request.getParameter("enableLimit") != null,
+                        Double.parseDouble(request.getParameter("limit"))
+                );
+                receiptTypeService.save(receiptTypeToSave);
 
+                response.sendRedirect(request.getContextPath() + "/admin-panel");
                 break;
         }
 

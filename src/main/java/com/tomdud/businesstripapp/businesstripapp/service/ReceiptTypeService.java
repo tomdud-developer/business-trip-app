@@ -39,4 +39,8 @@ public class ReceiptTypeService {
     public ReceiptType getByName(String name) {
         return receiptTypeRepository.getByName(name);
     }
+
+    public void save(ReceiptType receiptType) {
+        receiptTypeRepository.save(receiptType);
+    }
 }

@@ -37,13 +37,17 @@ public class AdminPanelServlet extends HttpServlet {
 
         String action = request.getServletPath();
 
-        logger.log(Level.INFO, "Admin panel post - action - {}", action);
+        logger.log(Level.INFO, "Admin panel post - action - {0}", action);
 
         switch (action) {
             case "/admin-panel/update":
                 ReimbursementUpdateRequestDTO reimbursementUpdateRequestDTO = new ReimbursementUpdateRequestDTO(
                         Double.parseDouble(request.getParameter("perKilometer")),
-                        Double.parseDouble(request.getParameter("perDay"))
+                        Double.parseDouble(request.getParameter("perDay")),
+                        request.getParameter("enableMileageLimit") != null,
+                        Double.parseDouble(request.getParameter("mileageLimit")),
+                        request.getParameter("enableTotalReimbursementLimit") != null,
+                        Double.parseDouble(request.getParameter("totalReimbursementLimit"))
                 );
 
                 reimbursementService.add(reimbursementUpdateRequestDTO);

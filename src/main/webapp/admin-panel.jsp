@@ -30,7 +30,7 @@
                   <div class="input-group">
                       <div class="input-group-text">
                           <label style="margin-right: 5px">Maximum mileage limit enable/disable</label>
-                          <input class="form-check-input mt-0" type="checkbox" value="${reimbursement.enableMileageLimit}">
+                          <input class="form-check-input mt-0" type="checkbox" name="enableMileageLimit" value="${reimbursement.enableMileageLimit}">
                       </div>
                       <input type="number" step="0.01" id="mileageLimit" name="mileageLimit" value="${reimbursement.mileageLimit}" />
                       <label for="perKilometer" class="input-group-text">km</label>
@@ -38,7 +38,7 @@
                   <div class="input-group">
                       <div class="input-group-text">
                           <label style="margin-right: 5px">Total reimbursement limit enable/disable</label>
-                          <input class="form-check-input mt-0" type="checkbox" value="${reimbursement.enableTotalReimbursementLimit}">
+                          <input class="form-check-input mt-0" type="checkbox" name="enableTotalReimbursementLimit" value="${reimbursement.enableTotalReimbursementLimit}">
                       </div>
                       <input type="number" step="0.01" id="totalReimbursementLimit" name="totalReimbursementLimit" value="${reimbursement.totalReimbursementLimit}" />
                       <label for="perKilometer" class="input-group-text">$</label>
@@ -82,7 +82,14 @@
       </div>
 
       <div class="border p-3">
-          <h3 class="form-label">Receipt Types</h3>
+          <div class="row">
+              <div class="col">
+                  <h3 class="form-label">Receipt Types</h3>
+              </div>
+              <div class="col-auto">
+                  <a href="receipt-type/insert" class="btn btn-primary">Add new Receipt type</a>
+              </div>
+          </div>
           <table id="receiptTypesTable" class="table table-striped">
               <thead class="thead-dark">
               <tr>
