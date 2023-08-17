@@ -49,7 +49,7 @@ public class ReimbursementService {
     public Reimbursement getLeast() {
         return reimbursementRepository.getAll()
                 .stream()
-                .sorted(Comparator.comparing(Reimbursement::getSettingDate))
+                .sorted(Comparator.comparing(Reimbursement::getSettingDate).reversed())
                 .limit(1)
                 .collect(Collectors.toList()).get(0);
     }

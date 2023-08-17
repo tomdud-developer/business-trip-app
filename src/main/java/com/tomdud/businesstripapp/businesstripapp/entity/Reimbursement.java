@@ -7,11 +7,39 @@ public class Reimbursement {
     private long id;
     private double perKilometer;
     private double perDay;
+
+    private boolean enableMileageLimit;
+    private double mileageLimit;
+
+    private boolean enableTotalReimbursementLimit;
+    private double totalReimbursementLimit;
+
     private LocalDateTime settingDate;
 
     public Reimbursement(double perKilometer, double perDay, LocalDateTime settingDate) {
         this.perKilometer = perKilometer;
         this.perDay = perDay;
+        this.settingDate = settingDate;
+
+        this.enableMileageLimit = false;
+        this.mileageLimit = 0.0;
+        this.enableTotalReimbursementLimit = false;
+        this.totalReimbursementLimit = 0.0;
+    }
+
+    public Reimbursement(double perKilometer,
+                         double perDay,
+                         boolean enableMileageLimit,
+                         double mileageLimit,
+                         boolean enableTotalReimbursementLimit,
+                         double totalReimbursementLimit,
+                         LocalDateTime settingDate) {
+        this.perKilometer = perKilometer;
+        this.perDay = perDay;
+        this.enableMileageLimit = enableMileageLimit;
+        this.mileageLimit = mileageLimit;
+        this.enableTotalReimbursementLimit = enableTotalReimbursementLimit;
+        this.totalReimbursementLimit = totalReimbursementLimit;
         this.settingDate = settingDate;
     }
 
@@ -45,5 +73,37 @@ public class Reimbursement {
 
     public void setSettingDate(LocalDateTime settingDate) {
         this.settingDate = settingDate;
+    }
+
+    public boolean isEnableMileageLimit() {
+        return enableMileageLimit;
+    }
+
+    public void setEnableMileageLimit(boolean enableMileageLimit) {
+        this.enableMileageLimit = enableMileageLimit;
+    }
+
+    public double getMileageLimit() {
+        return mileageLimit;
+    }
+
+    public void setMileageLimit(double mileageLimit) {
+        this.mileageLimit = mileageLimit;
+    }
+
+    public boolean isEnableTotalReimbursementLimit() {
+        return enableTotalReimbursementLimit;
+    }
+
+    public void setEnableTotalReimbursementLimit(boolean enableTotalReimbursementLimit) {
+        this.enableTotalReimbursementLimit = enableTotalReimbursementLimit;
+    }
+
+    public double getTotalReimbursementLimit() {
+        return totalReimbursementLimit;
+    }
+
+    public void setTotalReimbursementLimit(double totalReimbursementLimit) {
+        this.totalReimbursementLimit = totalReimbursementLimit;
     }
 }

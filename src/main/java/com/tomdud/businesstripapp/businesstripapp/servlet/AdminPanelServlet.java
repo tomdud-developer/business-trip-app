@@ -18,19 +18,10 @@ public class AdminPanelServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getServletPath();
 
-        logger.log(Level.INFO, "Admin panel - action - " + action);
-
-        switch (action) {
-            case "/new":
-                break;
-            default:
-                request.setAttribute("reimbursement", reimbursementService.getLeast());
-                request.getRequestDispatcher("admin-panel.jsp").forward(request, response);
-                break;
-        }
-
+        request.setAttribute("reimbursement", reimbursementService.getLeast());
+        request.setAttribute("reimbursementModificationList", reimbursementService.getAll());
+        request.getRequestDispatcher("/admin-panel.jsp").forward(request, response);
     }
 
     @Override
@@ -48,11 +39,11 @@ public class AdminPanelServlet extends HttpServlet {
                 );
 
                 reimbursementService.add(reimbursementUpdateRequestDTO);
-                response.sendRedirect("admin-panel");
+                response.sendRedirect(request.getContextPath() + "/admin-panel");
                 break;
             default:
                 request.setAttribute("reimbursement", reimbursementService.getLeast());
-                response.sendRedirect("admin-panel");
+                doGet(request, response);
                 break;
         }
     }
