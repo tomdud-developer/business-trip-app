@@ -11,34 +11,42 @@
     <h1>Business Trip Reimbursement Calculator</h1>
     <form method="post" action="calculate-reimbursement">
         <div class="container" id="calculatorFormContainer">
-            <h3>Provide data:</h3>
-            <div class="input-group mb-3">
-                <label for="tripStartDate" class="input-group-text" id="basic-addon1">Trip start date</label>
-                <input type="date" class="form-control" id="tripStartDate" name="tripStartDate">
-            </div>
-            <div class="input-group mb-3">
-                <input type="date" class="form-control" id="tripEndDate" name="tripEndDate">
-                <span class="input-group-text">Choose end date or trip duration in days</span>
-                <input type="number" id="numberOfDays" name="numberOfDays" min="1">
+            <div class="mb-3">
+                <label class="form-label">Business trip duration</label>
+                <div class="input-group">
+                    <label for="tripStartDate" class="input-group-text" id="basic-addon1">Trip start date</label>
+                    <input type="date" class="form-control" id="tripStartDate" name="tripStartDate">
+                </div>
+                <div class="input-group">
+                    <input type="date" class="form-control" id="tripEndDate" name="tripEndDate">
+                    <span class="input-group-text">Choose end date or trip duration in days</span>
+                    <input type="number" id="numberOfDays" name="numberOfDays" min="1">
+                </div>
             </div>
 
-            <div>
-                <label for="receiptValue">Receipt value in dollars $:</label>
-                <input type="text" id="receiptValue" name="receiptValue">
-                <select id="receiptType">
-                    <option value="taxi">Taxi</option>
-                    <option value="hotel">Hotel</option>
-                    <option value="plane">Plane Ticket</option>
-                    <option value="train">Train</option>
-                </select>
-                <button type="button" id="addNewReceiptButton">Add new Receipt</button>
-                <br>
-                <table id="receiptList">
-                    <tr>
-                        <th>Receipt Type</th>
-                        <th>Receipt Value</th>
-                        <th>Action</th>
-                    </tr>
+            <div class="mb-3">
+                <label class="form-label">Business trip expenses</label>
+                <div class="input-group">
+                    <label for="receiptValue" class="input-group-text">Receipt value</label>
+                    <input type="number" step="0.01" id="receiptValue" name="receiptValue">
+                    <label for="receiptValue" class="input-group-text">$</label>
+                    <select id="receiptType" class="form-select" aria-label="taxi">
+                        <option value="taxi">Taxi</option>
+                        <option value="hotel">Hotel</option>
+                        <option value="plane">Plane Ticket</option>
+                        <option value="train">Train</option>
+                    </select>
+                    <button type="button" id="addNewReceiptButton">Add new Receipt</button>
+                </div>
+
+                <table id="receiptList" class="table table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Receipt Type</th>
+                            <th scope="col">Receipt Value</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
                 </table>
             </div>
 
@@ -52,6 +60,7 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </form>
+    <script src="jquery-3.7.0.min.js"></script>
     <script src="scripts2.js"></script>
 </body>
 </html>

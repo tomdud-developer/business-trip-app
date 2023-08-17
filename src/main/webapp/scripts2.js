@@ -27,7 +27,26 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-$('#sandbox-container .input-daterange').datepicker({
-    todayHighlight: true
-});
+$(document).ready(function() {
+    $('#tripEndDate').on('input', function() {
+        let currentSetStartDate = new Date(document.getElementById("tripStartDate").value);
+        let currentSetEndDate = new Date($(this).val());
+        let differenceInMs = currentSetEndDate - currentSetStartDate;
+        let differenceInDays = Math.floor(differenceInMs / (1000 * 60 * 60 * 24));
+        $('#numberOfDays').val(differenceInDays);
+    });
 
+    $('#numberOfDays').on('input', function() {
+        const numberOfDays = parseInt($(this).val());
+        const tripStartDate = new Date(document.getElementById("tripStartDate").value);
+
+        if (!isNaN(numberOfDays)) {
+            const newEndDateTimestamp = tripStartDate.getTime() + numberOfDays * 24 * 60 * 60 * 1000;
+            const newEndDate = new Date(newEndDateTimestamp);
+
+            const formattedNewEndDate = newEndDate.toISOString().split('T')[0];
+            $('#tripEndDate').val(formattedNewEndDate);
+        }
+    });
+
+});
