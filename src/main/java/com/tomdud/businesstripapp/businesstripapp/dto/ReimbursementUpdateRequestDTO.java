@@ -1,12 +1,12 @@
 package com.tomdud.businesstripapp.businesstripapp.dto;
 
 
-public class ReimbursementPostRequestDTO {
+public class ReimbursementUpdateRequestDTO {
 
     private double perKilometer;
     private double perDay;
 
-    public ReimbursementPostRequestDTO(double perKilometer, double perDay) {
+    public ReimbursementUpdateRequestDTO(double perKilometer, double perDay) {
         this.perKilometer = perKilometer;
         this.perDay = perDay;
     }

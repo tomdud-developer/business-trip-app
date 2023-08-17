@@ -1,6 +1,6 @@
 package com.tomdud.businesstripapp.businesstripapp.service;
 
-import com.tomdud.businesstripapp.businesstripapp.dto.ReimbursementPostRequestDTO;
+import com.tomdud.businesstripapp.businesstripapp.dto.ReimbursementUpdateRequestDTO;
 import com.tomdud.businesstripapp.businesstripapp.entity.Reimbursement;
 import com.tomdud.businesstripapp.businesstripapp.repository.ReimbursementRepository;
 
@@ -32,10 +32,10 @@ public class ReimbursementService {
         return result;
     }
 
-    public Reimbursement add(ReimbursementPostRequestDTO reimbursementPostRequestDTO) {
+    public Reimbursement add(ReimbursementUpdateRequestDTO reimbursementUpdateRequestDTO) {
         Reimbursement reimbursement = new Reimbursement(
-                reimbursementPostRequestDTO.getPerKilometer(),
-                reimbursementPostRequestDTO.getPerDay(),
+                reimbursementUpdateRequestDTO.getPerKilometer(),
+                reimbursementUpdateRequestDTO.getPerDay(),
                 LocalDateTime.now()
         );
 

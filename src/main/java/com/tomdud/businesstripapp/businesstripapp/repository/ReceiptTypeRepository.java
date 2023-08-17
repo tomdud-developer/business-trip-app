@@ -38,7 +38,7 @@ public class ReceiptTypeRepository {
         repository.add(receiptType);
     }
 
-    private List<ReceiptType> getAll() {
+    public List<ReceiptType> getAll() {
         return new ArrayList<>(repository);
     }
 
