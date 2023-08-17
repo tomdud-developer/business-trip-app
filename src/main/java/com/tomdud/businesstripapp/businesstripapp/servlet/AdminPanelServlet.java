@@ -2,6 +2,7 @@ package com.tomdud.businesstripapp.businesstripapp.servlet;
 
 import com.tomdud.businesstripapp.businesstripapp.dto.ReimbursementUpdateRequestDTO;
 import com.tomdud.businesstripapp.businesstripapp.entity.Reimbursement;
+import com.tomdud.businesstripapp.businesstripapp.service.ReceiptTypeService;
 import com.tomdud.businesstripapp.businesstripapp.service.ReimbursementService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -10,17 +11,24 @@ import java.util.logging.Level;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-@WebServlet(name = "AdminPanelServlet", value = {"/admin-panel", "/admin-panel/update"})
+@WebServlet(name = "AdminPanelServlet", value = {"/admin-panel", "/admin-panel/update", "/admin-panel/delete-receipt", "/admin-panel/edit-receipt"})
 public class AdminPanelServlet extends HttpServlet {
 
     private static final Logger logger = Logger.getLogger(CalculateReimbursementServlet.class.getName());
     private final ReimbursementService reimbursementService = ReimbursementService.getInstance();
+    private final ReceiptTypeService receiptTypeService = ReceiptTypeService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        String action = request.getServletPath();
+
+        logger.log(Level.INFO, "Admin panel get - action - {}", action);
+
         request.setAttribute("reimbursement", reimbursementService.getLeast());
         request.setAttribute("reimbursementModificationList", reimbursementService.getAll());
+        request.setAttribute("receiptTypes", receiptTypeService.getAll());
+
         request.getRequestDispatcher("/admin-panel.jsp").forward(request, response);
     }
 
@@ -29,7 +37,7 @@ public class AdminPanelServlet extends HttpServlet {
 
         String action = request.getServletPath();
 
-        logger.log(Level.INFO, "Admin panel post - action - " + action);
+        logger.log(Level.INFO, "Admin panel post - action - {}", action);
 
         switch (action) {
             case "/admin-panel/update":

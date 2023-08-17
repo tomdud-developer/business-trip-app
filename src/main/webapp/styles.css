@@ -5,3 +5,7 @@
 #adminFormContainer {
     max-width: 60%;
 }
+
+.save-button-long {
+    width: 200px;
+}

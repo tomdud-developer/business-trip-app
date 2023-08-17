@@ -13,70 +13,101 @@
   <h1>Admin Panel</h1>
   <div class="container" id="adminFormContainer">
       <form action="admin-panel/update" method="post">
-          <div class="mb-3">
-              <label class="form-label">Reimbursement details</label>
-              <div class="input-group">
-                  <label for="perKilometer" class="input-group-text">Car mileage</label>
-                  <input type="number" step="0.01" id="perKilometer" name="perKilometer" value="${reimbursement.perKilometer}" />
-                  <label for="perKilometer" class="input-group-text">$/km</label>
+          <div class="border p-3">
+              <h3 class="form-label">Reimbursement details</h3>
+              <div class="mb-3">
+                  <div class="input-group">
+                      <label for="perKilometer" class="input-group-text">Car mileage</label>
+                      <input type="number" step="0.01" id="perKilometer" name="perKilometer" value="${reimbursement.perKilometer}" />
+                      <label for="perKilometer" class="input-group-text">$/km</label>
 
-                  <label for="perDay" class="input-group-text">Daily allowance</label>
-                  <input type="number" step="0.01" id="perDay" name="perDay" value="${reimbursement.perDay}" />
-                  <label for="perDay" class="input-group-text">$/day</label>
-              </div>
-          </div>
-
-          <div class="mb-3">
-              <label class="form-label">Reimbursement limits</label>
-              <div class="input-group">
-                  <div class="input-group-text">
-                      <label style="margin-right: 5px">Maximum mileage limit enable/disable</label>
-                      <input class="form-check-input mt-0" type="checkbox" value="${reimbursement.enableMileageLimit}">
+                      <label for="perDay" class="input-group-text">Daily allowance</label>
+                      <input type="number" step="0.01" id="perDay" name="perDay" value="${reimbursement.perDay}" />
+                      <label for="perDay" class="input-group-text">$/day</label>
                   </div>
-                  <input type="number" step="0.01" id="mileageLimit" name="mileageLimit" value="${reimbursement.mileageLimit}" />
-                  <label for="perKilometer" class="input-group-text">km</label>
               </div>
-              <div class="input-group">
-                  <div class="input-group-text">
-                      <label style="margin-right: 5px">Total reimbursement limit enable/disable</label>
-                      <input class="form-check-input mt-0" type="checkbox" value="${reimbursement.enableTotalReimbursementLimit}">
+              <div class="mb-3">
+                  <div class="input-group">
+                      <div class="input-group-text">
+                          <label style="margin-right: 5px">Maximum mileage limit enable/disable</label>
+                          <input class="form-check-input mt-0" type="checkbox" value="${reimbursement.enableMileageLimit}">
+                      </div>
+                      <input type="number" step="0.01" id="mileageLimit" name="mileageLimit" value="${reimbursement.mileageLimit}" />
+                      <label for="perKilometer" class="input-group-text">km</label>
                   </div>
-                  <input type="number" step="0.01" id="totalReimbursementLimit" name="totalReimbursementLimit" value="${reimbursement.totalReimbursementLimit}" />
-                  <label for="perKilometer" class="input-group-text">$</label>
+                  <div class="input-group">
+                      <div class="input-group-text">
+                          <label style="margin-right: 5px">Total reimbursement limit enable/disable</label>
+                          <input class="form-check-input mt-0" type="checkbox" value="${reimbursement.enableTotalReimbursementLimit}">
+                      </div>
+                      <input type="number" step="0.01" id="totalReimbursementLimit" name="totalReimbursementLimit" value="${reimbursement.totalReimbursementLimit}" />
+                      <label for="perKilometer" class="input-group-text">$</label>
+                  </div>
               </div>
-          </div>
 
-          <button type="submit" class="btn btn-success">Save</button>
+              <button type="submit" class="btn btn-success save-button-long">Save</button>
+          </div>
       </form>
 
-      <table id="reimbursementHistoryModificationList" class="table table-striped">
-          <thead class="thead-dark">
-              <tr>
-                  <th scope="col">Modification date</th>
-                  <th scope="col">Car mileage, $/km</th>
-                  <th scope="col">Daily allowance, $/day</th>
-                  <th scope="col">Mileage limit status</th>
-                  <th scope="col">Mileage limit, km</th>
-                  <th scope="col">Total reimbursement status</th>
-                  <th scope="col">Total reimbursement limit, $</th>
-              </tr>
-          </thead>
-          <tbody>
-              <c:forEach var="modification" items="${reimbursementModificationList}">
+      <div class="border p-3">
+          <h3 class="form-label">Reimbursement details modification history</h3>
+          <table id="reimbursementHistoryModificationList" class="table table-striped">
+              <thead class="thead-dark">
                   <tr>
+                      <th scope="col">Modification date</th>
+                      <th scope="col">Car mileage, $/km</th>
+                      <th scope="col">Daily allowance, $/day</th>
+                      <th scope="col">Mileage limit status</th>
+                      <th scope="col">Mileage limit, km</th>
+                      <th scope="col">Total reimbursement status</th>
+                      <th scope="col">Total reimbursement limit, $</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <c:forEach var="modification" items="${reimbursementModificationList}">
+                      <tr>
+                          <td>
+                              <c:out value="${fn:substring(modification.settingDate, 0, 16)}" />
+                          </td>
+                          <td>${modification.perKilometer}</td>
+                          <td>${modification.perDay}</td>
+                          <td>${modification.enableMileageLimit}</td>
+                          <td>${modification.mileageLimit}</td>
+                          <td>${modification.enableTotalReimbursementLimit}</td>
+                          <td>${modification.totalReimbursementLimit}</td>
+                      </tr>
+                  </c:forEach>
+              </tbody>
+          </table>
+      </div>
+
+      <div class="border p-3">
+          <h3 class="form-label">Receipt Types</h3>
+          <table id="receiptTypesTable" class="table table-striped">
+              <thead class="thead-dark">
+              <tr>
+                  <th scope="col">Receipt type name</th>
+                  <th scope="col">Limit enable status</th>
+                  <th scope="col">Limit for single receipt</th>
+                  <th scope="col">Action</th>
+              </tr>
+              </thead>
+              <tbody>
+              <c:forEach var="receiptType" items="${receiptTypes}">
+                  <tr>
+                      <td>${receiptType.name}</td>
+                      <td>${receiptType.enableLimit}</td>
+                      <td>${receiptType.limit}</td>
                       <td>
-                          <c:out value="${fn:substring(modification.settingDate, 0, 16)}" />
+                          <a href="receipt-type/edit?name=<c:out value='${receiptType.name}' />">Edit</a>
+                          <a href="receipt-type/delete?name=<c:out value='${receiptType.name}' />">Delete</a>
                       </td>
-                      <td>${modification.perKilometer}</td>
-                      <td>${modification.perDay}</td>
-                      <td>${modification.enableMileageLimit}</td>
-                      <td>${modification.mileageLimit}</td>
-                      <td>${modification.enableTotalReimbursementLimit}</td>
-                      <td>${modification.totalReimbursementLimit}</td>
                   </tr>
               </c:forEach>
-          </tbody>
-      </table>
+              </tbody>
+          </table>
+      </div>
+
   </div>
 
   <script src="jquery-3.7.0.min.js"></script>

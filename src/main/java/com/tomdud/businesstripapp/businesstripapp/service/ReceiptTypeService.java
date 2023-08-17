@@ -32,4 +32,11 @@ public class ReceiptTypeService {
         return receiptTypeRepository.getAll();
     }
 
+    public void deleteByName(String name) {
+        receiptTypeRepository.delete(name);
+    }
+
+    public ReceiptType getByName(String name) {
+        return receiptTypeRepository.getByName(name);
+    }
 }

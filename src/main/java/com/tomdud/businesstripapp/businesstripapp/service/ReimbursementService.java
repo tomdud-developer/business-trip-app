@@ -43,7 +43,10 @@ public class ReimbursementService {
     }
 
     public List<Reimbursement> getAll() {
-        return reimbursementRepository.getAll();
+        return reimbursementRepository.getAll()
+                .stream()
+                .sorted(Comparator.comparing(Reimbursement::getSettingDate).reversed())
+                .collect(Collectors.toList());
     }
 
     public Reimbursement getLeast() {
