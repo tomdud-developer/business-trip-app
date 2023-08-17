@@ -1,4 +1,9 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="com.tomdud.businesstripapp.businesstripapp.entity.Reimbursement" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+
 <html>
 
 <head>
@@ -8,6 +13,14 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <c:if test="true">
+        <p>true</p>
+    </c:if>
+    <c:if test="false">
+        <p>false</p>
+    </c:if>
+
+    <% response.getWriter().println(((Reimbursement)request.getAttribute("reimbursement")).getPerKilometer()); %>
     <h1>Business Trip Reimbursement Calculator</h1>
     <form method="post" action="calculate-reimbursement">
         <div class="container" id="calculatorFormContainer">
