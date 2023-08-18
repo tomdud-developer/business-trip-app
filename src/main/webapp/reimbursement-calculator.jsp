@@ -30,6 +30,35 @@
                         </div>
                         <input type="hidden" name="tripFieldChanged" id="tripFieldChanged">
                     </form>
+                    <form action="calculate-reimbursement/addDisabledDay" method="post">
+                        <div class="input-group">
+                            <label for="disabledDayDate" class="input-group-text">Disabled day date</label>
+                            <input type="date" class="form-control" id="disabledDayDate" name="disabledDayDate" value="${tripDuration.startDate}">
+                            <button type="submit" class="btn btn-primary" id="addNewDisabledDay">Add new disabled day</button>
+                        </div>
+                    </form>
+                    <h5>Disabled days list</h5>
+                    <table id="disabledDaysTable" class="table table-striped">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach var="date" items="${tripDuration.disabledDays}">
+                            <tr>
+                                <td>${date}</td>
+                                <td>
+                                    <form action="calculate-reimbursement/deleteDisabledDay" method="post">
+                                        <input type="date" class="form-control" id="disabledDayDateToDelete" name="disabledDayDateToDelete" value="${date}" style="display: none">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="d-flex align-items-center">
                     <div class="flex-grow-1"></div>
@@ -73,10 +102,11 @@
                                 <th scope="col">Receipt value</th>
                                 <th scope="col">Receipt limit</th>
                                 <th scope="col">Reimbursement</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                        <c:forEach var="receipt" items="${receiptList}">
+                        <c:forEach var="receipt" items="${receiptList}" varStatus="loop">
                             <tr>
                                 <td>${receipt.receiptType.name}</td>
                                 <td>${receipt.value}</td>
@@ -89,6 +119,12 @@
                                     </c:otherwise>
                                 </c:choose>
                                 <td>${receipt.reimbursement}</td>
+                                <td>
+                                    <form action="calculate-reimbursement/delete-receipt" method="post">
+                                        <input type="number" class="form-control" id="receiptIndexToDelete" name="receiptIndexToDelete" value="${loop.index}" style="display: none">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </td>
                             </tr>
                         </c:forEach>
                         </tbody>

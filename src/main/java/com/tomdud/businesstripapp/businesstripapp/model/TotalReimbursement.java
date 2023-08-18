@@ -1,5 +1,6 @@
 package com.tomdud.businesstripapp.businesstripapp.model;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class TotalReimbursement {
@@ -7,7 +8,6 @@ public class TotalReimbursement {
     private List<Receipt> receiptList;
     private CarUsage carUsage;
     private TripDuration tripDuration;
-
 
     public TotalReimbursement(List<Receipt> receiptList, CarUsage carUsage, TripDuration tripDuration) {
         this.receiptList = receiptList;

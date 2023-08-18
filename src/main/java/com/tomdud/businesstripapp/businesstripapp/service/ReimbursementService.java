@@ -65,15 +65,12 @@ public class ReimbursementService {
                 .collect(Collectors.toList()).get(0);
     }
 
-    public double calculateTotalAllowance(int tripDuration) {
-        return getLeast().getPerDay() * tripDuration;
-    }
-
     public TripDuration getNewTripDurationBasedOnChangedDays(TripDuration oldTripDuration, int days) {
         return new TripDuration(
                 oldTripDuration.getStartDate(),
                 oldTripDuration.getStartDate().plusDays(days - 1),
-                days
+                days,
+                oldTripDuration.getDisabledDays()
         );
     }
 
@@ -81,7 +78,8 @@ public class ReimbursementService {
         return new TripDuration(
                 oldTripDuration.getStartDate(),
                 newEndDate,
-                (int)ChronoUnit.DAYS.between(oldTripDuration.getStartDate(), newEndDate) + 1
+                (int)ChronoUnit.DAYS.between(oldTripDuration.getStartDate(), newEndDate) + 1,
+                oldTripDuration.getDisabledDays()
         );
     }
 
@@ -89,7 +87,8 @@ public class ReimbursementService {
         return new TripDuration(
                 newStartDate,
                 oldTripDuration.getEndDate(),
-                (int)ChronoUnit.DAYS.between(newStartDate, oldTripDuration.getEndDate()) + 1
+                (int)ChronoUnit.DAYS.between(newStartDate, oldTripDuration.getEndDate()) + 1,
+                oldTripDuration.getDisabledDays()
         );
     }
 
