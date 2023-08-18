@@ -1,6 +1,8 @@
 package com.tomdud.businesstripapp.businesstripapp.servlet;
 
+import com.tomdud.businesstripapp.businesstripapp.model.CarUsage;
 import com.tomdud.businesstripapp.businesstripapp.model.Receipt;
+import com.tomdud.businesstripapp.businesstripapp.model.TotalReimbursement;
 import com.tomdud.businesstripapp.businesstripapp.model.TripDuration;
 import com.tomdud.businesstripapp.businesstripapp.service.ReceiptService;
 import com.tomdud.businesstripapp.businesstripapp.service.ReimbursementService;
@@ -19,7 +21,12 @@ import java.util.logging.Logger;
 
 @WebServlet(
         name = "CalculateReimbursementServlet",
-        value = {"/calculate-reimbursement", "/calculate-reimbursement/add-receipt"}
+        value = {
+                "/calculate-reimbursement",
+                "/calculate-reimbursement/add-receipt",
+                "/calculate-reimbursement/modify-duration",
+                "/calculate-reimbursement/modify-car-usage"
+        }
 )
 public class CalculateReimbursementServlet extends HttpServlet {
 
@@ -33,7 +40,6 @@ public class CalculateReimbursementServlet extends HttpServlet {
 
         logger.log(Level.INFO, "Calculator panel get");
 
-        request.setAttribute("reimbursement", reimbursementService.getLeast());
         request.setAttribute("receiptTypes", receiptService.getAllReceiptTypes());
 
         List<Receipt> receipts = (List<Receipt>) request.getSession().getAttribute("receiptList");
@@ -48,8 +54,18 @@ public class CalculateReimbursementServlet extends HttpServlet {
             request.getSession().setAttribute("tripDuration", tripDuration);
         }
 
+        CarUsage carUsage = (CarUsage) request.getSession().getAttribute("carUsage");
+        if(carUsage == null) {
+            carUsage = new CarUsage(0.0, reimbursementService.getLeast());
+            request.getSession().setAttribute("carUsage", carUsage);
+        }
+
         request.getSession().setAttribute("totalAllowance", reimbursementService.calculateTotalAllowance(tripDuration.getDuration()));
         request.getSession().setAttribute("expensesTotalReimbursement", receiptService.calculateTotalReimbursement(receipts));
+
+        TotalReimbursement totalReimbursement = new TotalReimbursement(receipts, carUsage, tripDuration);
+        request.getSession().setAttribute("totalReimbursement", reimbursementService.calculateTotalReimbursement(totalReimbursement));
+
         request.getRequestDispatcher("reimbursement-calculator.jsp").forward(request, response);
     }
 
@@ -63,7 +79,6 @@ public class CalculateReimbursementServlet extends HttpServlet {
         switch (action) {
             case "/calculate-reimbursement/add-receipt":
             case "calculate-reimbursement/add-receipt":
-
                 logger.log(Level.INFO, "CalculatorPanel::doPost - adding new receipt - {0}",
                         request.getParameter("receiptType"));
 
@@ -78,7 +93,44 @@ public class CalculateReimbursementServlet extends HttpServlet {
 
                 response.sendRedirect(request.getContextPath() + "/calculate-reimbursement");
                 break;
+            case "/calculate-reimbursement/modify-duration":
+            case "calculate-reimbursement/modify-duration":
+                logger.log(Level.INFO, "CalculatorPanel::doPost - change in trip duration form - changed field: {0}",
+                        request.getParameter("tripFieldChanged"));
+                TripDuration tripDuration = (TripDuration) request.getSession().getAttribute("tripDuration");
+                switch (request.getParameter("tripFieldChanged")) {
+                    case "numberOfDays":
+                        tripDuration = reimbursementService.getNewTripDurationBasedOnChangedDays(
+                            tripDuration,
+                            Integer.parseInt(request.getParameter("numberOfDays"))
+                        );
+                        request.getSession().setAttribute("tripDuration", tripDuration);
+                        break;
+                    case "tripEndDate":
+                        tripDuration = reimbursementService.getNewTripDurationBasedOnChangedEndDate(
+                                tripDuration,
+                                LocalDate.parse(request.getParameter("tripEndDate"))
+                        );
+                        request.getSession().setAttribute("tripDuration", tripDuration);
+                        break;
+                    case "tripStartDate":
+                        tripDuration = reimbursementService.getNewTripDurationBasedOnChangedStartDate(
+                                tripDuration,
+                                LocalDate.parse(request.getParameter("tripStartDate"))
+                        );
+                        request.getSession().setAttribute("tripDuration", tripDuration);
+                        break;
+                }
 
+                response.sendRedirect(request.getContextPath() + "/calculate-reimbursement");
+                break;
+            case "/calculate-reimbursement/modify-car-usage":
+            case "calculate-reimbursement/modify-car-usage":
+                double distance = Double.parseDouble(request.getParameter("distance"));
+                CarUsage newCarUsage= new CarUsage(distance, reimbursementService.getLeast());
+                request.getSession().setAttribute("carUsage", newCarUsage);
+                response.sendRedirect(request.getContextPath() + "/calculate-reimbursement");
+                break;
             default:
                 response.sendRedirect(request.getContextPath() + "/calculate-reimbursement");
                 break;

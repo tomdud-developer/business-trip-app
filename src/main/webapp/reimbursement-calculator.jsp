@@ -14,19 +14,22 @@
 </head>
 <body>
     <h1>Business Trip Reimbursement Calculator</h1>
-        <div class="container" id="calculatorFormContainer">
+        <div class="container border p-3" id="calculatorFormContainer">
             <div class="border p-3">
                 <div class="mb-3">
                     <h3 class="form-label">Business trip duration</h3>
-                    <div class="input-group">
-                        <label for="tripStartDate" class="input-group-text" id="basic-addon1">Trip start date</label>
-                        <input type="date" class="form-control" id="tripStartDate" name="tripStartDate" value="${tripDuration.startDate}">
-                    </div>
-                    <div class="input-group">
-                        <input type="date" class="form-control" id="tripEndDate" name="tripEndDate" value="${tripDuration.endDate}">
-                        <span class="input-group-text">Choose end date or trip duration in days</span>
-                        <input type="number" class="form-control" id="numberOfDays" name="numberOfDays" min="1" value="${tripDuration.duration}">
-                    </div>
+                    <form action="calculate-reimbursement/modify-duration" id="calculate-reimbursement/modify-duration" method="post">
+                        <div class="input-group">
+                            <label for="tripStartDate" class="input-group-text" id="basic-addon1">Trip start date</label>
+                            <input type="date" class="form-control" id="tripStartDate" name="tripStartDate" value="${tripDuration.startDate}">
+                        </div>
+                        <div class="input-group">
+                            <input type="date" class="form-control" id="tripEndDate" name="tripEndDate" value="${tripDuration.endDate}">
+                            <span class="input-group-text">Choose end date or trip duration in days</span>
+                            <input type="number" class="form-control" id="numberOfDays" name="numberOfDays" min="1" value="${tripDuration.duration}">
+                        </div>
+                        <input type="hidden" name="tripFieldChanged" id="tripFieldChanged">
+                    </form>
                 </div>
                 <div class="d-flex align-items-center">
                     <div class="flex-grow-1"></div>
@@ -36,70 +39,112 @@
                 </div>
             </div>
 
+            <div class="border p-3">
+                <div class="mb-3">
+                    <h3 class="form-label">Business trip expenses</h3>
+                    <form action="calculate-reimbursement/add-receipt" method="post">
+                        <div class="input-group">
+                                <label for="receiptValue" class="input-group-text">Receipt value</label>
+                                <input class="form-control" type="number" step="0.01" id="receiptValue" name="receiptValue" min="0.01">
+                                <label for="receiptValue" class="input-group-text">$</label>
+                                <select id="receiptType" name="receiptType" class="form-select" aria-label="taxi">
+                                    <c:forEach items="${receiptTypes}" var="type">
+                                        <option value="${type.name}">
+                                                ${type.name} -
+                                                <c:choose>
+                                                    <c:when test="${type.enableLimit}">
+                                                        limit - ${type.limit}$
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        limit disabled
+                                                    </c:otherwise>
+                                                </c:choose>
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                                <button type="submit" class="btn btn-primary" id="addNewReceiptButton">Add new Receipt</button>
+                        </div>
+                    </form>
 
-            <div class="mb-3 border p-3">
-                <h3 class="form-label">Business trip expenses</h3>
-                <form action="calculate-reimbursement/add-receipt" method="post">
-                    <div class="input-group">
-                            <label for="receiptValue" class="input-group-text">Receipt value</label>
-                            <input class="form-control" type="number" step="0.01" id="receiptValue" name="receiptValue" min="0.01">
-                            <label for="receiptValue" class="input-group-text">$</label>
-                            <select id="receiptType" name="receiptType" class="form-select" aria-label="taxi">
-                                <c:forEach items="${receiptTypes}" var="type">
-                                    <option value="${type.name}">
-                                            ${type.name} -
-                                            <c:choose>
-                                                <c:when test="${type.enableLimit}">
-                                                    limit - ${type.limit}$
-                                                </c:when>
-                                                <c:otherwise>
-                                                    limit disabled
-                                                </c:otherwise>
-                                            </c:choose>
-                                    </option>
-                                </c:forEach>
-                            </select>
-                            <button type="submit" class="btn btn-primary" id="addNewReceiptButton">Add new Receipt</button>
+                    <table id="receiptList" class="table table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Receipt name</th>
+                                <th scope="col">Receipt value</th>
+                                <th scope="col">Receipt limit</th>
+                                <th scope="col">Reimbursement</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach var="receipt" items="${receiptList}">
+                            <tr>
+                                <td>${receipt.receiptType.name}</td>
+                                <td>${receipt.value}</td>
+                                <c:choose>
+                                    <c:when test="${receipt.receiptType.enableLimit}">
+                                        <td>${receipt.receiptType.limit}</td>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <td>Limit disabled</td>
+                                    </c:otherwise>
+                                </c:choose>
+                                <td>${receipt.reimbursement}</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1"></div>
+                        <h5 class="mb-0 ms-3 pb-1 border-bottom">
+                            Total expenses reimbursement = ${expensesTotalReimbursement}$
+                        </h5>
                     </div>
-                </form>
+                </div>
+            </div>
 
-                <table id="receiptList" class="table table-striped">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">Receipt name</th>
-                            <th scope="col">Receipt value</th>
-                            <th scope="col">Receipt limit</th>
-                            <th scope="col">Reimbursement</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach var="receipt" items="${receiptList}">
-                        <tr>
-                            <td>${receipt.receiptType.name}</td>
-                            <td>${receipt.value}</td>
-                            <c:choose>
-                                <c:when test="${receipt.receiptType.enableLimit}">
-                                    <td>${receipt.receiptType.limit}</td>
-                                </c:when>
-                                <c:otherwise>
-                                    <td>Limit disabled</td>
-                                </c:otherwise>
-                            </c:choose>
-                            <td>${receipt.reimbursement}</td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
+            <div class="border p-3">
+                <div class="mb-3">
+                    <h3 class="form-label">Car usage</h3>
+                    <form action="calculate-reimbursement/modify-car-usage" id="calculate-reimbursement/modify-car-usage" method="post">
+                        <div class="input-group">
+                            <span class="input-group-text">Distance</span>
+                            <input type="number" step="0.001" class="form-control" id="distance" name="distance" min="1" value="${carUsage.distance}">
+                            <span class="input-group-text">km</span>
+                            <span class="input-group-text">
+                                Limit of distance:
+                                <c:choose>
+                                    <c:when test="${carUsage.reimbursement.enableMileageLimit}">
+                                        ${carUsage.reimbursement.mileageLimit}km
+                                    </c:when>
+                                    <c:otherwise>
+                                        Disabled
+                                    </c:otherwise>
+                                </c:choose>
+                            </span>
+                            <span class="input-group-text">Current rate: ${carUsage.reimbursement.perKilometer}$/km</span>
+                        </div>
+                    </form>
+                </div>
                 <div class="d-flex align-items-center">
                     <div class="flex-grow-1"></div>
                     <h5 class="mb-0 ms-3 pb-1 border-bottom">
-                        Total expenses reimbursement = ${expensesTotalReimbursement}$
+                        Total car usage reimburse = ${carUsage.totalReimburse}$
                     </h5>
                 </div>
             </div>
 
+            <div style="height: 30px"></div>
+            <div class="d-flex align-items-center">
+                <div class="flex-grow-1"></div>
+                <h2 class="mb-0 ms-3 pb-1 border-bottom">
+                    Total reimbursement = ${totalReimbursement}$
+                </h2>
+            </div>
+            <div class="d-flex align-items-center">
+                <div class="flex-grow-1"></div>
+                <button type="submit" class="btn btn-success">Send request for reimbursement to payroll department</button>
+            </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     <script src="jquery-3.7.0.min.js"></script>
     <script src="scripts2.js"></script>
