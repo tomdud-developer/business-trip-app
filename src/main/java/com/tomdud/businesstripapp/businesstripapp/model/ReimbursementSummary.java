@@ -82,4 +82,8 @@ public class ReimbursementSummary {
     public void setTotalReimbursement(double totalReimbursement) {
         this.totalReimbursement = totalReimbursement;
     }
+
+    public double sumReimbursementFromReceipts() {
+        return receiptList.stream().map(Receipt::getReimbursement).reduce(0.0, Double::sum);
+    }
 }

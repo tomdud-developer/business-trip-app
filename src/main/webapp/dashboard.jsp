@@ -25,6 +25,7 @@
                         <th scope="col">Duration</th>
                         <th scope="col" class="border-end">Disabled days</th>
                         <th scope="col">Receipts</th>
+                        <th scope="col" class="border-end">Total for receipts</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -64,6 +65,7 @@
                                             </ul>
                                         </div>
                                     </td>
+                                    <td>${summary.sumReimbursementFromReceipts()}$</td>
                                 </tr>
                             </c:forEach>
                         </c:if>
