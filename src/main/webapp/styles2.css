@@ -13,3 +13,10 @@
 .save-button-long {
     width: 200px;
 }
+
+.logo {
+    font-family: Arial, sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+    color: #ffb700;
+}

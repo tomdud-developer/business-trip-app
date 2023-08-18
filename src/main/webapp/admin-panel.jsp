@@ -7,7 +7,7 @@
     <title>Admin panel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link href=”https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css” rel=”stylesheet” type=”text/css” />
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles2.css">
 </head>
 <body>
   <h1>Admin Panel</h1>
