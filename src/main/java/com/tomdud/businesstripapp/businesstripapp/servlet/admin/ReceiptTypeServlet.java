@@ -1,4 +1,4 @@
-package com.tomdud.businesstripapp.businesstripapp.servlet;
+package com.tomdud.businesstripapp.businesstripapp.servlet.admin;
 
 import com.tomdud.businesstripapp.businesstripapp.model.ReceiptType;
 import com.tomdud.businesstripapp.businesstripapp.service.ReceiptService;

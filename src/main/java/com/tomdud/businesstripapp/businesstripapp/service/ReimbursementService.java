@@ -1,9 +1,7 @@
 package com.tomdud.businesstripapp.businesstripapp.service;
 
 import com.tomdud.businesstripapp.businesstripapp.dto.ReimbursementUpdateRequestDTO;
-import com.tomdud.businesstripapp.businesstripapp.model.Reimbursement;
-import com.tomdud.businesstripapp.businesstripapp.model.TotalReimbursement;
-import com.tomdud.businesstripapp.businesstripapp.model.TripDuration;
+import com.tomdud.businesstripapp.businesstripapp.model.*;
 import com.tomdud.businesstripapp.businesstripapp.repository.ReimbursementRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,6 +42,10 @@ public class ReimbursementService {
         Reimbursement reimbursement = new Reimbursement(
                 reimbursementUpdateRequestDTO.getPerKilometer(),
                 reimbursementUpdateRequestDTO.getPerDay(),
+                reimbursementUpdateRequestDTO.isEnableMileageLimit(),
+                reimbursementUpdateRequestDTO.getMileageLimit(),
+                reimbursementUpdateRequestDTO.isEnableTotalReimbursementLimit(),
+                reimbursementUpdateRequestDTO.getTotalReimbursementLimit(),
                 LocalDateTime.now()
         );
 
@@ -92,10 +94,23 @@ public class ReimbursementService {
         );
     }
 
+    public TotalReimbursement calculateTotalReimbursement(
+            TripDuration tripDuration,
+            List<Receipt> receipts,
+            CarUsage carUsage) {
 
-    public double calculateTotalReimbursement(TotalReimbursement totalReimbursement) {
-        return totalReimbursement.getCarUsage().getTotalReimburse()
-                + receiptService.calculateTotalReimbursement(totalReimbursement.getReceiptList())
-                + daysAllowanceService.calculateTotalAllowance(totalReimbursement.getTripDuration(), getLeast());
+        double sum = carUsage.getTotalReimburse()
+                + receiptService.calculateTotalReimbursement(receipts)
+                + daysAllowanceService.calculateTotalAllowance(tripDuration, getLeast());
+
+        return new TotalReimbursement(
+                tripDuration,
+                receipts,
+                carUsage,
+                getLeast(),
+                sum
+        );
     }
+
+
 }

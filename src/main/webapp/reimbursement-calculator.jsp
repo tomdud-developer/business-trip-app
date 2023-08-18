@@ -178,7 +178,10 @@
             </div>
             <div class="d-flex align-items-center">
                 <div class="flex-grow-1"></div>
-                <button type="submit" class="btn btn-success">Send request for reimbursement to payroll department</button>
+                <form action="calculate-reimbursement/send-to-consideration" id="calculate-reimbursement/modify-duration" method="post">
+                    <input type="number" id="checkSum" name="checkSum" value="${totalReimbursement}" style="display: none">
+                    <button type="submit" class="btn btn-success">Send request for reimbursement to payroll department</button>
+                </form>
             </div>
 
         </div>

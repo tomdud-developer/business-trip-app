@@ -1,4 +1,4 @@
-package com.tomdud.businesstripapp.businesstripapp.servlet;
+package com.tomdud.businesstripapp.businesstripapp.servlet.admin;
 
 import com.tomdud.businesstripapp.businesstripapp.dto.ReimbursementUpdateRequestDTO;
 import com.tomdud.businesstripapp.businesstripapp.service.ReceiptService;
@@ -34,30 +34,30 @@ public class AdminPanelServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         String action = request.getServletPath();
-
-        logger.log(Level.INFO, "Admin panel post - action - {0}", action);
+        logger.log(Level.INFO, "AdminPanelServlet::doPost - action - {0}", action);
 
         switch (action) {
             case "/admin-panel/update":
-                ReimbursementUpdateRequestDTO reimbursementUpdateRequestDTO = new ReimbursementUpdateRequestDTO(
-                        Double.parseDouble(request.getParameter("perKilometer")),
-                        Double.parseDouble(request.getParameter("perDay")),
-                        request.getParameter("enableMileageLimit") != null,
-                        Double.parseDouble(request.getParameter("mileageLimit")),
-                        request.getParameter("enableTotalReimbursementLimit") != null,
-                        Double.parseDouble(request.getParameter("totalReimbursementLimit"))
-                );
-
-                reimbursementService.add(reimbursementUpdateRequestDTO);
+                addNewReimbursement(request);
                 response.sendRedirect(request.getContextPath() + "/admin-panel");
                 break;
             default:
-                request.setAttribute("reimbursement", reimbursementService.getLeast());
-                doGet(request, response);
-                break;
+                throw new IllegalStateException("Unexpected value: " + action);
         }
+    }
+
+    private void addNewReimbursement(HttpServletRequest request) {
+        ReimbursementUpdateRequestDTO reimbursementUpdateRequestDTO = new ReimbursementUpdateRequestDTO(
+                Double.parseDouble(request.getParameter("perKilometer")),
+                Double.parseDouble(request.getParameter("perDay")),
+                request.getParameter("enableMileageLimit") != null,
+                Double.parseDouble(request.getParameter("mileageLimit")),
+                request.getParameter("enableTotalReimbursementLimit") != null,
+                Double.parseDouble(request.getParameter("totalReimbursementLimit"))
+        );
+
+        reimbursementService.add(reimbursementUpdateRequestDTO);
     }
 
 }

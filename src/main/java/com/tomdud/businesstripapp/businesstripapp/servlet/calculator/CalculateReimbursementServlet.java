@@ -22,7 +22,8 @@ import java.util.logging.Logger;
 @WebServlet(
         name = "CalculateReimbursementServlet",
         value = {
-                "/calculate-reimbursement"
+                "/calculate-reimbursement",
+                "/calculate-reimbursement/send-to-consideration"
         }
 )
 public class CalculateReimbursementServlet extends HttpServlet {
@@ -36,34 +37,9 @@ public class CalculateReimbursementServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        logger.log(Level.INFO, "Calculator panel get");
+        logger.log(Level.INFO, "CalculateReimbursementServlet::doGet");
 
-        request.setAttribute("receiptTypes", receiptService.getAllReceiptTypes());
-
-        List<Receipt> receipts = (List<Receipt>) request.getSession().getAttribute("receiptList");
-        if(receipts == null) {
-            receipts = new ArrayList<>();
-            request.getSession().setAttribute("receiptList", receipts);
-        }
-
-        TripDuration tripDuration = (TripDuration) request.getSession().getAttribute("tripDuration");
-        if(tripDuration == null) {
-            tripDuration = new TripDuration(LocalDate.now(), LocalDate .now(), 1, new HashSet<>());
-            request.getSession().setAttribute("tripDuration", tripDuration);
-        }
-
-        CarUsage carUsage = (CarUsage) request.getSession().getAttribute("carUsage");
-        if(carUsage == null) {
-            carUsage = new CarUsage(0.0, reimbursementService.getLeast());
-            request.getSession().setAttribute("carUsage", carUsage);
-        }
-
-        request.getSession().setAttribute("totalAllowance", daysAllowanceService.calculateTotalAllowance(tripDuration, reimbursementService.getLeast()));
-        request.getSession().setAttribute("expensesTotalReimbursement", receiptService.calculateTotalReimbursement(receipts));
-
-        TotalReimbursement totalReimbursement = new TotalReimbursement(receipts, carUsage, tripDuration);
-        request.getSession().setAttribute("totalReimbursement", reimbursementService.calculateTotalReimbursement(totalReimbursement));
-
+        initializeSessionAttributesIfNullsAndCalculateTotals(request);
         request.getRequestDispatcher("reimbursement-calculator.jsp").forward(request, response);
     }
 
@@ -72,16 +48,71 @@ public class CalculateReimbursementServlet extends HttpServlet {
 
         String action = request.getServletPath();
 
-        logger.log(Level.INFO, "Calculator panel post - action - {0}", action);
+        logger.log(Level.INFO, "CalculateReimbursementServlet::doPost - action - {0}", action);
 
         switch (action) {
+            case "/calculate-reimbursement/send-to-consideration":
+                TotalReimbursement totalReimbursement = buildTotalReimbursement(request);
+                totalReimbursement.setUserId(123L);
 
-            default:
-                response.sendRedirect(request.getContextPath() + "/calculate-reimbursement");
+                //TODO
+                //SAVE this and return to welcome page with list of requests?
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + action);
+        }
+    }
+
+    private void initializeSessionAttributesIfNullsAndCalculateTotals(HttpServletRequest request) {
+        request.getSession().setAttribute("receiptTypes", receiptService.getAllReceiptTypes());
+
+        List<Receipt> receipts = retrieveListOfReceiptsFromSession(request);
+        if(receipts == null) {
+            receipts = new ArrayList<>();
+            request.getSession().setAttribute("receiptList", receipts);
         }
 
+        TripDuration tripDuration = retrieveTripDurationFromSession(request);
+        if(tripDuration == null) {
+            tripDuration = new TripDuration(LocalDate.now(), LocalDate .now(), 1, new HashSet<>());
+            request.getSession().setAttribute("tripDuration", tripDuration);
+        }
 
+        CarUsage carUsage = retrieveCarUsageFromSession(request);
+        if(carUsage == null) {
+            carUsage = new CarUsage(0.0, reimbursementService.getLeast());
+            request.getSession().setAttribute("carUsage", carUsage);
+        }
+
+        calculateTotals(request);
+    }
+
+    private void calculateTotals(HttpServletRequest request) {
+        TotalReimbursement totalReimbursement = buildTotalReimbursement(request);
+
+        request.getSession().setAttribute("totalAllowance", daysAllowanceService.calculateTotalAllowance(totalReimbursement.getTripDuration(), reimbursementService.getLeast()));
+        request.getSession().setAttribute("expensesTotalReimbursement", receiptService.calculateTotalReimbursement(totalReimbursement.getReceiptList()));
+        request.getSession().setAttribute("totalReimbursement", totalReimbursement.getTotalReimbursement());
+    }
+
+    private TotalReimbursement buildTotalReimbursement(HttpServletRequest request) {
+        return reimbursementService.calculateTotalReimbursement(
+                retrieveTripDurationFromSession(request),
+                retrieveListOfReceiptsFromSession(request),
+                retrieveCarUsageFromSession(request)
+        );
+    }
+
+    private List<Receipt> retrieveListOfReceiptsFromSession(HttpServletRequest request) {
+        return (List<Receipt>) request.getSession().getAttribute("receiptList");
+    }
+
+    private TripDuration retrieveTripDurationFromSession(HttpServletRequest request) {
+        return (TripDuration) request.getSession().getAttribute("tripDuration");
+    }
+
+    private CarUsage retrieveCarUsageFromSession(HttpServletRequest request) {
+        return (CarUsage) request.getSession().getAttribute("carUsage");
     }
 
 
