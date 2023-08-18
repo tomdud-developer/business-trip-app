@@ -62,19 +62,19 @@ public class TripDurationServlet extends HttpServlet {
 
         switch (tripFieldChanged) {
             case "numberOfDays":
-                tripDuration = reimbursementService.getNewTripDurationBasedOnChangedDays(
+                tripDuration = daysAllowanceService.getNewTripDurationBasedOnChangedDays(
                         tripDuration,
                         Integer.parseInt(request.getParameter("numberOfDays"))
                 );
                 break;
             case "tripEndDate":
-                tripDuration = reimbursementService.getNewTripDurationBasedOnChangedEndDate(
+                tripDuration = daysAllowanceService.getNewTripDurationBasedOnChangedEndDate(
                         tripDuration,
                         LocalDate.parse(request.getParameter("tripEndDate"))
                 );
                 break;
             case "tripStartDate":
-                tripDuration = reimbursementService.getNewTripDurationBasedOnChangedStartDate(
+                tripDuration = daysAllowanceService.getNewTripDurationBasedOnChangedStartDate(
                         tripDuration,
                         LocalDate.parse(request.getParameter("tripStartDate"))
                 );
@@ -88,7 +88,7 @@ public class TripDurationServlet extends HttpServlet {
     private void addDisabledDay(HttpServletRequest request) {
         TripDuration currentTripDuration = retrieveTripDurationFromRequest(request);
         LocalDate dateToDisable = LocalDate.parse(request.getParameter("disabledDayDate"));
-        if (daysAllowanceService.isDateBetween(
+        if (daysAllowanceService.isDateBetweenOrEquals(
                 dateToDisable,
                 currentTripDuration.getStartDate(),
                 currentTripDuration.getEndDate())

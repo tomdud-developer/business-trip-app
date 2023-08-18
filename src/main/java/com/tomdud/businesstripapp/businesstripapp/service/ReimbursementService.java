@@ -67,33 +67,6 @@ public class ReimbursementService {
                 .collect(Collectors.toList()).get(0);
     }
 
-    public TripDuration getNewTripDurationBasedOnChangedDays(TripDuration oldTripDuration, int days) {
-        return new TripDuration(
-                oldTripDuration.getStartDate(),
-                oldTripDuration.getStartDate().plusDays(days - 1),
-                days,
-                oldTripDuration.getDisabledDays()
-        );
-    }
-
-    public TripDuration getNewTripDurationBasedOnChangedEndDate(TripDuration oldTripDuration, LocalDate newEndDate) {
-        return new TripDuration(
-                oldTripDuration.getStartDate(),
-                newEndDate,
-                (int)ChronoUnit.DAYS.between(oldTripDuration.getStartDate(), newEndDate) + 1,
-                oldTripDuration.getDisabledDays()
-        );
-    }
-
-    public TripDuration getNewTripDurationBasedOnChangedStartDate(TripDuration oldTripDuration, LocalDate newStartDate) {
-        return new TripDuration(
-                newStartDate,
-                oldTripDuration.getEndDate(),
-                (int)ChronoUnit.DAYS.between(newStartDate, oldTripDuration.getEndDate()) + 1,
-                oldTripDuration.getDisabledDays()
-        );
-    }
-
     public TotalReimbursement calculateTotalReimbursement(
             TripDuration tripDuration,
             List<Receipt> receipts,
