@@ -1,13 +1,9 @@
 package com.tomdud.businesstripapp.businesstripapp.repository;
 
-import com.tomdud.businesstripapp.businesstripapp.exception.UserNotFoundException;
-import com.tomdud.businesstripapp.businesstripapp.model.Reimbursement;
 import com.tomdud.businesstripapp.businesstripapp.model.Role;
 import com.tomdud.businesstripapp.businesstripapp.model.User;
 
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class UserRepository {
 
@@ -17,9 +13,9 @@ public class UserRepository {
 
     private UserRepository() {
         repository = new HashSet<>();
-        User user = new User("user", "user", new HashSet<>(Set.of(Role.USER)));
-        User user2 = new User("user2", "user2", new HashSet<>(Set.of(Role.USER)));
-        User admin = new User("admin", "admin", new HashSet<>(Set.of(Role.ADMIN)));
+        User user = new User(0L, "user", "user", new HashSet<>(Set.of(Role.USER)));
+        User user2 = new User(1L,"user2", "user2", new HashSet<>(Set.of(Role.USER)));
+        User admin = new User(2L, "admin", "admin", new HashSet<>(Set.of(Role.ADMIN)));
 
         repository.add(user);
         repository.add(user2);

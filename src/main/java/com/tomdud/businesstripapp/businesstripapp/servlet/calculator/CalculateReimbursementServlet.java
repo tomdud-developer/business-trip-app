@@ -2,7 +2,7 @@ package com.tomdud.businesstripapp.businesstripapp.servlet.calculator;
 
 import com.tomdud.businesstripapp.businesstripapp.model.CarUsage;
 import com.tomdud.businesstripapp.businesstripapp.model.Receipt;
-import com.tomdud.businesstripapp.businesstripapp.model.TotalReimbursement;
+import com.tomdud.businesstripapp.businesstripapp.model.ReimbursementSummary;
 import com.tomdud.businesstripapp.businesstripapp.model.TripDuration;
 import com.tomdud.businesstripapp.businesstripapp.service.DaysAllowanceService;
 import com.tomdud.businesstripapp.businesstripapp.service.ReceiptService;
@@ -52,11 +52,14 @@ public class CalculateReimbursementServlet extends HttpServlet {
 
         switch (action) {
             case "/calculate-reimbursement/send-to-consideration":
-                TotalReimbursement totalReimbursement = buildTotalReimbursement(request);
-                totalReimbursement.setUserId(123L);
+                ReimbursementSummary reimbursementSummary = buildTotalReimbursement(request);
+                reimbursementSummary.setUserId(123L);
 
                 //TODO
                 //SAVE this and return to welcome page with list of requests?
+
+                reimbursementService.saveReimbursementSummary(reimbursementSummary, 0L);
+
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + action);
@@ -88,14 +91,14 @@ public class CalculateReimbursementServlet extends HttpServlet {
     }
 
     private void calculateTotals(HttpServletRequest request) {
-        TotalReimbursement totalReimbursement = buildTotalReimbursement(request);
+        ReimbursementSummary reimbursementSummary = buildTotalReimbursement(request);
 
-        request.getSession().setAttribute("totalAllowance", daysAllowanceService.calculateTotalAllowance(totalReimbursement.getTripDuration(), reimbursementService.getLeast()));
-        request.getSession().setAttribute("expensesTotalReimbursement", receiptService.calculateTotalReimbursement(totalReimbursement.getReceiptList()));
-        request.getSession().setAttribute("totalReimbursement", totalReimbursement.getTotalReimbursement());
+        request.getSession().setAttribute("totalAllowance", daysAllowanceService.calculateTotalAllowance(reimbursementSummary.getTripDuration(), reimbursementService.getLeast()));
+        request.getSession().setAttribute("expensesTotalReimbursement", receiptService.calculateTotalReimbursement(reimbursementSummary.getReceiptList()));
+        request.getSession().setAttribute("totalReimbursement", reimbursementSummary.getTotalReimbursement());
     }
 
-    private TotalReimbursement buildTotalReimbursement(HttpServletRequest request) {
+    private ReimbursementSummary buildTotalReimbursement(HttpServletRequest request) {
         return reimbursementService.calculateTotalReimbursement(
                 retrieveTripDurationFromSession(request),
                 retrieveListOfReceiptsFromSession(request),

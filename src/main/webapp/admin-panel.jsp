@@ -18,11 +18,11 @@
               <div class="mb-3">
                   <div class="input-group">
                       <label for="perKilometer" class="input-group-text">Car mileage</label>
-                      <input type="number" step="0.01" class="form-control" id="perKilometer" name="perKilometer" value="${reimbursement.perKilometer}" />
+                      <input type="number" step="0.01" class="form-control" id="perKilometer" name="perKilometer" value="${reimbursementDetails.perKilometer}" />
                       <label for="perKilometer" class="input-group-text">$/km</label>
 
                       <label for="perDay" class="input-group-text">Daily allowance</label>
-                      <input type="number" step="0.01" class="form-control" id="perDay" name="perDay" value="${reimbursement.perDay}" />
+                      <input type="number" step="0.01" class="form-control" id="perDay" name="perDay" value="${reimbursementDetails.perDay}" />
                       <label for="perDay" class="input-group-text">$/day</label>
                   </div>
               </div>
@@ -30,17 +30,17 @@
                   <div class="input-group">
                       <div class="input-group-text">
                           <label style="margin-right: 5px">Maximum mileage limit enable/disable</label>
-                          <input class="form-check-input mt-0" type="checkbox" name="enableMileageLimit" id="enableMileageLimit" value="${reimbursement.enableMileageLimit}">
+                          <input class="form-check-input mt-0" type="checkbox" name="enableMileageLimit" id="enableMileageLimit" value="${reimbursementDetails.enableMileageLimit}">
                       </div>
-                      <input type="number" class="form-control" step="0.01" id="mileageLimit" name="mileageLimit" value="${reimbursement.mileageLimit}" />
+                      <input type="number" class="form-control" step="0.01" id="mileageLimit" name="mileageLimit" value="${reimbursementDetails.mileageLimit}" />
                       <label for="perKilometer" class="input-group-text">km</label>
                   </div>
                   <div class="input-group">
                       <div class="input-group-text">
-                          <label style="margin-right: 5px">Total reimbursement limit enable/disable</label>
-                          <input class="form-check-input mt-0" type="checkbox" name="enableTotalReimbursementLimit" id="enableTotalReimbursementLimit" value="${reimbursement.enableTotalReimbursementLimit}">
+                          <label style="margin-right: 5px">Total reimbursementDetails limit enable/disable</label>
+                          <input class="form-check-input mt-0" type="checkbox" name="enableTotalReimbursementLimit" id="enableTotalReimbursementLimit" value="${reimbursementDetails.enableTotalReimbursementLimit}">
                       </div>
-                      <input type="number" step="0.01" class="form-control" id="totalReimbursementLimit" name="totalReimbursementLimit" value="${reimbursement.totalReimbursementLimit}" />
+                      <input type="number" step="0.01" class="form-control" id="totalReimbursementLimit" name="totalReimbursementLimit" value="${reimbursementDetails.totalReimbursementLimit}" />
                       <label for="perKilometer" class="input-group-text">$</label>
                   </div>
               </div>
@@ -59,8 +59,8 @@
                       <th scope="col">Daily allowance, $/day</th>
                       <th scope="col">Mileage limit status</th>
                       <th scope="col">Mileage limit, km</th>
-                      <th scope="col">Total reimbursement status</th>
-                      <th scope="col">Total reimbursement limit, $</th>
+                      <th scope="col">Total reimbursementDetails status</th>
+                      <th scope="col">Total reimbursementDetails limit, $</th>
                   </tr>
               </thead>
               <tbody>

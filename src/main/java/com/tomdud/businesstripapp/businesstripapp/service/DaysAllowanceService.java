@@ -1,6 +1,6 @@
 package com.tomdud.businesstripapp.businesstripapp.service;
 
-import com.tomdud.businesstripapp.businesstripapp.model.Reimbursement;
+import com.tomdud.businesstripapp.businesstripapp.model.ReimbursementDetails;
 import com.tomdud.businesstripapp.businesstripapp.model.TripDuration;
 
 import java.time.LocalDate;
@@ -52,8 +52,8 @@ public class DaysAllowanceService {
         );
     }
 
-    public double calculateTotalAllowance(TripDuration tripDuration, Reimbursement reimbursement) {
-        return reimbursement.getPerDay() * (tripDuration.getDuration() - tripDuration.getDisabledDays().size());
+    public double calculateTotalAllowance(TripDuration tripDuration, ReimbursementDetails reimbursementDetails) {
+        return reimbursementDetails.getPerDay() * (tripDuration.getDuration() - tripDuration.getDisabledDays().size());
     }
 
     public boolean isDateBetweenOrEquals(LocalDate date, LocalDate startDate, LocalDate endDate) {

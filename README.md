@@ -1,7 +1,7 @@
 
 # Business Trip Reimbursement Calculation Application
 
-Java Application to manage the reimbursement of expenses of a user after a business trip.
+Java Application to manage the reimbursementDetails of expenses of a user after a business trip.
 
 
 

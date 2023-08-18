@@ -2,10 +2,11 @@ package com.tomdud.businesstripapp.businesstripapp.service;
 
 import com.tomdud.businesstripapp.businesstripapp.dto.ReimbursementUpdateRequestDTO;
 import com.tomdud.businesstripapp.businesstripapp.model.*;
-import com.tomdud.businesstripapp.businesstripapp.repository.ReimbursementRepository;
-import java.time.LocalDate;
+import com.tomdud.businesstripapp.businesstripapp.repository.ReimbursementDetailsRepository;
+import com.tomdud.businesstripapp.businesstripapp.repository.ReimbursementSummaryRepository;
+import com.tomdud.businesstripapp.businesstripapp.util.SampleDataGenerator;
+
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,15 +15,12 @@ public class ReimbursementService {
 
     private static volatile ReimbursementService instance;
 
-    private final ReimbursementRepository reimbursementRepository;
-    private final ReceiptService receiptService;
-    private final DaysAllowanceService daysAllowanceService;
+    private final ReimbursementDetailsRepository reimbursementDetailsRepository = ReimbursementDetailsRepository.getInstance();
+    private final ReceiptService receiptService = ReceiptService.getInstance();
+    private final DaysAllowanceService daysAllowanceService = DaysAllowanceService.getInstance();
+    private final ReimbursementSummaryRepository reimbursementSummaryRepository = ReimbursementSummaryRepository.getInstance();
 
     private ReimbursementService() {
-
-        reimbursementRepository = ReimbursementRepository.getInstance();
-        receiptService = ReceiptService.getInstance();
-        daysAllowanceService = DaysAllowanceService.getInstance();
     }
 
     public static ReimbursementService getInstance() {
@@ -38,8 +36,8 @@ public class ReimbursementService {
         return result;
     }
 
-    public Reimbursement add(ReimbursementUpdateRequestDTO reimbursementUpdateRequestDTO) {
-        Reimbursement reimbursement = new Reimbursement(
+    public ReimbursementDetails add(ReimbursementUpdateRequestDTO reimbursementUpdateRequestDTO) {
+        ReimbursementDetails reimbursementDetails = new ReimbursementDetails(
                 reimbursementUpdateRequestDTO.getPerKilometer(),
                 reimbursementUpdateRequestDTO.getPerDay(),
                 reimbursementUpdateRequestDTO.isEnableMileageLimit(),
@@ -49,25 +47,25 @@ public class ReimbursementService {
                 LocalDateTime.now()
         );
 
-        return reimbursementRepository.add(reimbursement);
+        return reimbursementDetailsRepository.add(reimbursementDetails);
     }
 
-    public List<Reimbursement> getAll() {
-        return reimbursementRepository.getAll()
+    public List<ReimbursementDetails> getAll() {
+        return reimbursementDetailsRepository.getAll()
                 .stream()
-                .sorted(Comparator.comparing(Reimbursement::getSettingDate).reversed())
+                .sorted(Comparator.comparing(ReimbursementDetails::getSettingDate).reversed())
                 .collect(Collectors.toList());
     }
 
-    public Reimbursement getLeast() {
-        return reimbursementRepository.getAll()
+    public ReimbursementDetails getLeast() {
+        return reimbursementDetailsRepository.getAll()
                 .stream()
-                .sorted(Comparator.comparing(Reimbursement::getSettingDate).reversed())
+                .sorted(Comparator.comparing(ReimbursementDetails::getSettingDate).reversed())
                 .limit(1)
                 .collect(Collectors.toList()).get(0);
     }
 
-    public TotalReimbursement calculateTotalReimbursement(
+    public ReimbursementSummary calculateTotalReimbursement(
             TripDuration tripDuration,
             List<Receipt> receipts,
             CarUsage carUsage) {
@@ -76,13 +74,22 @@ public class ReimbursementService {
                 + receiptService.calculateTotalReimbursement(receipts)
                 + daysAllowanceService.calculateTotalAllowance(tripDuration, getLeast());
 
-        return new TotalReimbursement(
+        return new ReimbursementSummary(
                 tripDuration,
                 receipts,
                 carUsage,
                 getLeast(),
                 sum
         );
+    }
+
+    public List<ReimbursementSummary> getAllReimbursementSummariesByUserId(long userId) {
+        return reimbursementSummaryRepository.getAllByUserId(userId);
+    }
+
+    public ReimbursementSummary saveReimbursementSummary(ReimbursementSummary reimbursementSummary, long userId) {
+        reimbursementSummary.setUserId(userId);
+        return reimbursementSummaryRepository.save(reimbursementSummary);
     }
 
 

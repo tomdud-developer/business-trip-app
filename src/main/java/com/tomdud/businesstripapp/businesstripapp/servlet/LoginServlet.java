@@ -45,8 +45,9 @@ public class LoginServlet extends HttpServlet {
 
                     request.getSession().setAttribute("username", user.getUsername());
                     request.getSession().setAttribute("roles", user.getRoles());
+                    request.getSession().setAttribute("id", user.getId());
 
-                    response.sendRedirect(request.getContextPath() + "/dashboard.jsp");
+                    response.sendRedirect(request.getContextPath() + "/dashboard");
                 } catch (UserNotAuthenticatedException e) {
                     request.setAttribute("error", "Incorrect username or password");
                      doGet(request, response);

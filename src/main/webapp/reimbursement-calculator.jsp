@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="com.tomdud.businesstripapp.businesstripapp.model.Reimbursement" %>
+<%@ page import="com.tomdud.businesstripapp.businesstripapp.model.ReimbursementDetails" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -19,7 +19,7 @@
             <div class="border p-3">
                 <div class="mb-3">
                     <h3 class="form-label">Business trip duration</h3>
-                    <form action="calculate-reimbursement/modify-duration" id="calculate-reimbursement/modify-duration" method="post">
+                    <form action="calculate-reimbursementDetails/modify-duration" id="calculate-reimbursementDetails/modify-duration" method="post">
                         <div class="input-group">
                             <label for="tripStartDate" class="input-group-text" id="basic-addon1">Trip start date</label>
                             <input type="date" class="form-control" id="tripStartDate" name="tripStartDate" value="${tripDuration.startDate}">
@@ -31,7 +31,7 @@
                         </div>
                         <input type="hidden" name="tripFieldChanged" id="tripFieldChanged">
                     </form>
-                    <form action="calculate-reimbursement/addDisabledDay" method="post">
+                    <form action="calculate-reimbursementDetails/addDisabledDay" method="post">
                         <div class="input-group">
                             <label for="disabledDayDate" class="input-group-text">Disabled day date</label>
                             <input type="date" class="form-control" id="disabledDayDate" name="disabledDayDate" value="${tripDuration.startDate}">
@@ -51,7 +51,7 @@
                             <tr>
                                 <td>${date}</td>
                                 <td>
-                                    <form action="calculate-reimbursement/deleteDisabledDay" method="post">
+                                    <form action="calculate-reimbursementDetails/deleteDisabledDay" method="post">
                                         <input type="date" class="form-control" id="disabledDayDateToDelete" name="disabledDayDateToDelete" value="${date}" style="display: none">
                                         <button type="submit" class="btn btn-danger">Delete</button>
                                     </form>
@@ -72,7 +72,7 @@
             <div class="border p-3">
                 <div class="mb-3">
                     <h3 class="form-label">Business trip expenses</h3>
-                    <form action="calculate-reimbursement/add-receipt" method="post">
+                    <form action="calculate-reimbursementDetails/add-receipt" method="post">
                         <div class="input-group">
                                 <label for="receiptValue" class="input-group-text">Receipt value</label>
                                 <input class="form-control" type="number" step="0.01" id="receiptValue" name="receiptValue" min="0.01">
@@ -119,9 +119,9 @@
                                         <td>Limit disabled</td>
                                     </c:otherwise>
                                 </c:choose>
-                                <td>${receipt.reimbursement}</td>
+                                <td>${receipt.reimbursementDetails}</td>
                                 <td>
-                                    <form action="calculate-reimbursement/delete-receipt" method="post">
+                                    <form action="calculate-reimbursementDetails/delete-receipt" method="post">
                                         <input type="number" class="form-control" id="receiptIndexToDelete" name="receiptIndexToDelete" value="${loop.index}" style="display: none">
                                         <button type="submit" class="btn btn-danger">Delete</button>
                                     </form>
@@ -133,7 +133,7 @@
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1"></div>
                         <h5 class="mb-0 ms-3 pb-1 border-bottom">
-                            Total expenses reimbursement = ${expensesTotalReimbursement}$
+                            Total expenses reimbursementDetails = ${expensesTotalReimbursement}$
                         </h5>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
             <div class="border p-3">
                 <div class="mb-3">
                     <h3 class="form-label">Car usage</h3>
-                    <form action="calculate-reimbursement/modify-car-usage" id="calculate-reimbursement/modify-car-usage" method="post">
+                    <form action="calculate-reimbursementDetails/modify-car-usage" id="calculate-reimbursementDetails/modify-car-usage" method="post">
                         <div class="input-group">
                             <span class="input-group-text">Distance</span>
                             <input type="number" step="0.001" class="form-control" id="distance" name="distance" min="1" value="${carUsage.distance}">
@@ -150,15 +150,15 @@
                             <span class="input-group-text">
                                 Limit of distance:
                                 <c:choose>
-                                    <c:when test="${carUsage.reimbursement.enableMileageLimit}">
-                                        ${carUsage.reimbursement.mileageLimit}km
+                                    <c:when test="${carUsage.reimbursementDetails.enableMileageLimit}">
+                                        ${carUsage.reimbursementDetails.mileageLimit}km
                                     </c:when>
                                     <c:otherwise>
                                         Disabled
                                     </c:otherwise>
                                 </c:choose>
                             </span>
-                            <span class="input-group-text">Current rate: ${carUsage.reimbursement.perKilometer}$/km</span>
+                            <span class="input-group-text">Current rate: ${carUsage.reimbursementDetails.perKilometer}$/km</span>
                         </div>
                     </form>
                 </div>
@@ -174,14 +174,14 @@
             <div class="d-flex align-items-center">
                 <div class="flex-grow-1"></div>
                 <h2 class="mb-0 ms-3 pb-1 border-bottom">
-                    Total reimbursement = ${totalReimbursement}$
+                    Total reimbursementDetails = ${reimbursementSummary}$
                 </h2>
             </div>
             <div class="d-flex align-items-center">
                 <div class="flex-grow-1"></div>
-                <form action="calculate-reimbursement/send-to-consideration" id="calculate-reimbursement/modify-duration" method="post">
-                    <input type="number" id="checkSum" name="checkSum" value="${totalReimbursement}" style="display: none">
-                    <button type="submit" class="btn btn-success">Send request for reimbursement to payroll department</button>
+                <form action="calculate-reimbursementDetails/send-to-consideration" method="post">
+                    <input type="number" id="checkSum" name="checkSum" value="${reimbursementSummary}" style="display: none">
+                    <button type="submit" class="btn btn-success">Send request for reimbursementDetails to payroll department</button>
                 </form>
             </div>
 

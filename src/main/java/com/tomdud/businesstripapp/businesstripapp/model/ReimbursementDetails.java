@@ -2,7 +2,7 @@ package com.tomdud.businesstripapp.businesstripapp.model;
 
 import java.time.LocalDateTime;
 
-public class Reimbursement {
+public class ReimbursementDetails {
 
     private long id;
     private double perKilometer;
@@ -16,7 +16,7 @@ public class Reimbursement {
 
     private LocalDateTime settingDate;
 
-    public Reimbursement(double perKilometer, double perDay, LocalDateTime settingDate) {
+    public ReimbursementDetails(double perKilometer, double perDay, LocalDateTime settingDate) {
         this.perKilometer = perKilometer;
         this.perDay = perDay;
         this.settingDate = settingDate;
@@ -27,13 +27,13 @@ public class Reimbursement {
         this.totalReimbursementLimit = 0.0;
     }
 
-    public Reimbursement(double perKilometer,
-                         double perDay,
-                         boolean enableMileageLimit,
-                         double mileageLimit,
-                         boolean enableTotalReimbursementLimit,
-                         double totalReimbursementLimit,
-                         LocalDateTime settingDate) {
+    public ReimbursementDetails(double perKilometer,
+                                double perDay,
+                                boolean enableMileageLimit,
+                                double mileageLimit,
+                                boolean enableTotalReimbursementLimit,
+                                double totalReimbursementLimit,
+                                LocalDateTime settingDate) {
         this.perKilometer = perKilometer;
         this.perDay = perDay;
         this.enableMileageLimit = enableMileageLimit;

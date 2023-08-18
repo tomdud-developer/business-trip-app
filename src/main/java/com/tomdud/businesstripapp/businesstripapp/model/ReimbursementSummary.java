@@ -1,9 +1,8 @@
 package com.tomdud.businesstripapp.businesstripapp.model;
 
-import java.time.LocalDate;
 import java.util.List;
 
-public class TotalReimbursement {
+public class ReimbursementSummary {
 
     private long id;
     private long userId;
@@ -11,20 +10,20 @@ public class TotalReimbursement {
     private CarUsage carUsage;
     private TripDuration tripDuration;
 
-    private Reimbursement reimbursement;
+    private ReimbursementDetails reimbursementDetails;
     private double totalReimbursement;
 
-    public TotalReimbursement(
+    public ReimbursementSummary(
             TripDuration tripDuration,
             List<Receipt> receiptList,
             CarUsage carUsage,
-            Reimbursement reimbursement,
+            ReimbursementDetails reimbursementDetails,
             double totalReimbursement
     ) {
         this.receiptList = receiptList;
         this.carUsage = carUsage;
         this.tripDuration = tripDuration;
-        this.reimbursement = reimbursement;
+        this.reimbursementDetails = reimbursementDetails;
         this.totalReimbursement = totalReimbursement;
     }
 
@@ -68,12 +67,12 @@ public class TotalReimbursement {
         this.tripDuration = tripDuration;
     }
 
-    public Reimbursement getReimbursement() {
-        return reimbursement;
+    public ReimbursementDetails getReimbursement() {
+        return reimbursementDetails;
     }
 
-    public void setReimbursement(Reimbursement reimbursement) {
-        this.reimbursement = reimbursement;
+    public void setReimbursement(ReimbursementDetails reimbursementDetails) {
+        this.reimbursementDetails = reimbursementDetails;
     }
 
     public double getTotalReimbursement() {

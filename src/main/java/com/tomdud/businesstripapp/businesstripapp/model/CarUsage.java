@@ -3,16 +3,16 @@ package com.tomdud.businesstripapp.businesstripapp.model;
 public class CarUsage {
 
     private double distance;
-    private Reimbursement reimbursement;
+    private ReimbursementDetails reimbursementDetails;
     private double totalReimburse;
 
-    public CarUsage(double distance, Reimbursement reimbursement) {
+    public CarUsage(double distance, ReimbursementDetails reimbursementDetails) {
         this.distance = distance;
-        this.reimbursement = reimbursement;
+        this.reimbursementDetails = reimbursementDetails;
 
-        if(reimbursement.isEnableMileageLimit() && distance > reimbursement.getMileageLimit())
-            this.totalReimburse = reimbursement.getMileageLimit() * reimbursement.getPerKilometer();
-        else this.totalReimburse = distance * reimbursement.getPerKilometer();
+        if(reimbursementDetails.isEnableMileageLimit() && distance > reimbursementDetails.getMileageLimit())
+            this.totalReimburse = reimbursementDetails.getMileageLimit() * reimbursementDetails.getPerKilometer();
+        else this.totalReimburse = distance * reimbursementDetails.getPerKilometer();
     }
 
     public double getDistance() {
@@ -23,12 +23,12 @@ public class CarUsage {
         this.distance = distance;
     }
 
-    public Reimbursement getReimbursement() {
-        return reimbursement;
+    public ReimbursementDetails getReimbursement() {
+        return reimbursementDetails;
     }
 
-    public void setReimbursement(Reimbursement reimbursement) {
-        this.reimbursement = reimbursement;
+    public void setReimbursement(ReimbursementDetails reimbursementDetails) {
+        this.reimbursementDetails = reimbursementDetails;
     }
 
     public double getTotalReimburse() {
