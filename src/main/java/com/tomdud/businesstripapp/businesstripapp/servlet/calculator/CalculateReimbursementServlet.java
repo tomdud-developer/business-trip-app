@@ -24,7 +24,6 @@ import java.util.logging.Logger;
         value = {
                 "/calculate-reimbursement",
                 "/calculate-reimbursement/modify-duration",
-                "/calculate-reimbursement/modify-car-usage",
                 "/calculate-reimbursement/addDisabledDay",
                 "/calculate-reimbursement/deleteDisabledDay"
         }
@@ -134,14 +133,6 @@ public class CalculateReimbursementServlet extends HttpServlet {
                 request.getSession().setAttribute("tripDuration", currentTripDuration2);
                 response.sendRedirect(request.getContextPath() + "/calculate-reimbursement");
                 break;
-            case "/calculate-reimbursement/modify-car-usage":
-            case "calculate-reimbursement/modify-car-usage":
-                double distance = Double.parseDouble(request.getParameter("distance"));
-                CarUsage newCarUsage= new CarUsage(distance, reimbursementService.getLeast());
-                request.getSession().setAttribute("carUsage", newCarUsage);
-                response.sendRedirect(request.getContextPath() + "/calculate-reimbursement");
-                break;
-
             default:
                 response.sendRedirect(request.getContextPath() + "/calculate-reimbursement");
                 break;
