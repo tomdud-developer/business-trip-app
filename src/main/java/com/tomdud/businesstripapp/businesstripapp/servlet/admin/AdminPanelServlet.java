@@ -20,15 +20,9 @@ public class AdminPanelServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        logger.log(Level.INFO, "AdminPanelServlet::doGet");
 
-        String action = request.getServletPath();
-
-        logger.log(Level.INFO, "Admin panel get - action - {}", action);
-
-        request.setAttribute("reimbursement", reimbursementService.getLeast());
-        request.setAttribute("reimbursementModificationList", reimbursementService.getAll());
-        request.setAttribute("receiptTypes", receiptService.getAllReceiptTypes());
-
+        initialize(request);
         request.getRequestDispatcher("/admin-panel.jsp").forward(request, response);
     }
 
@@ -45,6 +39,12 @@ public class AdminPanelServlet extends HttpServlet {
             default:
                 throw new IllegalStateException("Unexpected value: " + action);
         }
+    }
+
+    private void initialize(HttpServletRequest request) {
+        request.setAttribute("reimbursement", reimbursementService.getLeast());
+        request.setAttribute("reimbursementModificationList", reimbursementService.getAll());
+        request.setAttribute("receiptTypes", receiptService.getAllReceiptTypes());
     }
 
     private void addNewReimbursement(HttpServletRequest request) {
