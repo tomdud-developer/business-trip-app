@@ -22,10 +22,7 @@ import java.util.logging.Logger;
 @WebServlet(
         name = "CalculateReimbursementServlet",
         value = {
-                "/calculate-reimbursement",
-                "/calculate-reimbursement/modify-duration",
-                "/calculate-reimbursement/addDisabledDay",
-                "/calculate-reimbursement/deleteDisabledDay"
+                "/calculate-reimbursement"
         }
 )
 public class CalculateReimbursementServlet extends HttpServlet {
@@ -78,61 +75,7 @@ public class CalculateReimbursementServlet extends HttpServlet {
         logger.log(Level.INFO, "Calculator panel post - action - {0}", action);
 
         switch (action) {
-            case "/calculate-reimbursement/modify-duration":
-            case "calculate-reimbursement/modify-duration":
-                logger.log(Level.INFO, "CalculatorPanel::doPost - change in trip duration form - changed field: {0}",
-                        request.getParameter("tripFieldChanged"));
-                TripDuration tripDuration = (TripDuration) request.getSession().getAttribute("tripDuration");
-                switch (request.getParameter("tripFieldChanged")) {
-                    case "numberOfDays":
-                        tripDuration = reimbursementService.getNewTripDurationBasedOnChangedDays(
-                            tripDuration,
-                            Integer.parseInt(request.getParameter("numberOfDays"))
-                        );
-                        request.getSession().setAttribute("tripDuration", tripDuration);
-                        break;
-                    case "tripEndDate":
-                        tripDuration = reimbursementService.getNewTripDurationBasedOnChangedEndDate(
-                                tripDuration,
-                                LocalDate.parse(request.getParameter("tripEndDate"))
-                        );
-                        request.getSession().setAttribute("tripDuration", tripDuration);
-                        break;
-                    case "tripStartDate":
-                        tripDuration = reimbursementService.getNewTripDurationBasedOnChangedStartDate(
-                                tripDuration,
-                                LocalDate.parse(request.getParameter("tripStartDate"))
-                        );
-                        request.getSession().setAttribute("tripDuration", tripDuration);
-                        break;
-                }
 
-                request.getSession().setAttribute("tripDuration", tripDuration);
-                response.sendRedirect(request.getContextPath() + "/calculate-reimbursement");
-                break;
-            case "/calculate-reimbursement/addDisabledDay":
-            case "calculate-reimbursement/addDisabledDay":
-                TripDuration currentTripDuration = (TripDuration) request.getSession().getAttribute("tripDuration");
-                LocalDate dateToDisable = LocalDate.parse(request.getParameter("disabledDayDate"));
-                if (daysAllowanceService.isDateBetween(
-                        dateToDisable,
-                        currentTripDuration.getStartDate(),
-                        currentTripDuration.getEndDate())
-                ) currentTripDuration.getDisabledDays().add(dateToDisable);
-
-                request.getSession().setAttribute("tripDuration", currentTripDuration);
-                response.sendRedirect(request.getContextPath() + "/calculate-reimbursement");
-                break;
-
-            case "/calculate-reimbursement/deleteDisabledDay":
-            case "calculate-reimbursement/deleteDisabledDay":
-                TripDuration currentTripDuration2 = (TripDuration) request.getSession().getAttribute("tripDuration");
-                LocalDate disabledDateToDelete = LocalDate.parse(request.getParameter("disabledDayDateToDelete"));
-                currentTripDuration2.getDisabledDays().remove(disabledDateToDelete);
-
-                request.getSession().setAttribute("tripDuration", currentTripDuration2);
-                response.sendRedirect(request.getContextPath() + "/calculate-reimbursement");
-                break;
             default:
                 response.sendRedirect(request.getContextPath() + "/calculate-reimbursement");
                 break;
