@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+/*document.addEventListener("DOMContentLoaded", function() {
     const receiptTypeSelect = document.getElementById("receiptType");
     const receiptValue = document.getElementById("receiptValue");
     const addReceiptButton = document.getElementById("addNewReceiptButton");
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         cell3.appendChild(removeButton);
     });
-});
+});*/
 
 $(document).ready(function() {
     $('#tripEndDate').on('input', function() {

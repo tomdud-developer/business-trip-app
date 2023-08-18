@@ -22,10 +22,9 @@
 
     <% response.getWriter().println(((Reimbursement)request.getAttribute("reimbursement")).getPerKilometer()); %>
     <h1>Business Trip Reimbursement Calculator</h1>
-    <form method="post" action="calculate-reimbursement">
         <div class="container" id="calculatorFormContainer">
             <div class="mb-3">
-                <label class="form-label">Business trip duration</label>
+                <h3 class="form-label">Business trip duration</h3>
                 <div class="input-group">
                     <label for="tripStartDate" class="input-group-text" id="basic-addon1">Trip start date</label>
                     <input type="date" class="form-control" id="tripStartDate" name="tripStartDate">
@@ -38,41 +37,69 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Business trip expenses</label>
-                <div class="input-group">
-                    <label for="receiptValue" class="input-group-text">Receipt value</label>
-                    <input type="number" step="0.01" id="receiptValue" name="receiptValue">
-                    <label for="receiptValue" class="input-group-text">$</label>
-                    <select id="receiptType" class="form-select" aria-label="taxi">
-                        <option value="taxi">Taxi</option>
-                        <option value="hotel">Hotel</option>
-                        <option value="plane">Plane Ticket</option>
-                        <option value="train">Train</option>
-                    </select>
-                    <button type="button" id="addNewReceiptButton">Add new Receipt</button>
-                </div>
+                <h3 class="form-label">Business trip expenses</h3>
+                <form action="calculate-reimbursement/add-receipt" method="post">
+                    <div class="input-group">
+                            <label for="receiptValue" class="input-group-text">Receipt value</label>
+                            <input type="number" step="0.01" id="receiptValue" name="receiptValue">
+                            <label for="receiptValue" class="input-group-text">$</label>
+                            <select id="receiptType" name="receiptType" class="form-select" aria-label="taxi">
+                                <c:forEach items="${receiptTypes}" var="type">
+                                    <option value="${type.name}">
+                                            ${type.name} -
+                                            <c:choose>
+                                                <c:when test="${type.enableLimit}">
+                                                    limit - ${type.limit}$
+                                                </c:when>
+                                                <c:otherwise>
+                                                    limit disabled
+                                                </c:otherwise>
+                                            </c:choose>
+                                    </option>
+                                </c:forEach>
+                            </select>
+                            <button type="submit" id="addNewReceiptButton">Add new Receipt</button>
+                    </div>
+                </form>
 
                 <table id="receiptList" class="table table-striped">
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col">Receipt Type</th>
-                            <th scope="col">Receipt Value</th>
-                            <th scope="col">Action</th>
+                            <th scope="col">Receipt name</th>
+                            <th scope="col">Receipt value</th>
+                            <th scope="col">Receipt limit</th>
+                            <th scope="col">Reimbursement</th>
                         </tr>
                     </thead>
+                    <tbody>
+                    <c:forEach var="receipt" items="${receiptList}">
+                        <tr>
+                            <td>${receipt.receiptType.name}</td>
+                            <td>${receipt.value}</td>
+                            <c:choose>
+                                <c:when test="${receipt.receiptType.enableLimit}">
+                                    <td>${receipt.receiptType.limit}</td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td>Limit disabled</td>
+                                </c:otherwise>
+                            </c:choose>
+                            <td>${receipt.reimbursement}</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
                 </table>
             </div>
 
 
-            <label for="inputPassword5" class="form-label">Password</label>
-            <input type="password" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock">
+            <label for="inputPassword" class="form-label">Password</label>
+            <input type="password" id="inputPassword" class="form-control" aria-describedby="passwordHelpBlock">
             <div id="passwordHelpBlock" class="form-text">
                 Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
             </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
-    </form>
     <script src="jquery-3.7.0.min.js"></script>
     <script src="scripts2.js"></script>
 </body>
