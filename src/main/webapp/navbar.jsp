@@ -7,20 +7,30 @@
     <link rel="stylesheet" href="styles2.css">
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg bg-primary">
-    <div class="container-fluid">
-      <span class="logo">Business Trip Reimbursement Calculation Application</span>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="dashboard.jsp">Dashboard</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+    <nav class="navbar navbar-expand-lg bg-primary" style="background-color: #e3f2fd;">
+        <div class="container-fluid">
+            <span class="logo">Business Trip Reimbursement Calculation Application</span>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="dashboard.jsp">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="">Info</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <span class="nav-link">You are logged in as: ${username} and have ${roles} role</span>
+                    </li>
+                    <li class="nav-item">
+                        <form action="logout" method="post">
+                            <button type="submit" class="btn btn-secondary">Logout</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 </body>
 </html>
