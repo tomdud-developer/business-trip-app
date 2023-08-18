@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 public class TripDurationServlet extends HttpServlet {
 
     private static final Logger logger = Logger.getLogger(CalculateReimbursementServlet.class.getName());
-    private final ReimbursementService reimbursementService = ReimbursementService.getInstance();
     private final DaysAllowanceService daysAllowanceService = DaysAllowanceService.getInstance();
 
     @Override

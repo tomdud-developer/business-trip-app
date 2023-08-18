@@ -12,7 +12,7 @@
 </head>
 <body>
   <h1>Dashboard</h1>
-  You are logged as
+  You are logged as ${roles} Your login is ${username}
 
 
 </body>
