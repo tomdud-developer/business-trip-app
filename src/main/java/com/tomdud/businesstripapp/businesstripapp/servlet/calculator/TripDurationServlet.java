@@ -58,7 +58,7 @@ public class TripDurationServlet extends HttpServlet {
         logger.log(Level.INFO,
                 "TripDurationServlet::modify-duration change in trip duration form - changed field: {0}",
                 tripFieldChanged);
-        TripDuration tripDuration = (TripDuration) request.getSession().getAttribute("tripDuration");
+        TripDuration tripDuration = retrieveTripDurationFromRequest(request);
 
         switch (tripFieldChanged) {
             case "numberOfDays":
@@ -86,7 +86,7 @@ public class TripDurationServlet extends HttpServlet {
     }
 
     private void addDisabledDay(HttpServletRequest request) {
-        TripDuration currentTripDuration = (TripDuration) request.getSession().getAttribute("tripDuration");
+        TripDuration currentTripDuration = retrieveTripDurationFromRequest(request);
         LocalDate dateToDisable = LocalDate.parse(request.getParameter("disabledDayDate"));
         if (daysAllowanceService.isDateBetween(
                 dateToDisable,
@@ -96,8 +96,12 @@ public class TripDurationServlet extends HttpServlet {
     }
 
     private void deleteDisabledDay(HttpServletRequest request) {
-        TripDuration currentTripDuration = (TripDuration) request.getSession().getAttribute("tripDuration");
+        TripDuration currentTripDuration = retrieveTripDurationFromRequest(request);
         LocalDate disabledDateToDelete = LocalDate.parse(request.getParameter("disabledDayDateToDelete"));
         currentTripDuration.getDisabledDays().remove(disabledDateToDelete);
+    }
+
+    private TripDuration retrieveTripDurationFromRequest(HttpServletRequest request) {
+        return (TripDuration) request.getSession().getAttribute("tripDuration");
     }
 }
