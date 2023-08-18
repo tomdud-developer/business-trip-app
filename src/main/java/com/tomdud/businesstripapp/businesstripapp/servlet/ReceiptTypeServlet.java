@@ -1,6 +1,6 @@
 package com.tomdud.businesstripapp.businesstripapp.servlet;
 
-import com.tomdud.businesstripapp.businesstripapp.entity.ReceiptType;
+import com.tomdud.businesstripapp.businesstripapp.model.ReceiptType;
 import com.tomdud.businesstripapp.businesstripapp.service.ReceiptService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;

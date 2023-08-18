@@ -1,11 +1,10 @@
 package com.tomdud.businesstripapp.businesstripapp.service;
 
-import com.tomdud.businesstripapp.businesstripapp.entity.Receipt;
-import com.tomdud.businesstripapp.businesstripapp.entity.ReceiptType;
+import com.tomdud.businesstripapp.businesstripapp.model.Receipt;
+import com.tomdud.businesstripapp.businesstripapp.model.ReceiptType;
 import com.tomdud.businesstripapp.businesstripapp.repository.ReceiptTypeRepository;
 
 import java.util.List;
-import java.util.function.BiFunction;
 
 public class ReceiptService {
 

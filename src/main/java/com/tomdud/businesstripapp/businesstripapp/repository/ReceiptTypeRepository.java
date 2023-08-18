@@ -1,6 +1,6 @@
 package com.tomdud.businesstripapp.businesstripapp.repository;
 
-import com.tomdud.businesstripapp.businesstripapp.entity.ReceiptType;
+import com.tomdud.businesstripapp.businesstripapp.model.ReceiptType;
 
 import java.util.ArrayList;
 import java.util.HashSet;

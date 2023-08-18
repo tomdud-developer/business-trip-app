@@ -1,4 +1,4 @@
-package com.tomdud.businesstripapp.businesstripapp.entity;
+package com.tomdud.businesstripapp.businesstripapp.model;
 
 public class Receipt {
 
@@ -10,7 +10,7 @@ public class Receipt {
         this.value = value;
         this.receiptType = receiptType;
 
-        if (value > receiptType.getLimit())
+        if (receiptType.isEnableLimit() && (value > receiptType.getLimit()))
             this.reimbursement = receiptType.getLimit();
         else
             this.reimbursement = value;

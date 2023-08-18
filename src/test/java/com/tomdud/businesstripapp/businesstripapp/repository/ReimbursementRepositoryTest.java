@@ -1,13 +1,11 @@
 package com.tomdud.businesstripapp.businesstripapp.repository;
 
-import com.tomdud.businesstripapp.businesstripapp.entity.Reimbursement;
+import com.tomdud.businesstripapp.businesstripapp.model.Reimbursement;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ReimbursementRepositoryTest {
 

@@ -1,7 +1,7 @@
 package com.tomdud.businesstripapp.businesstripapp.service;
 
 import com.tomdud.businesstripapp.businesstripapp.dto.ReimbursementUpdateRequestDTO;
-import com.tomdud.businesstripapp.businesstripapp.entity.Reimbursement;
+import com.tomdud.businesstripapp.businesstripapp.model.Reimbursement;
 import com.tomdud.businesstripapp.businesstripapp.repository.ReimbursementRepository;
 
 import java.time.LocalDateTime;
@@ -55,6 +55,10 @@ public class ReimbursementService {
                 .sorted(Comparator.comparing(Reimbursement::getSettingDate).reversed())
                 .limit(1)
                 .collect(Collectors.toList()).get(0);
+    }
+
+    public double calculateTotalAllowance(int tripDuration) {
+        return getLeast().getPerDay() * tripDuration;
     }
 
 

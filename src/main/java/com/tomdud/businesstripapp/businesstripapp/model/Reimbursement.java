@@ -1,4 +1,4 @@
-package com.tomdud.businesstripapp.businesstripapp.entity;
+package com.tomdud.businesstripapp.businesstripapp.model;
 
 import java.time.LocalDateTime;
 

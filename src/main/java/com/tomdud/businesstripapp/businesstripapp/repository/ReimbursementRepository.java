@@ -1,6 +1,6 @@
 package com.tomdud.businesstripapp.businesstripapp.repository;
 
-import com.tomdud.businesstripapp.businesstripapp.entity.Reimbursement;
+import com.tomdud.businesstripapp.businesstripapp.model.Reimbursement;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

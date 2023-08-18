@@ -1,12 +1,15 @@
 package com.tomdud.businesstripapp.businesstripapp.servlet;
 
-import com.tomdud.businesstripapp.businesstripapp.entity.Receipt;
+import com.tomdud.businesstripapp.businesstripapp.model.Receipt;
+import com.tomdud.businesstripapp.businesstripapp.model.TripDuration;
 import com.tomdud.businesstripapp.businesstripapp.service.ReceiptService;
 import com.tomdud.businesstripapp.businesstripapp.service.ReimbursementService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -33,14 +36,20 @@ public class CalculateReimbursementServlet extends HttpServlet {
         request.setAttribute("reimbursement", reimbursementService.getLeast());
         request.setAttribute("receiptTypes", receiptService.getAllReceiptTypes());
 
-
         List<Receipt> receipts = (List<Receipt>) request.getSession().getAttribute("receiptList");
         if(receipts == null) {
             receipts = new ArrayList<>();
             request.getSession().setAttribute("receiptList", receipts);
         }
 
-        request.setAttribute("expensesTotalReimbursement", receiptService.calculateTotalReimbursement(receipts));
+        TripDuration tripDuration = (TripDuration) request.getSession().getAttribute("tripDuration");
+        if(tripDuration == null) {
+            tripDuration = new TripDuration(LocalDate.now(), LocalDate .now(), 1);
+            request.getSession().setAttribute("tripDuration", tripDuration);
+        }
+
+        request.getSession().setAttribute("totalAllowance", reimbursementService.calculateTotalAllowance(tripDuration.getDuration()));
+        request.getSession().setAttribute("expensesTotalReimbursement", receiptService.calculateTotalReimbursement(receipts));
         request.getRequestDispatcher("reimbursement-calculator.jsp").forward(request, response);
     }
 

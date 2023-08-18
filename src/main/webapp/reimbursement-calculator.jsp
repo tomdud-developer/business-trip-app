@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="com.tomdud.businesstripapp.businesstripapp.entity.Reimbursement" %>
+<%@ page import="com.tomdud.businesstripapp.businesstripapp.model.Reimbursement" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -13,35 +13,36 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <c:if test="true">
-        <p>true</p>
-    </c:if>
-    <c:if test="false">
-        <p>false</p>
-    </c:if>
-
-    <% response.getWriter().println(((Reimbursement)request.getAttribute("reimbursement")).getPerKilometer()); %>
     <h1>Business Trip Reimbursement Calculator</h1>
         <div class="container" id="calculatorFormContainer">
-            <div class="mb-3">
-                <h3 class="form-label">Business trip duration</h3>
-                <div class="input-group">
-                    <label for="tripStartDate" class="input-group-text" id="basic-addon1">Trip start date</label>
-                    <input type="date" class="form-control" id="tripStartDate" name="tripStartDate">
+            <div class="border p-3">
+                <div class="mb-3">
+                    <h3 class="form-label">Business trip duration</h3>
+                    <div class="input-group">
+                        <label for="tripStartDate" class="input-group-text" id="basic-addon1">Trip start date</label>
+                        <input type="date" class="form-control" id="tripStartDate" name="tripStartDate" value="${tripDuration.startDate}">
+                    </div>
+                    <div class="input-group">
+                        <input type="date" class="form-control" id="tripEndDate" name="tripEndDate" value="${tripDuration.endDate}">
+                        <span class="input-group-text">Choose end date or trip duration in days</span>
+                        <input type="number" class="form-control" id="numberOfDays" name="numberOfDays" min="1" value="${tripDuration.duration}">
+                    </div>
                 </div>
-                <div class="input-group">
-                    <input type="date" class="form-control" id="tripEndDate" name="tripEndDate">
-                    <span class="input-group-text">Choose end date or trip duration in days</span>
-                    <input type="number" id="numberOfDays" name="numberOfDays" min="1">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1"></div>
+                    <h5 class="mb-0 ms-3 pb-1 border-bottom">
+                        Total allowance = ${totalAllowance}$
+                    </h5>
                 </div>
             </div>
 
-            <div class="mb-3">
+
+            <div class="mb-3 border p-3">
                 <h3 class="form-label">Business trip expenses</h3>
                 <form action="calculate-reimbursement/add-receipt" method="post">
                     <div class="input-group">
                             <label for="receiptValue" class="input-group-text">Receipt value</label>
-                            <input type="number" step="0.01" id="receiptValue" name="receiptValue">
+                            <input class="form-control" type="number" step="0.01" id="receiptValue" name="receiptValue" min="0.01">
                             <label for="receiptValue" class="input-group-text">$</label>
                             <select id="receiptType" name="receiptType" class="form-select" aria-label="taxi">
                                 <c:forEach items="${receiptTypes}" var="type">
@@ -58,7 +59,7 @@
                                     </option>
                                 </c:forEach>
                             </select>
-                            <button type="submit" id="addNewReceiptButton">Add new Receipt</button>
+                            <button type="submit" class="btn btn-primary" id="addNewReceiptButton">Add new Receipt</button>
                     </div>
                 </form>
 
@@ -89,14 +90,14 @@
                     </c:forEach>
                     </tbody>
                 </table>
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1"></div>
+                    <h5 class="mb-0 ms-3 pb-1 border-bottom">
+                        Total expenses reimbursement = ${expensesTotalReimbursement}$
+                    </h5>
+                </div>
             </div>
 
-
-            <label for="inputPassword" class="form-label">Password</label>
-            <input type="password" id="inputPassword" class="form-control" aria-describedby="passwordHelpBlock">
-            <div id="passwordHelpBlock" class="form-text">
-                Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
-            </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
