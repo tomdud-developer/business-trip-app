@@ -16,7 +16,10 @@
     <div class="container border p-3" id="calculatorFormContainer">
         <div class="border p-3">
             <div class="mb-3">
-                <h5>Reimbursement requests</h5>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4>Reimbursement requests</h4>
+                    <button class="btn btn-success">Add New Reimbursement</button>
+                </div>
                 <table id="disabledDaysTable" class="table table-striped">
                     <thead class="thead-dark">
                     <tr>
