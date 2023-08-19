@@ -1,14 +1,13 @@
 package com.tomdud.businesstripapp.businesstripapp.servlet.calculator;
 
 import com.tomdud.businesstripapp.businesstripapp.model.Receipt;
+import com.tomdud.businesstripapp.businesstripapp.model.ReimbursementSummary;
 import com.tomdud.businesstripapp.businesstripapp.service.ReceiptService;
-import com.tomdud.businesstripapp.businesstripapp.service.ReimbursementService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,7 +17,7 @@ import java.util.logging.Logger;
 )
 public class ReceiptServlet extends HttpServlet {
 
-    private static final Logger logger = Logger.getLogger(CalculateReimbursementServlet.class.getName());
+    private static final Logger logger = Logger.getLogger(ReceiptServlet.class.getName());
     private final ReceiptService receiptService = ReceiptService.getInstance();
 
     @Override
@@ -47,7 +46,7 @@ public class ReceiptServlet extends HttpServlet {
     }
 
     private void addReceipt(HttpServletRequest request) {
-        ArrayList<Receipt> receiptArrayList = (ArrayList<Receipt>) request.getSession().getAttribute("receiptList");
+        List<Receipt> receiptArrayList = retrieveModelOfReceiptsFromSession(request);
 
         logger.log(Level.INFO, "ReceiptServlet::doPost - adding new receipt - {0}",
                 request.getParameter("receiptType"));
@@ -61,11 +60,16 @@ public class ReceiptServlet extends HttpServlet {
     }
 
     private void removeReceipt(HttpServletRequest request) {
-        ArrayList<Receipt> receiptArrayList = (ArrayList<Receipt>) request.getSession().getAttribute("receiptList");
+        List<Receipt> receiptArrayList = retrieveModelOfReceiptsFromSession(request);
 
         int indexToDelete = Integer.parseInt(request.getParameter("receiptIndexToDelete"));
         logger.log(Level.INFO, "ReceiptServlet::doPost - deleting receipt with index - {0}", indexToDelete);
 
         receiptArrayList.remove(indexToDelete);
+    }
+
+    private List<Receipt> retrieveModelOfReceiptsFromSession(HttpServletRequest request) {
+        return ((ReimbursementSummary) request.getSession().getAttribute("reimbursementSummary"))
+                .getReceiptList();
     }
 }

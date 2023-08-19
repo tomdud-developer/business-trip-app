@@ -42,8 +42,8 @@ public class AdminPanelServlet extends HttpServlet {
     }
 
     private void initialize(HttpServletRequest request) {
-        request.setAttribute("reimbursement", reimbursementService.getLeast());
-        request.setAttribute("reimbursementModificationList", reimbursementService.getAll());
+        request.setAttribute("reimbursement", reimbursementService.getLeastDetails());
+        request.setAttribute("reimbursementModificationList", reimbursementService.getAllDetails());
         request.setAttribute("receiptTypes", receiptService.getAllReceiptTypes());
     }
 

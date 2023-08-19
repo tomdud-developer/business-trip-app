@@ -1,8 +1,8 @@
 package com.tomdud.businesstripapp.businesstripapp.servlet.calculator;
 
+import com.tomdud.businesstripapp.businesstripapp.model.ReimbursementSummary;
 import com.tomdud.businesstripapp.businesstripapp.model.TripDuration;
 import com.tomdud.businesstripapp.businesstripapp.service.DaysAllowanceService;
-import com.tomdud.businesstripapp.businesstripapp.service.ReimbursementService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 )
 public class TripDurationServlet extends HttpServlet {
 
-    private static final Logger logger = Logger.getLogger(CalculateReimbursementServlet.class.getName());
+    private static final Logger logger = Logger.getLogger(TripDurationServlet.class.getName());
     private final DaysAllowanceService daysAllowanceService = DaysAllowanceService.getInstance();
 
     @Override
@@ -57,23 +57,23 @@ public class TripDurationServlet extends HttpServlet {
         logger.log(Level.INFO,
                 "TripDurationServlet::modify-duration change in trip duration form - changed field: {0}",
                 tripFieldChanged);
-        TripDuration tripDuration = retrieveTripDurationFromRequest(request);
+        TripDuration tripDuration = retrieveTripDurationFromSession(request);
 
         switch (tripFieldChanged) {
             case "numberOfDays":
-                tripDuration = daysAllowanceService.getNewTripDurationBasedOnChangedDays(
+                daysAllowanceService.modifyTripDurationBasedOnChangedDays(
                         tripDuration,
                         Integer.parseInt(request.getParameter("numberOfDays"))
                 );
                 break;
             case "tripEndDate":
-                tripDuration = daysAllowanceService.getNewTripDurationBasedOnChangedEndDate(
+                daysAllowanceService.modifyTripDurationBasedOnChangedEndDate(
                         tripDuration,
                         LocalDate.parse(request.getParameter("tripEndDate"))
                 );
                 break;
             case "tripStartDate":
-                tripDuration = daysAllowanceService.getNewTripDurationBasedOnChangedStartDate(
+                daysAllowanceService.modifyTripDurationBasedOnChangedStartDate(
                         tripDuration,
                         LocalDate.parse(request.getParameter("tripStartDate"))
                 );
@@ -81,11 +81,14 @@ public class TripDurationServlet extends HttpServlet {
             default:
                 throw new IllegalStateException("Unexpected value: " + tripFieldChanged);
         }
-        request.getSession().setAttribute("tripDuration", tripDuration);
+    }
+
+    private TripDuration retrieveTripDurationFromSession(HttpServletRequest request) {
+        return ((ReimbursementSummary) request.getSession().getAttribute("reimbursementSummary")).getTripDuration();
     }
 
     private void addDisabledDay(HttpServletRequest request) {
-        TripDuration currentTripDuration = retrieveTripDurationFromRequest(request);
+        TripDuration currentTripDuration = retrieveTripDurationFromSession(request);
         LocalDate dateToDisable = LocalDate.parse(request.getParameter("disabledDayDate"));
         if (daysAllowanceService.isDateBetweenOrEquals(
                 dateToDisable,
@@ -95,12 +98,8 @@ public class TripDurationServlet extends HttpServlet {
     }
 
     private void deleteDisabledDay(HttpServletRequest request) {
-        TripDuration currentTripDuration = retrieveTripDurationFromRequest(request);
+        TripDuration currentTripDuration = retrieveTripDurationFromSession(request);
         LocalDate disabledDateToDelete = LocalDate.parse(request.getParameter("disabledDayDateToDelete"));
         currentTripDuration.getDisabledDays().remove(disabledDateToDelete);
-    }
-
-    private TripDuration retrieveTripDurationFromRequest(HttpServletRequest request) {
-        return (TripDuration) request.getSession().getAttribute("tripDuration");
     }
 }

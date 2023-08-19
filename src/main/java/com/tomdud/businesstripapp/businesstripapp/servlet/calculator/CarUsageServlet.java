@@ -1,7 +1,7 @@
 package com.tomdud.businesstripapp.businesstripapp.servlet.calculator;
 
 import com.tomdud.businesstripapp.businesstripapp.model.CarUsage;
-import com.tomdud.businesstripapp.businesstripapp.service.ReceiptService;
+import com.tomdud.businesstripapp.businesstripapp.model.ReimbursementSummary;
 import com.tomdud.businesstripapp.businesstripapp.service.ReimbursementService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -14,8 +14,7 @@ import java.util.logging.Logger;
 @WebServlet(name = "CarUsageServlet", value = "/calculate-reimbursement/modify-car-usage")
 public class CarUsageServlet extends HttpServlet {
 
-    private static final Logger logger = Logger.getLogger(CalculateReimbursementServlet.class.getName());
-    private final ReimbursementService reimbursementService = ReimbursementService.getInstance();
+    private static final Logger logger = Logger.getLogger(CarUsageServlet.class.getName());
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -41,7 +40,11 @@ public class CarUsageServlet extends HttpServlet {
 
     private void calculateCarUsage(HttpServletRequest request) {
         double distance = Double.parseDouble(request.getParameter("distance"));
-        CarUsage newCarUsage= new CarUsage(distance, reimbursementService.getLeast());
-        request.getSession().setAttribute("carUsage", newCarUsage);
+        CarUsage carUsage = retrieveModelOfCarUsageFromSession(request);
+        carUsage.setDistance(distance);
+    }
+
+    private CarUsage retrieveModelOfCarUsageFromSession(HttpServletRequest request) {
+        return ((ReimbursementSummary) request.getSession().getAttribute("reimbursementSummary")).getCarUsage();
     }
 }
