@@ -8,14 +8,23 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-primary" style="background-color: #e3f2fd;">
         <div class="container-fluid">
-            <span class="logo">Business Trip Reimbursement Calculation Application</span>
+            <span class="logo" style="margin-right: 50px">Business Trip Reimbursement Calculation Application</span>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a href="dashboard" class="btn btn-success"><h5>Dashboard</h5></a>
+                        <a href="dashboard" class="btn btn-success px-4 py-2 me-2">
+                            <h5 class="mb-0">Dashboard</h5>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">Info</a>
+                        <a href="calculate-reimbursement" class="btn btn-success px-4 py-2 me-2">
+                            <h5 class="mb-0">Calculator</h5>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="admin-panel" class="btn btn-success px-4 py-2">
+                            <h5 class="mb-0">Admin Panel</h5>
+                        </a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">

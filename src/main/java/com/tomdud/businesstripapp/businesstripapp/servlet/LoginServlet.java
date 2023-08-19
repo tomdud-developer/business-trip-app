@@ -14,11 +14,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @WebServlet(name = "LoginServlet", value = {
-        "/login", "/login/try-login"
+        "/login", "/logout"
 })
 public class LoginServlet extends HttpServlet {
 
-    private static final Logger logger = Logger.getLogger(CalculateReimbursementServlet.class.getName());
+    private static final Logger logger = Logger.getLogger(LoginServlet.class.getName());
 
     private final UserService userService = UserService.getInstance();
 
@@ -38,7 +38,7 @@ public class LoginServlet extends HttpServlet {
                 String username = request.getParameter("username");
                 String password = request.getParameter("password");
 
-                logger.log(Level.INFO, "LoginServlet::doPost::try-login username - {0}", username);
+                logger.log(Level.INFO, "LoginServlet::doPost::login username - {0}", username);
 
                 try {
                     User user = userService.returnUserIfPasswordIsCorrect(username, password);
@@ -50,9 +50,18 @@ public class LoginServlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/dashboard");
                 } catch (UserNotAuthenticatedException e) {
                     request.setAttribute("error", "Incorrect username or password");
-                     doGet(request, response);
+                    doGet(request, response);
                 }
 
+                break;
+            case "/logout":
+                logger.log(Level.INFO, "LoginServlet::doPost::logout");
+
+                request.getSession().setAttribute("username", null);
+                request.getSession().setAttribute("roles", null);
+                request.getSession().setAttribute("id", null);
+
+                doGet(request, response);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + action);

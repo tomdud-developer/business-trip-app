@@ -6,6 +6,8 @@ import com.tomdud.businesstripapp.businesstripapp.service.ReimbursementService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+
+import java.time.LocalDateTime;
 import java.util.logging.Level;
 
 import java.io.IOException;
@@ -48,11 +50,12 @@ public class CalculateReimbursementServlet extends HttpServlet {
         switch (action) {
             case "/calculate-reimbursement/send-to-consideration":
                 ReimbursementSummary reimbursementSummary = retrieveModelOfReimbursementSummaryFromSession(request);
-
+                reimbursementSummary.setCreationDateTime(LocalDateTime.now());
                 //TODO
-                //SAVE this and return to welcome page with list of requests?
 
                 reimbursementService.saveReimbursementSummary(reimbursementSummary, 0L);
+                initializeNewSession(request);
+                response.sendRedirect(request.getContextPath() + "/dashboard");
 
                 break;
             default:

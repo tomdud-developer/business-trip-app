@@ -12,8 +12,10 @@
 </head>
 <body>
     <jsp:include page="navbar.jsp" />
-    <h1>Business Trip Reimbursement Calculator</h1>
         <div class="container border p-3" id="calculatorFormContainer">
+            <div class="text-center">
+                <h1>Calculator</h1>
+            </div>
             <div class="border p-3">
                 <div class="mb-3">
                     <h3 class="form-label">Business trip duration</h3>
