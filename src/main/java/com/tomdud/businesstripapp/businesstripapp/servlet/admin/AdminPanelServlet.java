@@ -1,7 +1,7 @@
 package com.tomdud.businesstripapp.businesstripapp.servlet.admin;
 
 import com.tomdud.businesstripapp.businesstripapp.dto.ReimbursementUpdateRequestDTO;
-import com.tomdud.businesstripapp.businesstripapp.service.ReceiptService;
+import com.tomdud.businesstripapp.businesstripapp.service.ReceiptTypeService;
 import com.tomdud.businesstripapp.businesstripapp.service.ReimbursementService;
 import com.tomdud.businesstripapp.businesstripapp.servlet.calculator.CalculateReimbursementServlet;
 import jakarta.servlet.*;
@@ -16,7 +16,7 @@ public class AdminPanelServlet extends HttpServlet {
 
     private static final Logger logger = Logger.getLogger(CalculateReimbursementServlet.class.getName());
     private final ReimbursementService reimbursementService = ReimbursementService.getInstance();
-    private final ReceiptService receiptService = ReceiptService.getInstance();
+    private final ReceiptTypeService receiptTypeService = ReceiptTypeService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -44,7 +44,7 @@ public class AdminPanelServlet extends HttpServlet {
     private void initialize(HttpServletRequest request) {
         request.setAttribute("reimbursement", reimbursementService.getLeastDetails());
         request.setAttribute("reimbursementModificationList", reimbursementService.getAllDetails());
-        request.setAttribute("receiptTypes", receiptService.getAllReceiptTypes());
+        request.setAttribute("receiptTypes", receiptTypeService.getAllReceiptTypes());
     }
 
     private void addNewReimbursement(HttpServletRequest request) {

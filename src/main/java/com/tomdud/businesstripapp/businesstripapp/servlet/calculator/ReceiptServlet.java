@@ -2,7 +2,7 @@ package com.tomdud.businesstripapp.businesstripapp.servlet.calculator;
 
 import com.tomdud.businesstripapp.businesstripapp.model.Receipt;
 import com.tomdud.businesstripapp.businesstripapp.model.ReimbursementSummary;
-import com.tomdud.businesstripapp.businesstripapp.service.ReceiptService;
+import com.tomdud.businesstripapp.businesstripapp.service.ReceiptTypeService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 public class ReceiptServlet extends HttpServlet {
 
     private static final Logger logger = Logger.getLogger(ReceiptServlet.class.getName());
-    private final ReceiptService receiptService = ReceiptService.getInstance();
+    private final ReceiptTypeService receiptTypeService = ReceiptTypeService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -53,7 +53,7 @@ public class ReceiptServlet extends HttpServlet {
 
         Receipt receiptToAdd = new Receipt(
                 Double.parseDouble(request.getParameter("receiptValue")),
-                receiptService.getReceiptTypeByName(request.getParameter("receiptType"))
+                receiptTypeService.getReceiptTypeByName(request.getParameter("receiptType"))
         );
 
         receiptArrayList.add(receiptToAdd);

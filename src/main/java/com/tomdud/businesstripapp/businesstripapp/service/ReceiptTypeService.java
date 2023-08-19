@@ -1,28 +1,27 @@
 package com.tomdud.businesstripapp.businesstripapp.service;
 
-import com.tomdud.businesstripapp.businesstripapp.model.Receipt;
 import com.tomdud.businesstripapp.businesstripapp.model.ReceiptType;
 import com.tomdud.businesstripapp.businesstripapp.repository.ReceiptTypeRepository;
 
 import java.util.List;
 
-public class ReceiptService {
+public class ReceiptTypeService {
 
-    private static volatile ReceiptService instance;
+    private static volatile ReceiptTypeService instance;
 
     private final ReceiptTypeRepository receiptTypeRepository;
 
-    private ReceiptService() {
+    private ReceiptTypeService() {
         receiptTypeRepository = ReceiptTypeRepository.getInstance();
     }
 
-    public static ReceiptService getInstance() {
-        ReceiptService result = instance;
+    public static ReceiptTypeService getInstance() {
+        ReceiptTypeService result = instance;
         if (result == null) {
-            synchronized (ReceiptService.class) {
+            synchronized (ReceiptTypeService.class) {
                 result = instance;
                 if (result == null) {
-                    instance = result = new ReceiptService();
+                    instance = result = new ReceiptTypeService();
                 }
             }
         }
@@ -45,7 +44,4 @@ public class ReceiptService {
         receiptTypeRepository.save(receiptType);
     }
 
-    public double calculateTotalReimbursement(List<Receipt> receipts) {
-        return receipts.stream().map(Receipt::getReimbursement).reduce(0.0, Double::sum);
-    }
 }

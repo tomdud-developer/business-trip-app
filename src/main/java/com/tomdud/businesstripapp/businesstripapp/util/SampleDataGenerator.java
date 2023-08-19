@@ -1,7 +1,7 @@
 package com.tomdud.businesstripapp.businesstripapp.util;
 
 import com.tomdud.businesstripapp.businesstripapp.model.*;
-import com.tomdud.businesstripapp.businesstripapp.service.ReceiptService;
+import com.tomdud.businesstripapp.businesstripapp.service.ReceiptTypeService;
 import com.tomdud.businesstripapp.businesstripapp.service.ReimbursementService;
 
 import java.time.LocalDate;
@@ -11,14 +11,19 @@ import java.util.*;
 public class SampleDataGenerator {
 
     private final ReimbursementService reimbursementService = ReimbursementService.getInstance();
-    private final ReceiptService receiptService = ReceiptService.getInstance();
+    private final ReceiptTypeService receiptTypeService = ReceiptTypeService.getInstance();
 
     public ReimbursementSummary getReimbursementSummary() {
-        return reimbursementService.calculateTotalReimbursement(
+        ReimbursementSummary reimbursementSummary = new ReimbursementSummary(
                 getTripDuration(),
                 getReceiptList(),
-                getCarUsage()
+                getCarUsage(),
+                reimbursementService.getLeastDetails()
         );
+
+        reimbursementService.recalculateReimbursements(reimbursementSummary);
+
+        return reimbursementSummary;
     }
 
     public TripDuration getTripDuration() {
@@ -60,11 +65,11 @@ public class SampleDataGenerator {
 
     public Receipt getReceipt() {
         Random random = new Random();
-        int receiptTypesNumber = receiptService.getAllReceiptTypes().size();
+        int receiptTypesNumber = receiptTypeService.getAllReceiptTypes().size();
 
         return new Receipt(
                 random.nextDouble() * random.nextInt(200),
-                receiptService.getAllReceiptTypes().get(random.nextInt(receiptTypesNumber))
+                receiptTypeService.getAllReceiptTypes().get(random.nextInt(receiptTypesNumber))
         );
     }
 
@@ -72,8 +77,7 @@ public class SampleDataGenerator {
         Random random = new Random();
 
         return new CarUsage(
-                random.nextDouble() * random.nextInt(500),
-                reimbursementService.getLeast()
+                random.nextDouble() * random.nextInt(500)
         );
     }
 

@@ -1,8 +1,6 @@
 package com.tomdud.businesstripapp.businesstripapp.service;
 
-import com.tomdud.businesstripapp.businesstripapp.model.ReimbursementDetails;
 import com.tomdud.businesstripapp.businesstripapp.model.TripDuration;
-
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
@@ -25,37 +23,20 @@ public class DaysAllowanceService {
 
     private DaysAllowanceService() {}
 
-    public TripDuration getNewTripDurationBasedOnChangedDays(TripDuration oldTripDuration, int days) {
-        return new TripDuration(
-                oldTripDuration.getStartDate(),
-                oldTripDuration.getStartDate().plusDays(days - 1),
-                days,
-                oldTripDuration.getDisabledDays()
-        );
+    public void modifyTripDurationBasedOnChangedDays(TripDuration oldTripDuration, int days) {
+        oldTripDuration.setEndDate(oldTripDuration.getStartDate().plusDays(days - 1));
+        oldTripDuration.setDuration(days);
     }
 
-    public TripDuration getNewTripDurationBasedOnChangedEndDate(TripDuration oldTripDuration, LocalDate newEndDate) {
-        return new TripDuration(
-                oldTripDuration.getStartDate(),
-                newEndDate,
-                (int) ChronoUnit.DAYS.between(oldTripDuration.getStartDate(), newEndDate) + 1,
-                oldTripDuration.getDisabledDays()
-        );
+    public void modifyTripDurationBasedOnChangedEndDate(TripDuration oldTripDuration, LocalDate newEndDate) {
+        oldTripDuration.setEndDate(newEndDate);
+        oldTripDuration.setDuration((int) ChronoUnit.DAYS.between(oldTripDuration.getStartDate(), newEndDate) + 1);
     }
 
-    public TripDuration getNewTripDurationBasedOnChangedStartDate(TripDuration oldTripDuration, LocalDate newStartDate) {
-        return new TripDuration(
-                newStartDate,
-                oldTripDuration.getEndDate(),
-                (int)ChronoUnit.DAYS.between(newStartDate, oldTripDuration.getEndDate()) + 1,
-                oldTripDuration.getDisabledDays()
-        );
+    public void modifyTripDurationBasedOnChangedStartDate(TripDuration oldTripDuration, LocalDate newStartDate) {
+        oldTripDuration.setStartDate(newStartDate);
+        oldTripDuration.setDuration((int)ChronoUnit.DAYS.between(newStartDate, oldTripDuration.getEndDate()) + 1);
     }
-
-    public double calculateTotalAllowance(TripDuration tripDuration, ReimbursementDetails reimbursementDetails) {
-        return reimbursementDetails.getPerDay() * (tripDuration.getDuration() - tripDuration.getDisabledDays().size());
-    }
-
     public boolean isDateBetweenOrEquals(LocalDate date, LocalDate startDate, LocalDate endDate) {
         return !date.isBefore(startDate) && !date.isAfter(endDate)
                 || date.isEqual(startDate) || date.isEqual(endDate);

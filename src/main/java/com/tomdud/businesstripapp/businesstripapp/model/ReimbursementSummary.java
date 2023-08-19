@@ -1,5 +1,8 @@
 package com.tomdud.businesstripapp.businesstripapp.model;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class ReimbursementSummary {
@@ -10,21 +13,32 @@ public class ReimbursementSummary {
     private CarUsage carUsage;
     private TripDuration tripDuration;
 
+    private double totalAllowanceForTripDuration;
+    private double totalAllowanceForTripExpenses;
+    private double totalAllowanceForCarUsage;
+    private double totalAllowance;
+
     private ReimbursementDetails reimbursementDetails;
-    private double totalReimbursement;
 
     public ReimbursementSummary(
             TripDuration tripDuration,
             List<Receipt> receiptList,
             CarUsage carUsage,
-            ReimbursementDetails reimbursementDetails,
-            double totalReimbursement
+            ReimbursementDetails reimbursementDetails
     ) {
         this.receiptList = receiptList;
         this.carUsage = carUsage;
         this.tripDuration = tripDuration;
         this.reimbursementDetails = reimbursementDetails;
-        this.totalReimbursement = totalReimbursement;
+    }
+
+    public static ReimbursementSummary getInitialized(ReimbursementDetails reimbursementDetails) {
+        return new ReimbursementSummary(
+                new TripDuration(LocalDate.now(), LocalDate.now(), 1, new HashSet<>()),
+                new ArrayList<>(),
+                new CarUsage(0.0),
+                reimbursementDetails
+        );
     }
 
     public long getId() {
@@ -67,23 +81,43 @@ public class ReimbursementSummary {
         this.tripDuration = tripDuration;
     }
 
-    public ReimbursementDetails getReimbursement() {
+    public double getTotalAllowanceForTripDuration() {
+        return totalAllowanceForTripDuration;
+    }
+
+    public void setTotalAllowanceForTripDuration(double totalAllowanceForTripDuration) {
+        this.totalAllowanceForTripDuration = totalAllowanceForTripDuration;
+    }
+
+    public double getTotalAllowanceForTripExpenses() {
+        return totalAllowanceForTripExpenses;
+    }
+
+    public void setTotalAllowanceForTripExpenses(double totalAllowanceForTripExpenses) {
+        this.totalAllowanceForTripExpenses = totalAllowanceForTripExpenses;
+    }
+
+    public double getTotalAllowanceForCarUsage() {
+        return totalAllowanceForCarUsage;
+    }
+
+    public void setTotalAllowanceForCarUsage(double totalAllowanceForCarUsage) {
+        this.totalAllowanceForCarUsage = totalAllowanceForCarUsage;
+    }
+
+    public double getTotalAllowance() {
+        return totalAllowance;
+    }
+
+    public void setTotalAllowance(double totalAllowance) {
+        this.totalAllowance = totalAllowance;
+    }
+
+    public ReimbursementDetails getReimbursementDetails() {
         return reimbursementDetails;
     }
 
-    public void setReimbursement(ReimbursementDetails reimbursementDetails) {
+    public void setReimbursementDetails(ReimbursementDetails reimbursementDetails) {
         this.reimbursementDetails = reimbursementDetails;
-    }
-
-    public double getTotalReimbursement() {
-        return totalReimbursement;
-    }
-
-    public void setTotalReimbursement(double totalReimbursement) {
-        this.totalReimbursement = totalReimbursement;
-    }
-
-    public double sumReimbursementFromReceipts() {
-        return receiptList.stream().map(Receipt::getReimbursement).reduce(0.0, Double::sum);
     }
 }
