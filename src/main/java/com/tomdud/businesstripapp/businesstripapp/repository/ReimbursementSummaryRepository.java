@@ -1,12 +1,6 @@
 package com.tomdud.businesstripapp.businesstripapp.repository;
 
-import com.tomdud.businesstripapp.businesstripapp.model.ReimbursementDetails;
 import com.tomdud.businesstripapp.businesstripapp.model.ReimbursementSummary;
-import com.tomdud.businesstripapp.businesstripapp.model.TripDuration;
-import com.tomdud.businesstripapp.businesstripapp.util.SampleDataGenerator;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -45,5 +39,8 @@ public class ReimbursementSummaryRepository {
                 .collect(Collectors.toList());
     }
 
+    public List<ReimbursementSummary> getAllFromAllUsers() {
+        return new ArrayList<>(repository);
+    }
 
 }

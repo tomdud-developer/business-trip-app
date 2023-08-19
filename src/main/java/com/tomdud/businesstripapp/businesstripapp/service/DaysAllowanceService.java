@@ -37,6 +37,7 @@ public class DaysAllowanceService {
         oldTripDuration.setStartDate(newStartDate);
         oldTripDuration.setDuration((int)ChronoUnit.DAYS.between(newStartDate, oldTripDuration.getEndDate()) + 1);
     }
+
     public boolean isDateBetweenOrEquals(LocalDate date, LocalDate startDate, LocalDate endDate) {
         return !date.isBefore(startDate) && !date.isAfter(endDate)
                 || date.isEqual(startDate) || date.isEqual(endDate);
