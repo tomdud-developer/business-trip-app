@@ -2,6 +2,7 @@ package com.tomdud.businesstripapp.businesstripapp.servlet.admin;
 
 import com.tomdud.businesstripapp.businesstripapp.dto.ReimbursementUpdateRequestDTO;
 import com.tomdud.businesstripapp.businesstripapp.service.ReceiptTypeService;
+import com.tomdud.businesstripapp.businesstripapp.service.ReimbursementDetailsService;
 import com.tomdud.businesstripapp.businesstripapp.service.ReimbursementService;
 import com.tomdud.businesstripapp.businesstripapp.servlet.calculator.CalculateReimbursementServlet;
 import jakarta.servlet.*;
@@ -15,8 +16,9 @@ import java.util.logging.Logger;
 public class AdminPanelServlet extends HttpServlet {
 
     private static final Logger logger = Logger.getLogger(CalculateReimbursementServlet.class.getName());
-    private final ReimbursementService reimbursementService = ReimbursementService.getInstance();
+
     private final ReceiptTypeService receiptTypeService = ReceiptTypeService.getInstance();
+    private final ReimbursementDetailsService reimbursementDetailsService = ReimbursementDetailsService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -42,8 +44,8 @@ public class AdminPanelServlet extends HttpServlet {
     }
 
     private void initialize(HttpServletRequest request) {
-        request.setAttribute("reimbursement", reimbursementService.getLeastDetails());
-        request.setAttribute("reimbursementModificationList", reimbursementService.getAllDetails());
+        request.setAttribute("reimbursement", reimbursementDetailsService.getLeastDetails());
+        request.setAttribute("reimbursementModificationList", reimbursementDetailsService.getAllDetails());
         request.setAttribute("receiptTypes", receiptTypeService.getAllReceiptTypes());
     }
 
@@ -57,7 +59,7 @@ public class AdminPanelServlet extends HttpServlet {
                 Double.parseDouble(request.getParameter("totalReimbursementLimit"))
         );
 
-        reimbursementService.add(reimbursementUpdateRequestDTO);
+        reimbursementDetailsService.add(reimbursementUpdateRequestDTO);
     }
 
 }

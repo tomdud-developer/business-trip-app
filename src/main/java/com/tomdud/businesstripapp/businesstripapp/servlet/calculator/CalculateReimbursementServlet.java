@@ -2,6 +2,7 @@ package com.tomdud.businesstripapp.businesstripapp.servlet.calculator;
 
 import com.tomdud.businesstripapp.businesstripapp.model.ReimbursementSummary;
 import com.tomdud.businesstripapp.businesstripapp.service.ReceiptTypeService;
+import com.tomdud.businesstripapp.businesstripapp.service.ReimbursementDetailsService;
 import com.tomdud.businesstripapp.businesstripapp.service.ReimbursementService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -26,6 +27,7 @@ public class CalculateReimbursementServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(CalculateReimbursementServlet.class.getName());
 
     private final ReimbursementService reimbursementService = ReimbursementService.getInstance();
+    private final ReimbursementDetailsService reimbursementDetailsService = ReimbursementDetailsService.getInstance();
     private final ReceiptTypeService receiptTypeService = ReceiptTypeService.getInstance();
 
     @Override
@@ -73,7 +75,7 @@ public class CalculateReimbursementServlet extends HttpServlet {
     }
 
     private void initializeNewSession(HttpServletRequest request) {
-        ReimbursementSummary reimbursementSummary = ReimbursementSummary.getInitialized(reimbursementService.getLeastDetails());
+        ReimbursementSummary reimbursementSummary = ReimbursementSummary.getInitialized(reimbursementDetailsService.getLeastDetails());
         reimbursementService.recalculateReimbursements(reimbursementSummary);
         request.getSession().setAttribute("reimbursementSummary", reimbursementSummary);
     }

@@ -1,21 +1,16 @@
 package com.tomdud.businesstripapp.businesstripapp.service;
 
-import com.tomdud.businesstripapp.businesstripapp.dto.ReimbursementUpdateRequestDTO;
 import com.tomdud.businesstripapp.businesstripapp.model.*;
-import com.tomdud.businesstripapp.businesstripapp.repository.ReimbursementDetailsRepository;
 import com.tomdud.businesstripapp.businesstripapp.repository.ReimbursementSummaryRepository;
-
-import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ReimbursementService implements Calculator {
 
     private static volatile ReimbursementService instance;
 
-    private final ReimbursementDetailsRepository reimbursementDetailsRepository = ReimbursementDetailsRepository.getInstance();
+    private final ReimbursementDetailsService reimbursementDetailsService = ReimbursementDetailsService.getInstance();
     private final ReimbursementSummaryRepository reimbursementSummaryRepository = ReimbursementSummaryRepository.getInstance();
+
 
     private ReimbursementService() {
     }
@@ -33,38 +28,9 @@ public class ReimbursementService implements Calculator {
         return result;
     }
 
-    public ReimbursementDetails add(ReimbursementUpdateRequestDTO reimbursementUpdateRequestDTO) {
-        ReimbursementDetails reimbursementDetails = new ReimbursementDetails(
-                reimbursementUpdateRequestDTO.getPerKilometer(),
-                reimbursementUpdateRequestDTO.getPerDay(),
-                reimbursementUpdateRequestDTO.isEnableMileageLimit(),
-                reimbursementUpdateRequestDTO.getMileageLimit(),
-                reimbursementUpdateRequestDTO.isEnableTotalReimbursementLimit(),
-                reimbursementUpdateRequestDTO.getTotalReimbursementLimit(),
-                LocalDateTime.now()
-        );
-
-        return reimbursementDetailsRepository.add(reimbursementDetails);
-    }
-
-    public List<ReimbursementDetails> getAllDetails() {
-        return reimbursementDetailsRepository.getAll()
-                .stream()
-                .sorted(Comparator.comparing(ReimbursementDetails::getSettingDate).reversed())
-                .collect(Collectors.toList());
-    }
-
-    public ReimbursementDetails getLeastDetails() {
-        return reimbursementDetailsRepository.getAll()
-                .stream()
-                .sorted(Comparator.comparing(ReimbursementDetails::getSettingDate).reversed())
-                .limit(1)
-                .collect(Collectors.toList()).get(0);
-    }
-
     @Override
     public void recalculateReimbursements(ReimbursementSummary reimbursementSummary) {
-        reimbursementSummary.setReimbursementDetails(getLeastDetails());
+        reimbursementSummary.setReimbursementDetails(reimbursementDetailsService.getLeastDetails());
 
         double totalAllowanceForTripDuration = calculateAllowanceForTripDuration(reimbursementSummary);
         double totalAllowanceForTripExpenses = calculateAllowanceForTripExpenses(reimbursementSummary);
@@ -118,6 +84,5 @@ public class ReimbursementService implements Calculator {
         reimbursementSummary.setUserId(userId);
         return reimbursementSummaryRepository.save(reimbursementSummary);
     }
-
 
 }

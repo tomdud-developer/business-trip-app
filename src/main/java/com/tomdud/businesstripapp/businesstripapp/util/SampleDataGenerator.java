@@ -2,6 +2,7 @@ package com.tomdud.businesstripapp.businesstripapp.util;
 
 import com.tomdud.businesstripapp.businesstripapp.model.*;
 import com.tomdud.businesstripapp.businesstripapp.service.ReceiptTypeService;
+import com.tomdud.businesstripapp.businesstripapp.service.ReimbursementDetailsService;
 import com.tomdud.businesstripapp.businesstripapp.service.ReimbursementService;
 
 import java.time.LocalDate;
@@ -13,13 +14,14 @@ public class SampleDataGenerator {
 
     private final ReimbursementService reimbursementService = ReimbursementService.getInstance();
     private final ReceiptTypeService receiptTypeService = ReceiptTypeService.getInstance();
+    private final ReimbursementDetailsService reimbursementDetailsService = ReimbursementDetailsService.getInstance();
 
     public ReimbursementSummary getReimbursementSummary() {
         ReimbursementSummary reimbursementSummary = new ReimbursementSummary(
                 getTripDuration(),
                 getReceiptList(),
                 getCarUsage(),
-                reimbursementService.getLeastDetails()
+                reimbursementDetailsService.getLeastDetails()
         );
 
         reimbursementSummary.setCreationDateTime(LocalDateTime.now());

@@ -1,6 +1,7 @@
 package com.tomdud.businesstripapp.businesstripapp.servlet;
 
 import com.tomdud.businesstripapp.businesstripapp.model.ReimbursementSummary;
+import com.tomdud.businesstripapp.businesstripapp.service.ReimbursementDetailsService;
 import com.tomdud.businesstripapp.businesstripapp.service.ReimbursementService;
 import com.tomdud.businesstripapp.businesstripapp.servlet.calculator.CalculateReimbursementServlet;
 import com.tomdud.businesstripapp.businesstripapp.util.SampleDataGenerator;
@@ -18,6 +19,7 @@ import java.util.logging.Logger;
 public class DashboardServlet extends HttpServlet {
 
     private final ReimbursementService reimbursementService = ReimbursementService.getInstance();
+    private final ReimbursementDetailsService reimbursementDetailsService = ReimbursementDetailsService.getInstance();
     private static final Logger logger = Logger.getLogger(CalculateReimbursementServlet.class.getName());
 
     @Override
@@ -29,7 +31,7 @@ public class DashboardServlet extends HttpServlet {
         reimbursementSummaries.addAll(reimbursementService.getAllReimbursementSummariesByUserId(userId));
 
         request.setAttribute("reimbursementSummaryList", reimbursementSummaries);
-        request.setAttribute("reimbursementModificationList", reimbursementService.getAllDetails());
+        request.setAttribute("reimbursementModificationList", reimbursementDetailsService.getAllDetails());
 
         request.getRequestDispatcher("dashboard.jsp").forward(request, response);
     }
