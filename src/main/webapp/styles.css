@@ -10,6 +10,10 @@
     max-width: 60%;
 }
 
+#dashboardContainer {
+    max-width: 90%;
+}
+
 .save-button-long {
     width: 200px;
 }
@@ -19,4 +23,10 @@
     font-size: 25px;
     font-weight: bold;
     color: #ffb700;
+}
+
+table td,
+table th {
+    text-align: center;
+    vertical-align: middle;
 }

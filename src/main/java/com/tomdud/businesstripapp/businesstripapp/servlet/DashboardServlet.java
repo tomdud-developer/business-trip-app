@@ -29,6 +29,7 @@ public class DashboardServlet extends HttpServlet {
         reimbursementSummaries.addAll(reimbursementService.getAllReimbursementSummariesByUserId(userId));
 
         request.setAttribute("reimbursementSummaryList", reimbursementSummaries);
+        request.setAttribute("reimbursementModificationList", reimbursementService.getAllDetails());
 
         request.getRequestDispatcher("dashboard.jsp").forward(request, response);
     }
@@ -42,7 +43,7 @@ public class DashboardServlet extends HttpServlet {
         List<ReimbursementSummary> reimbursementSummaries = new ArrayList<>();
 
         SampleDataGenerator sampleDataGenerator = new SampleDataGenerator();
-        ReimbursementSummary reimbursementSummary =sampleDataGenerator.getReimbursementSummary();
+        ReimbursementSummary reimbursementSummary = sampleDataGenerator.getReimbursementSummary();
         reimbursementSummary.setUserId(userId);
         reimbursementSummary.setId(0L);
         reimbursementSummaries.add(reimbursementSummary);

@@ -15,8 +15,6 @@ public class ReimbursementService implements Calculator {
     private static volatile ReimbursementService instance;
 
     private final ReimbursementDetailsRepository reimbursementDetailsRepository = ReimbursementDetailsRepository.getInstance();
-    private final ReceiptTypeService receiptTypeService = ReceiptTypeService.getInstance();
-    private final DaysAllowanceService daysAllowanceService = DaysAllowanceService.getInstance();
     private final ReimbursementSummaryRepository reimbursementSummaryRepository = ReimbursementSummaryRepository.getInstance();
 
     private ReimbursementService() {
@@ -66,6 +64,8 @@ public class ReimbursementService implements Calculator {
 
     @Override
     public void recalculateReimbursements(ReimbursementSummary reimbursementSummary) {
+        reimbursementSummary.setReimbursementDetails(getLeastDetails());
+
         double totalAllowanceForTripDuration = calculateAllowanceForTripDuration(reimbursementSummary);
         double totalAllowanceForTripExpenses = calculateAllowanceForTripExpenses(reimbursementSummary);
         double totalAllowanceForCarUsage = calculateAllowanceForCarUsage(reimbursementSummary);
@@ -75,8 +75,8 @@ public class ReimbursementService implements Calculator {
         reimbursementSummary.setTotalAllowanceForCarUsage(totalAllowanceForCarUsage);
 
         double total = totalAllowanceForTripDuration + totalAllowanceForTripExpenses + totalAllowanceForCarUsage;
-        double limit = reimbursementSummary.getReimbursement().getTotalReimbursementLimit();
-        boolean isLimitEnabled = reimbursementSummary.getReimbursement().isEnableTotalReimbursementLimit();
+        double limit = reimbursementSummary.getReimbursementDetails().getTotalReimbursementLimit();
+        boolean isLimitEnabled = reimbursementSummary.getReimbursementDetails().isEnableTotalReimbursementLimit();
 
         if (isLimitEnabled && total > limit)
             reimbursementSummary.setTotalAllowance(limit);
@@ -86,7 +86,7 @@ public class ReimbursementService implements Calculator {
 
     public double calculateAllowanceForTripDuration(ReimbursementSummary reimbursementSummary) {
         TripDuration tripDuration = reimbursementSummary.getTripDuration();
-        double rate = reimbursementSummary.getReimbursement().getPerDay();
+        double rate = reimbursementSummary.getReimbursementDetails().getPerDay();
 
         return rate * (tripDuration.getDuration() - tripDuration.getDisabledDays().size());
     }
@@ -100,9 +100,9 @@ public class ReimbursementService implements Calculator {
 
     public double calculateAllowanceForCarUsage(ReimbursementSummary reimbursementSummary) {
         double distance = reimbursementSummary.getCarUsage().getDistance();
-        boolean isLimitEnabled = reimbursementSummary.getReimbursement().isEnableMileageLimit();
-        double distanceLimit = reimbursementSummary.getReimbursement().getMileageLimit();
-        double rate = reimbursementSummary.getReimbursement().getPerKilometer();
+        boolean isLimitEnabled = reimbursementSummary.getReimbursementDetails().isEnableMileageLimit();
+        double distanceLimit = reimbursementSummary.getReimbursementDetails().getMileageLimit();
+        double rate = reimbursementSummary.getReimbursementDetails().getPerKilometer();
 
         if (isLimitEnabled && distance > distanceLimit)
             return distanceLimit * rate;

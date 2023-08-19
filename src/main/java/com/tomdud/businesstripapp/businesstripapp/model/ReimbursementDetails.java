@@ -23,6 +23,7 @@ public class ReimbursementDetails {
 
         this.enableMileageLimit = false;
         this.mileageLimit = 0.0;
+
         this.enableTotalReimbursementLimit = false;
         this.totalReimbursementLimit = 0.0;
     }

@@ -1,19 +1,23 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
 <head>
     <title>Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <link href=”https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css” rel=”stylesheet” type=”text/css” />
-    <link rel="stylesheet" href="styles2.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles/bootstrap.min.css">
 </head>
 <body>
     <jsp:include page="navbar.jsp" />
-    <h1>Dashboard</h1>
-
-    <h1>Business Trip Reimbursement Calculator</h1>
-    <div class="container border p-3" id="calculatorFormContainer">
+    <div class="container border p-3" id="dashboardContainer">
+        <div class="text-center">
+            <h1>Dashboard</h1>
+        </div>
+        <div class="text-center">
+            <h3>You are logged in as ${username} and have ${roles} role</h3>
+        </div>
         <div class="border p-3">
             <div class="mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -23,52 +27,93 @@
                 <table id="disabledDaysTable" class="table table-striped">
                     <thead class="thead-dark">
                     <tr>
+                        <th scope="col" class="border-end">UserId</th>
+                        <th scope="col" class="border-end">Request time</th>
                         <th scope="col">Trip Start date</th>
                         <th scope="col">Trip End date</th>
                         <th scope="col">Duration</th>
-                        <th scope="col" class="border-end">Disabled days</th>
+                        <th scope="col">Disabled days</th>
+                        <th scope="col" class="border-end">Total allowance for trip duration</th>
                         <th scope="col">Receipts</th>
                         <th scope="col" class="border-end">Total for receipts</th>
+                        <th scope="col">Distance</th>
+                        <th scope="col" class="border-end">Total for car usage</th>
+                        <th scope="col" class="border-end">Total reimbursement</th>
                     </tr>
                     </thead>
                     <tbody>
                         <c:if test="${not empty reimbursementSummaryList}">
-                            <c:forEach var="summary" items="${reimbursementSummaryList}">
+                            <c:forEach var="reimbursementSummary" items="${reimbursementSummaryList}">
                                 <tr>
-                                    <td>${summary.tripDuration.startDate}</td>
-                                    <td>${summary.tripDuration.endDate}</td>
-                                    <td>${summary.tripDuration.duration}</td>
+                                    <td class="border-end">${reimbursementSummary.userId}</td>
                                     <td class="border-end">
+                                        <c:out value="${fn:substring(reimbursementSummary.creationDateTime, 0, 16)}" />
+                                    </td>
+                                    <td>${reimbursementSummary.tripDuration.startDate}</td>
+                                    <td>${reimbursementSummary.tripDuration.endDate}</td>
+                                    <td>${reimbursementSummary.tripDuration.duration}</td>
+                                    <td>
                                         <div class="d-flex align-items-center">
-                                            <p class="mb-0">${summary.tripDuration.disabledDays.size()} days</p>
-                                            <button class="btn btn-link ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${summary.id}" aria-expanded="false" aria-controls="collapse${summary.id}">
+                                            <p class="mb-0">${reimbursementSummary.tripDuration.disabledDays.size()} days</p>
+                                            <button class="btn btn-link ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-disabled-days-${reimbursementSummary.id}" aria-expanded="false" aria-controls="collapse-disabled-days-${reimbursementSummary.id}">
                                                 Show Dates
                                             </button>
                                         </div>
-                                        <div class="collapse" id="collapse${summary.id}">
+                                        <div class="collapse" id="collapse-disabled-days-${reimbursementSummary.id}">
                                             <ul>
-                                                <c:forEach var="disabledDay" items="${summary.tripDuration.disabledDays}">
+                                                <c:forEach var="disabledDay" items="${reimbursementSummary.tripDuration.disabledDays}">
                                                     <li>${disabledDay}</li>
                                                 </c:forEach>
                                             </ul>
                                         </div>
                                     </td>
                                     <td class="border-end">
+                                        <fmt:formatNumber value="${reimbursementSummary.totalAllowanceForTripDuration}" pattern="0.00" var="formattedTotalAllowanceForTripDuration" />
+                                        ${formattedTotalAllowanceForTripDuration}$
+                                    </td>
+                                    <td>
                                         <div class="d-flex align-items-center">
-                                            <p class="mb-0">${summary.receiptList.size()} Receipts </p>
-                                            <button class="btn btn-link ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${summary.id}" aria-expanded="false" aria-controls="collapse${summary.id}">
+                                            <p class="mb-0">${reimbursementSummary.receiptList.size()} Receipts </p>
+                                            <button class="btn btn-link ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-receipts-${reimbursementSummary.id}" aria-expanded="false" aria-controls="collapse-receipts-${reimbursementSummary.id}">
                                                 Show receipts
                                             </button>
                                         </div>
-                                        <div class="collapse" id="collapse${summary.id}">
+                                        <div class="collapse" id="collapse-receipts-${reimbursementSummary.id}">
                                             <ul>
-                                                <c:forEach var="receipt" items="${summary.receiptList}">
-                                                    <li>Value: ${receipt.value}$ - ${receipt.receiptType}$ - ${receipt.reimbursement}</li>
+                                                <c:forEach var="receipt" items="${reimbursementSummary.receiptList}">
+                                                    <fmt:formatNumber value="${receipt.value}" pattern="0.00" var="formattedReceiptValue" />
+                                                    <fmt:formatNumber value="${receipt.reimbursement}" pattern="0.00" var="formattedReceiptReimbursement" />
+                                                    <li>Value: ${formattedReceiptValue}$ - ${receipt.receiptType.name} -
+                                                        <c:choose>
+                                                            <c:when test="${receipt.receiptType.enableLimit}">
+                                                                <fmt:formatNumber value="${receipt.receiptType.limit}" pattern="0.00" var="formattedReceiptLimit" />
+                                                                Limit ${formattedReceiptLimit}$ -
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                Limit disabled -
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                        Reimburse ${formattedReceiptReimbursement}$</li>
                                                 </c:forEach>
                                             </ul>
                                         </div>
                                     </td>
-                                    <td>${summary.sumReimbursementFromReceipts()}$</td>
+                                    <td class="border-end">
+                                        <fmt:formatNumber value="${reimbursementSummary.totalAllowanceForTripExpenses}" pattern="0.00" var="formattedTotalAllowanceForTripExpenses" />
+                                            ${formattedTotalAllowanceForTripExpenses}$
+                                    </td>
+                                    <td>
+                                        <fmt:formatNumber value="${reimbursementSummary.carUsage.distance}" pattern="0.00" var="formattedDistance" />
+                                            ${formattedDistance}km
+                                    </td>
+                                    <td class="border-end">
+                                        <fmt:formatNumber value="${reimbursementSummary.totalAllowanceForCarUsage}" pattern="0.00" var="formattedTotalAllowanceForCarUsage" />
+                                            ${formattedTotalAllowanceForCarUsage}$
+                                    </td>
+                                    <td class="border-end">
+                                        <fmt:formatNumber value="${reimbursementSummary.totalAllowance}" pattern="0.00" var="formattedTotalAllowance" />
+                                            ${formattedTotalAllowance}$
+                                    </td>
                                 </tr>
                             </c:forEach>
                         </c:if>
@@ -76,6 +121,9 @@
                 </table>
             </div>
         </div>
+
+        <jsp:include page="reimbursement-details-history-table.jsp" />
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>

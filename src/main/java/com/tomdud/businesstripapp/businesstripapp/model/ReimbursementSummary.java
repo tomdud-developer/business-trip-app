@@ -1,6 +1,7 @@
 package com.tomdud.businesstripapp.businesstripapp.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -9,6 +10,7 @@ public class ReimbursementSummary {
 
     private long id;
     private long userId;
+    private LocalDateTime creationDateTime;
     private List<Receipt> receiptList;
     private CarUsage carUsage;
     private TripDuration tripDuration;
@@ -119,5 +121,13 @@ public class ReimbursementSummary {
 
     public void setReimbursementDetails(ReimbursementDetails reimbursementDetails) {
         this.reimbursementDetails = reimbursementDetails;
+    }
+
+    public LocalDateTime getCreationDateTime() {
+        return creationDateTime;
+    }
+
+    public void setCreationDateTime(LocalDateTime creationDateTime) {
+        this.creationDateTime = creationDateTime;
     }
 }

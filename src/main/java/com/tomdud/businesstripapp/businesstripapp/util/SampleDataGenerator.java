@@ -5,6 +5,7 @@ import com.tomdud.businesstripapp.businesstripapp.service.ReceiptTypeService;
 import com.tomdud.businesstripapp.businesstripapp.service.ReimbursementService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -21,6 +22,7 @@ public class SampleDataGenerator {
                 reimbursementService.getLeastDetails()
         );
 
+        reimbursementSummary.setCreationDateTime(LocalDateTime.now());
         reimbursementService.recalculateReimbursements(reimbursementSummary);
 
         return reimbursementSummary;
