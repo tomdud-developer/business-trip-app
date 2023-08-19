@@ -200,7 +200,7 @@
             </div>
 
         </div>
-    <script src="jquery-3.7.0.min.js"></script>
-    <script src="scripts2.js"></script>
+    <script src="scripts/jquery-3.7.0.min.js"></script>
+    <script src="scripts/scripts2.js"></script>
 </body>
 </html>

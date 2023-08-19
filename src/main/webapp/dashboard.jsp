@@ -2,6 +2,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.tomdud.businesstripapp.businesstripapp.util.Role" %>
+<%@ page import="java.util.Set" %>
 
 <html>
 <head>
@@ -22,13 +24,21 @@
             <div class="mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4>Reimbursement requests</h4>
-                    <a href="calculate-reimbursement-new-calculation" class="btn btn-success">Add New Reimbursement</a>
+                    <%
+                        Set<Role> roles = (Set<Role>) session.getAttribute("roles");
+                        if (roles != null && roles.contains(Role.USER)) {
+                    %>
+                        <a href="calculate-reimbursement-new-calculation" class="btn btn-success">Add New Reimbursement</a>
+                    <%
+                        }
+                    %>
                 </div>
                 <table id="disabledDaysTable" class="table table-striped">
                     <thead class="thead-dark">
                     <tr>
                         <th scope="col" class="border-end">UserId</th>
                         <th scope="col" class="border-end">Request time</th>
+                        <th scope="col" class="border-end">Details</th>
                         <th scope="col">Trip Start date</th>
                         <th scope="col">Trip End date</th>
                         <th scope="col">Duration</th>
@@ -48,6 +58,40 @@
                                     <td class="border-end">${reimbursementSummary.userId}</td>
                                     <td class="border-end">
                                         <c:out value="${fn:substring(reimbursementSummary.creationDateTime, 0, 16)}" />
+                                    </td>
+                                    <td class="border-end">
+                                        <div class="d-flex align-items-center">
+                                            <button class="btn btn-link ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-reimbursement-details-${reimbursementSummary.id}" aria-expanded="false" aria-controls="collapse-reimbursement-details-${reimbursementSummary.id}">
+                                                Show details
+                                            </button>
+                                        </div>
+                                        <div class="collapse" id="collapse-reimbursement-details-${reimbursementSummary.id}">
+                                            <ul>
+                                                <li>Daily allowance rate: ${reimbursementSummary.reimbursementDetails.perDay} $/day</li>
+                                                <li>Car usage rate: ${reimbursementSummary.reimbursementDetails.perKilometer} $/km</li>
+                                                <li>Distance limit:
+                                                    <c:choose>
+                                                        <c:when test="${reimbursementSummary.reimbursementDetails.enableMileageLimit}">
+                                                            ${reimbursementSummary.reimbursementDetails.mileageLimit}km
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            Limit disabled
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </li>
+                                                <li>Total allowance limit:
+                                                    <c:choose>
+                                                        <c:when test="${reimbursementSummary.reimbursementDetails.enableTotalReimbursementLimit}">
+                                                            ${reimbursementSummary.reimbursementDetails.totalReimbursementLimit}$
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            Limit disabled
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </li>
+
+                                            </ul>
+                                        </div>
                                     </td>
                                     <td>${reimbursementSummary.tripDuration.startDate}</td>
                                     <td>${reimbursementSummary.tripDuration.endDate}</td>

@@ -1,4 +1,8 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.tomdud.businesstripapp.businesstripapp.util.Role" %>
+<%@ page import="java.util.Set" %>
+
 <html>
 <head>
     <title>Navbar</title>
@@ -16,16 +20,29 @@
                             <h5 class="mb-0">Dashboard</h5>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="calculate-reimbursement" class="btn btn-success px-4 py-2 me-2">
-                            <h5 class="mb-0">Calculator</h5>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="admin-panel" class="btn btn-success px-4 py-2">
-                            <h5 class="mb-0">Admin Panel</h5>
-                        </a>
-                    </li>
+                    <%
+                        Set<Role> roles = (Set<Role>) session.getAttribute("roles");
+                        if (roles != null && roles.contains(Role.USER)) {
+                    %>
+                        <li class="nav-item">
+                            <a href="calculate-reimbursement" class="btn btn-success px-4 py-2 me-2">
+                                <h5 class="mb-0">Calculator</h5>
+                            </a>
+                        </li>
+                    <%
+                        }
+                    %>
+                    <%
+                        if (roles != null && roles.contains(Role.ADMIN)) {
+                    %>
+                        <li class="nav-item">
+                            <a href="admin-panel" class="btn btn-success px-4 py-2">
+                                <h5 class="mb-0">Admin Panel</h5>
+                            </a>
+                        </li>
+                    <%
+                        }
+                    %>
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
