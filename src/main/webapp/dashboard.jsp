@@ -6,7 +6,7 @@
 <html>
 <head>
     <title>Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/bootstrap.min.css">
 </head>
 <body>
@@ -22,7 +22,7 @@
             <div class="mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4>Reimbursement requests</h4>
-                    <button class="btn btn-success">Add New Reimbursement</button>
+                    <a href="calculate-reimbursement-new-calculation" class="btn btn-success">Add New Reimbursement</a>
                 </div>
                 <table id="disabledDaysTable" class="table table-striped">
                     <thead class="thead-dark">
@@ -126,6 +126,6 @@
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="scripts/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -6,7 +6,7 @@
 <head>
     <title>Admin panel</title>
     <link rel="stylesheet" href="styles/bootstrap.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
     <jsp:include page="navbar.jsp" />

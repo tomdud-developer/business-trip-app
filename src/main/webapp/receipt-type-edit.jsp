@@ -3,9 +3,8 @@
 <html>
 <head>
     <title>Receipt-type-edit-form</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <link href=”https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css” rel=”stylesheet” type=”text/css” />
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
     <c:if test="${receiptType != null}"><h1>Receipt Type (${receiptType.name}) Edit Form</h1></c:if>

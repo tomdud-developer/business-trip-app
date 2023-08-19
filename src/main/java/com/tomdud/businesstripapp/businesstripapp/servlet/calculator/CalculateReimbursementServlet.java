@@ -15,6 +15,7 @@ import java.util.logging.Logger;
         name = "CalculateReimbursementServlet",
         value = {
                 "/calculate-reimbursement",
+                "/calculate-reimbursement-new-calculation",
                 "/calculate-reimbursement/send-to-consideration"
         }
 )
@@ -27,10 +28,13 @@ public class CalculateReimbursementServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getServletPath();
+        logger.log(Level.INFO, "CalculateReimbursementServlet::doGet - {0}", action);
 
-        logger.log(Level.INFO, "CalculateReimbursementServlet::doGet");
+        if(action.equals("/calculate-reimbursement-new-calculation"))
+            initializeNewSession(request);
+        else initializeSessionAttributesIfNullAndRecalculateSummary(request);
 
-        initializeSessionAttributesIfNullAndRecalculateSummary(request);
         request.getRequestDispatcher("reimbursement-calculator.jsp").forward(request, response);
     }
 
@@ -61,11 +65,14 @@ public class CalculateReimbursementServlet extends HttpServlet {
 
         ReimbursementSummary reimbursementSummary = retrieveModelOfReimbursementSummaryFromSession(request);
         if (reimbursementSummary == null) {
-            reimbursementSummary = ReimbursementSummary.getInitialized(reimbursementService.getLeastDetails());
-            request.getSession().setAttribute("reimbursementSummary", reimbursementSummary);
-        }
+            initializeNewSession(request);
+        } else reimbursementService.recalculateReimbursements(reimbursementSummary);
+    }
 
+    private void initializeNewSession(HttpServletRequest request) {
+        ReimbursementSummary reimbursementSummary = ReimbursementSummary.getInitialized(reimbursementService.getLeastDetails());
         reimbursementService.recalculateReimbursements(reimbursementSummary);
+        request.getSession().setAttribute("reimbursementSummary", reimbursementSummary);
     }
 
     private ReimbursementSummary retrieveModelOfReimbursementSummaryFromSession(HttpServletRequest request) {
