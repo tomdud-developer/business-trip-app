@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@WebServlet(name = "ReceiptTypeServlet", value = {"/receipt-type/delete", "/receipt-type/edit", "/receipt-type/update", "/receipt-type/insert"})
+@WebServlet(name = "ReceiptTypeServlet", value = {"/receipt-type-delete", "/receipt-type-edit", "/receipt-type-update", "/receipt-type-insert"})
 public class ReceiptTypeServlet extends HttpServlet {
 
     private static final Logger logger = Logger.getLogger(CalculateReimbursementServlet.class.getName());
@@ -25,13 +25,13 @@ public class ReceiptTypeServlet extends HttpServlet {
         logger.log(Level.INFO, "ReceiptTypeServlet::doGet - action - {0}", action);
 
         switch (action) {
-            case "/receipt-type/delete":
+            case "/receipt-type-delete":
                 String receiptNameToDelete = request.getParameter("name");
                 logger.log(Level.INFO, "ReceiptTypeServlet::doGet - deleting receipt with name {0}", receiptNameToDelete);
                 receiptTypeService.deleteReceiptTypeByName(receiptNameToDelete);
                 response.sendRedirect(request.getContextPath() + "/admin-panel");
                 break;
-            case "/receipt-type/edit":
+            case "/receipt-type-edit":
                 String receiptNameToEdit = request.getParameter("name");
                 logger.log(Level.INFO, "ReceiptTypeServlet::doGet - edit receipt with name {0}", receiptNameToEdit);
                 ReceiptType receiptType = receiptTypeService.getReceiptTypeByName(receiptNameToEdit);
@@ -39,7 +39,7 @@ public class ReceiptTypeServlet extends HttpServlet {
                 request.setAttribute("receiptType", receiptType);
                 request.getRequestDispatcher("/receipt-type-edit.jsp").forward(request, response);
                 break;
-            case "/receipt-type/insert":
+            case "/receipt-type-insert":
                 logger.log(Level.INFO, "ReceiptTypeServlet::doGet - inserting new receipt");
                 request.setAttribute("receiptType", null);
                 request.getRequestDispatcher("/receipt-type-edit.jsp").forward(request, response);
@@ -55,7 +55,7 @@ public class ReceiptTypeServlet extends HttpServlet {
         logger.log(Level.INFO, "ReceiptTypeServlet::doPost - action - {0}", action);
 
         switch (action) {
-            case "/receipt-type/update":
+            case "/receipt-type-update":
                 ReceiptType receiptType = receiptTypeService.getReceiptTypeByName(request.getParameter("orgName"));
                 receiptType.setName(request.getParameter("name"));
                 receiptType.setEnableLimit(request.getParameter("enableLimit") != null);
@@ -63,7 +63,7 @@ public class ReceiptTypeServlet extends HttpServlet {
 
                 response.sendRedirect(request.getContextPath() + "/admin-panel");
                 break;
-            case "/receipt-type/insert":
+            case "/receipt-type-insert":
                 ReceiptType receiptTypeToSave = new ReceiptType(
                         request.getParameter("name"),
                         request.getParameter("enableLimit") != null,

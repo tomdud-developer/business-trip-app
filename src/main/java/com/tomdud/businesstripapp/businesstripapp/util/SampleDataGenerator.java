@@ -49,7 +49,7 @@ public class SampleDataGenerator {
         Set<LocalDate> localDates = new HashSet<>();
 
         for (int i = 0; i < random.nextInt(daysBetween); i++) {
-            localDates.add(localDate1.plusDays(random.nextInt(daysBetween)));
+            localDates.add(localDate1.plusDays(random.nextInt(daysBetween - 1) + 1));
         }
 
         return localDates;

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -66,6 +67,36 @@ class ReimbursementServiceTest {
         );
         Assertions.assertEquals(
                 reimbursementSummary.getReimbursementDetails().getPerDay() * tripDuration.getDuration(),
+                reimbursementSummary.getTotalAllowance(),0.01
+        );
+        Assertions.assertEquals(
+                reimbursementSummary.getTotalAllowanceForTripExpenses()
+                        + reimbursementSummary.getTotalAllowanceForTripDuration()
+                        + reimbursementSummary.getTotalAllowanceForCarUsage(),
+                reimbursementSummary.getTotalAllowance(),0.01
+        );
+    }
+
+    @Test
+    void recalculateReimbursementsChangeDurationAndAddedDisabledDays() {
+        //given
+        TripDuration tripDuration = reimbursementSummary.getTripDuration();
+
+        //when
+        daysAllowanceService.modifyTripDurationBasedOnChangedDays(tripDuration,20);
+        tripDuration.getDisabledDays().add(LocalDate.now().plusDays(5));
+        tripDuration.getDisabledDays().add(LocalDate.now().plusDays(6));
+        tripDuration.getDisabledDays().add(LocalDate.now().plusDays(10));
+
+        reimbursementService.recalculateReimbursements(reimbursementSummary);
+
+        //then
+        Assertions.assertEquals(
+                reimbursementSummary.getReimbursementDetails().getPerDay() * (tripDuration.getDuration() - 3),
+                reimbursementSummary.getTotalAllowanceForTripDuration(),0.01
+        );
+        Assertions.assertEquals(
+                reimbursementSummary.getReimbursementDetails().getPerDay() * (tripDuration.getDuration() - 3),
                 reimbursementSummary.getTotalAllowance(),0.01
         );
         Assertions.assertEquals(
