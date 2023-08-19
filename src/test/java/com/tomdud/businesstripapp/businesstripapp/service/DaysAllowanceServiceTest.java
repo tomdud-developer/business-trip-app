@@ -30,6 +30,11 @@ class DaysAllowanceServiceTest {
     }
 
     @Test
+    void getInstanceShouldReturnTheSameObject() {
+        Assertions.assertEquals(DaysAllowanceService.getInstance(), DaysAllowanceService.getInstance());
+    }
+
+    @Test
     void modifyTripDurationBasedOnChangedDays() {
         //when
         daysAllowanceService.modifyTripDurationBasedOnChangedDays(tripDuration, 5);
