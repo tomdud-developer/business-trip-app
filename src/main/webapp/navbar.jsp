@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.tomdud.businesstripapp.businesstripapp.util.Role" %>
+<%@ page import="com.tomdud.businesstripapp.util.Role" %>
 <%@ page import="java.util.Set" %>
 
 <html>
