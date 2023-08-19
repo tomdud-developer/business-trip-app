@@ -16,5 +16,4 @@ public class CarUsage {
         this.distance = distance;
     }
 
-
 }

@@ -2,9 +2,9 @@ package com.tomdud.businesstripapp.businesstripapp.model;
 
 public class Receipt {
 
-    private double value;
-    private ReceiptType receiptType;
-    private double reimbursement;
+    private final double value;
+    private final ReceiptType receiptType;
+    private final double reimbursement;
 
     public Receipt(double value, ReceiptType receiptType) {
         this.value = value;
@@ -20,23 +20,11 @@ public class Receipt {
         return value;
     }
 
-    public void setValue(double value) {
-        this.value = value;
-    }
-
     public ReceiptType getReceiptType() {
         return receiptType;
     }
 
-    public void setReceiptType(ReceiptType receiptType) {
-        this.receiptType = receiptType;
-    }
-
     public double getReimbursement() {
         return reimbursement;
-    }
-
-    public void setReimbursement(double reimbursement) {
-        this.reimbursement = reimbursement;
     }
 }

@@ -1,6 +1,6 @@
 package com.tomdud.businesstripapp.businesstripapp.repository;
 
-import com.tomdud.businesstripapp.businesstripapp.model.Role;
+import com.tomdud.businesstripapp.businesstripapp.util.Role;
 import com.tomdud.businesstripapp.businesstripapp.model.User;
 
 import java.util.*;
