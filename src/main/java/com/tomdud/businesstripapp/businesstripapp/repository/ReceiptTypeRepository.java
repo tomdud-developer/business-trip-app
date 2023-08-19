@@ -2,10 +2,7 @@ package com.tomdud.businesstripapp.businesstripapp.repository;
 
 import com.tomdud.businesstripapp.businesstripapp.model.ReceiptType;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ReceiptTypeRepository {
@@ -47,13 +44,11 @@ public class ReceiptTypeRepository {
         repository.removeIf(type -> type.getName().equals(name));
     }
 
-    public ReceiptType getByName(String name) {
+    public Optional<ReceiptType> getByName(String name) {
         return repository
                 .stream()
                 .filter(type -> type.getName().equals(name))
-                .limit(1)
-                .collect(Collectors.toList())
-                .get(0);
+                .findFirst();
     }
 
     public void save(ReceiptType receiptType) {

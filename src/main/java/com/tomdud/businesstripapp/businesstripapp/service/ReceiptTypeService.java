@@ -1,9 +1,12 @@
 package com.tomdud.businesstripapp.businesstripapp.service;
 
+import com.tomdud.businesstripapp.businesstripapp.exception.ReceiptTypeAlreadyInRepositoryException;
+import com.tomdud.businesstripapp.businesstripapp.exception.ReceiptTypeNotFoundException;
 import com.tomdud.businesstripapp.businesstripapp.model.ReceiptType;
 import com.tomdud.businesstripapp.businesstripapp.repository.ReceiptTypeRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ReceiptTypeService {
 
@@ -32,16 +35,27 @@ public class ReceiptTypeService {
         return receiptTypeRepository.getAll();
     }
 
-    public void deleteReceiptTypeByName(String name) {
-        receiptTypeRepository.delete(name);
+    public void deleteReceiptTypeByName(String name) throws ReceiptTypeNotFoundException {
+        Optional<ReceiptType> optional = receiptTypeRepository.getByName(name);
+        if (optional.isEmpty())
+            throw new ReceiptTypeNotFoundException(String.format("ReceiptType with name %s not found", name));
+        else receiptTypeRepository.delete(name);
     }
 
-    public ReceiptType getReceiptTypeByName(String name) {
-        return receiptTypeRepository.getByName(name);
+    public ReceiptType getReceiptTypeByName(String name) throws ReceiptTypeNotFoundException {
+        Optional<ReceiptType> optional = receiptTypeRepository.getByName(name);
+        if (optional.isEmpty())
+            throw new ReceiptTypeNotFoundException(String.format("ReceiptType with name %s not found", name));
+        return optional.get();
     }
 
-    public void saveReceiptType(ReceiptType receiptType) {
-        receiptTypeRepository.save(receiptType);
+    public void saveReceiptType(ReceiptType receiptType) throws ReceiptTypeAlreadyInRepositoryException{
+        if (receiptTypeRepository.getByName(receiptType.getName()).isPresent())
+            throw new ReceiptTypeAlreadyInRepositoryException(
+                    String.format("ReceiptType with name %s already in repository", receiptType.getName())
+            );
+        else
+            receiptTypeRepository.save(receiptType);
     }
 
 }
