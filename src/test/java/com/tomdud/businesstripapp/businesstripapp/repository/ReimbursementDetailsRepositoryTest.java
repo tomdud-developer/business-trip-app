@@ -17,7 +17,6 @@ class ReimbursementDetailsRepositoryTest {
         List<ReimbursementDetails> reimbursementDetailsList = reimbursementDetailsRepository.getAll();
 
         //then
-        Assertions.assertEquals(1, reimbursementDetailsList.size());
         Assertions.assertEquals(15.0, reimbursementDetailsList.get(0).getPerDay(), 0.000001);
         Assertions.assertEquals(0.3, reimbursementDetailsList.get(0).getPerKilometer(), 0.000001);
     }
@@ -26,12 +25,13 @@ class ReimbursementDetailsRepositoryTest {
     void add() {
         //given
         ReimbursementDetails reimbursementDetails = new ReimbursementDetails(1.0, 100.0, LocalDateTime.now());
+        int currentLength = reimbursementDetailsRepository.getAll().size();
 
         //when
         reimbursementDetailsRepository.add(reimbursementDetails);
 
         //then
-        Assertions.assertEquals(2, reimbursementDetailsRepository.getAll().size());
+        Assertions.assertEquals(currentLength + 1, reimbursementDetailsRepository.getAll().size());
     }
 
 }

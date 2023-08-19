@@ -2,6 +2,8 @@ package com.tomdud.businesstripapp.businesstripapp.service;
 
 import com.tomdud.businesstripapp.businesstripapp.model.*;
 import com.tomdud.businesstripapp.businesstripapp.repository.ReimbursementSummaryRepository;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ReimbursementService implements Calculator {
@@ -80,9 +82,14 @@ public class ReimbursementService implements Calculator {
         return reimbursementSummaryRepository.getAllByUserId(userId);
     }
 
-    public ReimbursementSummary saveReimbursementSummary(ReimbursementSummary reimbursementSummary, long userId) {
+    public List<ReimbursementSummary> getAllFromAllUsers() {
+        return reimbursementSummaryRepository.getAllFromAllUsers();
+    }
+
+    public void saveReimbursementSummary(ReimbursementSummary reimbursementSummary, long userId) {
         reimbursementSummary.setUserId(userId);
-        return reimbursementSummaryRepository.save(reimbursementSummary);
+        reimbursementSummary.setCreationDateTime(LocalDateTime.now());
+        reimbursementSummaryRepository.save(reimbursementSummary);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.tomdud.businesstripapp.businesstripapp.dto;
+package com.tomdud.businesstripapp.businesstripapp.model;
 
 
 public class ReimbursementUpdateRequestDTO {

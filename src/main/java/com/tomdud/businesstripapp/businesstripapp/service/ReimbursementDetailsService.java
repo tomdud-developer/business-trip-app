@@ -1,12 +1,8 @@
 package com.tomdud.businesstripapp.businesstripapp.service;
 
-import com.tomdud.businesstripapp.businesstripapp.dto.ReimbursementUpdateRequestDTO;
-import com.tomdud.businesstripapp.businesstripapp.model.Receipt;
+import com.tomdud.businesstripapp.businesstripapp.model.ReimbursementUpdateRequestDTO;
 import com.tomdud.businesstripapp.businesstripapp.model.ReimbursementDetails;
-import com.tomdud.businesstripapp.businesstripapp.model.ReimbursementSummary;
-import com.tomdud.businesstripapp.businesstripapp.model.TripDuration;
 import com.tomdud.businesstripapp.businesstripapp.repository.ReimbursementDetailsRepository;
-import com.tomdud.businesstripapp.businesstripapp.repository.ReimbursementSummaryRepository;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -62,5 +58,9 @@ public class ReimbursementDetailsService {
                 .sorted(Comparator.comparing(ReimbursementDetails::getSettingDate).reversed())
                 .limit(1)
                 .collect(Collectors.toList()).get(0);
+    }
+
+    public ReimbursementDetails getDefault() {
+        return reimbursementDetailsRepository.getDefault();
     }
 }

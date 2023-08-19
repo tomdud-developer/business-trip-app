@@ -1,9 +1,8 @@
 package com.tomdud.businesstripapp.businesstripapp.servlet.admin;
 
-import com.tomdud.businesstripapp.businesstripapp.dto.ReimbursementUpdateRequestDTO;
+import com.tomdud.businesstripapp.businesstripapp.model.ReimbursementUpdateRequestDTO;
 import com.tomdud.businesstripapp.businesstripapp.service.ReceiptTypeService;
 import com.tomdud.businesstripapp.businesstripapp.service.ReimbursementDetailsService;
-import com.tomdud.businesstripapp.businesstripapp.service.ReimbursementService;
 import com.tomdud.businesstripapp.businesstripapp.servlet.calculator.CalculateReimbursementServlet;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;

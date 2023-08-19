@@ -16,7 +16,7 @@ public class ReimbursementDetailsRepository {
 
     private ReimbursementDetailsRepository() {
         repository = new HashMap<>();
-        ReimbursementDetails defaultReimbursementDetails = new ReimbursementDetails(0.3, 15.0, LocalDateTime.now());
+        ReimbursementDetails defaultReimbursementDetails = getDefault();
         repository.put(0L, defaultReimbursementDetails);
     }
 
@@ -44,6 +44,10 @@ public class ReimbursementDetailsRepository {
 
     public List<ReimbursementDetails> getAll() {
         return new ArrayList<>(repository.values());
+    }
+
+    public ReimbursementDetails getDefault() {
+        return new ReimbursementDetails(0.3, 15.0, LocalDateTime.now());
     }
 
 }
