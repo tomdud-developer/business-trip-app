@@ -7,7 +7,7 @@
 <%@ page import="java.util.ArrayList" %>
 
 
-<html>
+
 <head>
     <title>Navbar</title>
     <link rel="stylesheet" href="styles/bootstrap.min.css">
@@ -77,4 +77,4 @@
         }
     %>
 </body>
-</html>
+
