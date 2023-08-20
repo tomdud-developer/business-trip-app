@@ -5,7 +5,6 @@
 
 
 <html>
-
 <head>
     <title>Business Trip Reimbursement Calculation Page</title>
     <link rel="stylesheet" href="styles/bootstrap.min.css">
@@ -206,6 +205,6 @@
 
         </div>
     <script src="scripts/jquery-3.7.0.min.js"></script>
-    <script src="scripts/scripts2.js"></script>
+    <script src="scripts/scripts.js"></script>
 </body>
 </html>

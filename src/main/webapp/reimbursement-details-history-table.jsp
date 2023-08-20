@@ -18,7 +18,7 @@
             <th scope="col">Daily allowance, $/day</th>
             <th scope="col">Mileage limit status</th>
             <th scope="col">Mileage limit, km</th>
-            <th scope="col">Total reimbursementDetails status</th>
+            <th scope="col">Total reimbursement limit status</th>
             <th scope="col">Total reimbursementDetails limit, $</th>
           </tr>
         </thead>

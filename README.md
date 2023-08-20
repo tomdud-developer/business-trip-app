@@ -4,8 +4,6 @@
 Java Application to manage the reimbursementDetails of expenses of a user after a business trip.
 
 
-
-
 ## Deployment
 
 Download Apache Tomcat 10.1.12 and Java 11, properly set JAVA_HOME envarionment variable.
@@ -13,8 +11,8 @@ To deploy this project run
 
 #### Clone app
 ```bash
-git clone https://github.com/tomdud-developer/BusinessTripReimbursementCalculationApplication.git
-cd BusinessTripReimbursementCalculationApplication
+git clone https://github.com/tomdud-developer/business-trip-app.git
+cd business-trip-app
 ```
 
 #### Build war and copy archive to YOUR_TOMCAT_HOME_FOLDER/webapps
@@ -44,6 +42,12 @@ To run tests, run the following command after cloning app
 ```bash
   .\mvnw test
 ```
+
+## Screenshots
+![tests.png](assets%2Ftests.png)
+![admin-panel.png](assets%2Fadmin-panel.png)
+![calculator.png](assets%2Fcalculator.png)
+![dashboard.png](assets%2Fdashboard.png)
 
 
 ## Authors
