@@ -32,6 +32,11 @@ class ReimbursementDetailsServiceTest {
     @Test
     void getLeastDetails() {
         //given
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         ReimbursementUpdateRequestDTO reimbursementUpdateRequestDTO = new ReimbursementUpdateRequestDTO(
                 1.0, 15.5, false, 0.0, true, 50000.0
         );
