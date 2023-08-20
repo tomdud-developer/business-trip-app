@@ -3,6 +3,10 @@
 
 Java Application to manage the reimbursementDetails of expenses of a user after a business trip.
 
+## Link do application deployed on AWS EC2
+I deployed application on AWS EC2
+http://34.240.9.153:8080/login
+
 
 ## Deployment
 
