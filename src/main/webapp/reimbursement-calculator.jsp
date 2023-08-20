@@ -28,7 +28,7 @@
                         </div>
                         <div class="input-group">
                             <input type="date" class="form-control" id="tripEndDate" name="tripEndDate" value="${reimbursementSummary.tripDuration.endDate}">
-                            <span class="input-group-text">Choose end date or trip duration in days</span>
+                            <span class="input-group-text">Choose end date or trip duration in days [Click enter]</span>
                             <input type="number" class="form-control" id="numberOfDays" name="numberOfDays" min="1" value="${reimbursementSummary.tripDuration.duration}">
                         </div>
                         <input type="hidden" name="tripFieldChanged" id="tripFieldChanged">
@@ -148,7 +148,7 @@
                     <h3 class="form-label">Car usage</h3>
                     <form action="calculate-reimbursement/modify-car-usage" id="calculate-reimbursement/modify-car-usage" method="post">
                         <div class="input-group">
-                            <span class="input-group-text">Distance</span>
+                            <span class="input-group-text">Distance [Click enter]</span>
                             <input type="number" step="0.001" class="form-control" id="distance" name="distance" min="1" value="${reimbursementSummary.carUsage.distance}">
                             <span class="input-group-text">km</span>
                             <span class="input-group-text">

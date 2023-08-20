@@ -28,8 +28,18 @@
                             <div class="mb-3 text-danger">
                                 ${error}
                             </div>
-                            <button type="submit" class="btn btn-primary">Login</button>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary" style="width: 200px">Login</button>
+                            </div>
                         </form>
+                        <div class="alert-success">
+                            Available users:
+                            <ul>
+                                <li>Login: user    Password: user     Role: USER</li>
+                                <li>Login: user2   Password: user2    Role: USER</li>
+                                <li>Login: admin   Password: admin    Role: ADMIN</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
