@@ -10,7 +10,7 @@ http://34.240.9.153:8080/login
 
 ## Deployment
 
-Download Apache Tomcat 10.1.12 and Java 11, properly set JAVA_HOME envarionment variable.
+Download Apache Tomcat 10.1.12 https://tomcat.apache.org/download-10.cgi and Java 11, properly set JAVA_HOME envarionment variable.
 To deploy this project run
 
 #### Clone app
@@ -36,7 +36,7 @@ cd YOUR_TOMCAT_HOME_FOLDER/bin
 
 #### Open browser and type
 ```bash
-http://localhost:8080/businesstripapp
+http://localhost:8080/businesstripapp/login
 ```
 
 ## Running Tests
