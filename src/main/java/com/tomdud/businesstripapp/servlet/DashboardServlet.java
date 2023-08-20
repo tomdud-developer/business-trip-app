@@ -1,9 +1,11 @@
 package com.tomdud.businesstripapp.servlet;
 
+import com.tomdud.businesstripapp.model.ReimbursementDetails;
 import com.tomdud.businesstripapp.model.ReimbursementSummary;
 import com.tomdud.businesstripapp.service.ReimbursementDetailsService;
 import com.tomdud.businesstripapp.service.ReimbursementService;
 import com.tomdud.businesstripapp.servlet.calculator.CalculateReimbursementServlet;
+import com.tomdud.businesstripapp.util.Role;
 import com.tomdud.businesstripapp.util.SampleDataGenerator;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -11,9 +13,11 @@ import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @WebServlet(name = "DashboardServlet", value = "/dashboard")
 public class DashboardServlet extends HttpServlet {
@@ -24,47 +28,25 @@ public class DashboardServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        long userId = 0L;//(long) request.getSession().getAttribute("id");
-
         logger.log(Level.INFO, "DashboardServlet::doGet");
-        List<ReimbursementSummary> reimbursementSummaries = generateSampleData(userId);
-        reimbursementSummaries.addAll(reimbursementService.getAllReimbursementSummariesByUserId(userId));
+
+        List<ReimbursementSummary> reimbursementSummaries;
+        Role role = (Role) request.getSession().getAttribute("role");
+
+        if (role.equals(Role.ADMIN)) {
+            reimbursementSummaries = reimbursementService.getAllFromAllUsers();
+        } else {
+            long userId = (long) request.getSession().getAttribute("id");
+            reimbursementSummaries = reimbursementService.getAllReimbursementSummariesByUserId(userId);
+        }
+
+        reimbursementSummaries = reimbursementSummaries.stream()
+                .sorted(Comparator.comparing(ReimbursementSummary::getCreationDateTime).reversed())
+                .collect(Collectors.toList());
 
         request.setAttribute("reimbursementSummaryList", reimbursementSummaries);
         request.setAttribute("reimbursementModificationList", reimbursementDetailsService.getAllDetails());
 
         request.getRequestDispatcher("dashboard.jsp").forward(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-
-    private List<ReimbursementSummary> generateSampleData(long userId) {
-        List<ReimbursementSummary> reimbursementSummaries = new ArrayList<>();
-
-        SampleDataGenerator sampleDataGenerator = new SampleDataGenerator();
-        ReimbursementSummary reimbursementSummary = sampleDataGenerator.getReimbursementSummary();
-        reimbursementSummary.setUserId(userId);
-        reimbursementSummary.setId(0L);
-        reimbursementSummaries.add(reimbursementSummary);
-
-        reimbursementSummary = sampleDataGenerator.getReimbursementSummary();
-        reimbursementSummary.setUserId(userId);
-        reimbursementSummary.setId(1L);
-        reimbursementSummaries.add(reimbursementSummary);
-
-        reimbursementSummary = sampleDataGenerator.getReimbursementSummary();
-        reimbursementSummary.setUserId(userId);
-        reimbursementSummary.setId(2L);
-        reimbursementSummaries.add(reimbursementSummary);
-
-        reimbursementSummary = sampleDataGenerator.getReimbursementSummary();
-        reimbursementSummary.setUserId(userId);
-        reimbursementSummary.setId(3L);
-        reimbursementSummaries.add(reimbursementSummary);
-
-        return reimbursementSummaries;
     }
 }

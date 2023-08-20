@@ -53,9 +53,10 @@ public class CalculateReimbursementServlet extends HttpServlet {
             case "/calculate-reimbursement/send-to-consideration":
                 ReimbursementSummary reimbursementSummary = retrieveModelOfReimbursementSummaryFromSession(request);
                 reimbursementSummary.setCreationDateTime(LocalDateTime.now());
-                //TODO
 
-                reimbursementService.saveReimbursementSummary(reimbursementSummary, 0L);
+                long userId = (long) request.getSession().getAttribute("id");
+
+                reimbursementService.saveReimbursementSummary(reimbursementSummary, userId);
                 initializeNewSession(request);
                 response.sendRedirect(request.getContextPath() + "/dashboard");
 
