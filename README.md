@@ -21,7 +21,6 @@ cd business-trip-app
 
 #### Build war and copy archive to YOUR_TOMCAT_HOME_FOLDER/webapps
 ```bash
-.\mvnw clean
 .\mvnw package
 copy target/businesstripapp.war YOUR_TOMCAT_HOME_FOLDER/webapps
 //Example: copy target/businesstripapp.war C:/Users/tomas/IdeaProjects/apache-tomcat-10.1.12/webapps
