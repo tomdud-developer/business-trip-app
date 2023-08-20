@@ -13,6 +13,7 @@
 <body>
     <jsp:include page="navbar.jsp" />
         <div class="container border p-3" id="calculatorFormContainer">
+            <div class="alert-danger">${error}</div>
             <div class="text-center">
                 <h1>Calculator</h1>
             </div>
@@ -75,7 +76,7 @@
                     <h3 class="form-label">Business trip expenses</h3>
                     <form action="calculate-reimbursement/add-receipt" method="post">
                         <div class="input-group">
-                                <label for="receiptValue" class="input-group-text">Receipt value</label>
+                                <label for="receiptValue" class="input-group-text" >Receipt value</label>
                                 <input class="form-control" type="number" step="0.01" id="receiptValue" name="receiptValue" min="0.01">
                                 <label for="receiptValue" class="input-group-text">$</label>
                                 <select id="receiptType" name="receiptType" class="form-select" aria-label="taxi">

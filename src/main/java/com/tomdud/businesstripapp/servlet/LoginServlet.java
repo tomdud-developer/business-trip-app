@@ -3,13 +3,16 @@ package com.tomdud.businesstripapp.servlet;
 import com.tomdud.businesstripapp.exception.UserNotAuthenticatedException;
 import com.tomdud.businesstripapp.model.User;
 import com.tomdud.businesstripapp.service.UserService;
+import com.tomdud.businesstripapp.util.Role;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @WebServlet(name = "LoginServlet", value = {
         "/login", "/logout"
@@ -42,7 +45,7 @@ public class LoginServlet extends HttpServlet {
                     User user = userService.returnUserIfPasswordIsCorrect(username, password);
 
                     request.getSession().setAttribute("username", user.getUsername());
-                    request.getSession().setAttribute("roles", user.getRoles());
+                    request.getSession().setAttribute("role", user.getRole());
                     request.getSession().setAttribute("id", user.getId());
 
                     response.sendRedirect(request.getContextPath() + "/dashboard");
@@ -56,7 +59,7 @@ public class LoginServlet extends HttpServlet {
                 logger.log(Level.INFO, "LoginServlet::doPost::logout");
 
                 request.getSession().setAttribute("username", null);
-                request.getSession().setAttribute("roles", null);
+                request.getSession().setAttribute("role", null);
                 request.getSession().setAttribute("id", null);
 
                 doGet(request, response);

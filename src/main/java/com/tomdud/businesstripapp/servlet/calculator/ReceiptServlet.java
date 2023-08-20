@@ -33,7 +33,12 @@ public class ReceiptServlet extends HttpServlet {
 
         switch (action) {
             case "/calculate-reimbursement/add-receipt":
-                addReceipt(request);
+                try {
+                    addReceipt(request);
+                } catch (NumberFormatException exception) {
+                    request.setAttribute("error", "Provide proper value for receipt");
+                    doGet(request, response);
+                }
                 break;
             case "/calculate-reimbursement/delete-receipt":
                 removeReceipt(request);
@@ -51,8 +56,14 @@ public class ReceiptServlet extends HttpServlet {
         logger.log(Level.INFO, "ReceiptServlet::doPost - adding new receipt - {0}",
                 request.getParameter("receiptType"));
 
+        String receiptValueString = request.getParameter("receiptValue");
+        if ( receiptValueString == null || receiptValueString.length() == 0)
+            throw new IllegalArgumentException();
+
+        Double receiptValue = Double.parseDouble(receiptValueString);
+
         Receipt receiptToAdd = new Receipt(
-                Double.parseDouble(request.getParameter("receiptValue")),
+                receiptValue,
                 receiptTypeService.getReceiptTypeByName(request.getParameter("receiptType"))
         );
 

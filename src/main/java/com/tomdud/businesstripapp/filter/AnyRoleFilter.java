@@ -35,8 +35,8 @@ public class AnyRoleFilter implements Filter {
         if (session == null || session.getAttribute("roles") == null) {
             httpResponse.sendRedirect("login");
         } else {
-            Set<Role> roles = (Set<Role>) session.getAttribute("roles");
-            if (roles.contains(Role.ADMIN) || roles.contains(Role.USER)) {
+            Role role = (Role) session.getAttribute("role");
+            if (role.equals(Role.ADMIN) || role.equals(Role.USER)) {
                 chain.doFilter(request, response);
             } else {
                 httpResponse.sendRedirect("login");

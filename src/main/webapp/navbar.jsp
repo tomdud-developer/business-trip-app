@@ -2,6 +2,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.tomdud.businesstripapp.util.Role" %>
 <%@ page import="java.util.Set" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+
 
 <html>
 <head>
@@ -21,8 +24,8 @@
                         </a>
                     </li>
                     <%
-                        Set<Role> roles = (Set<Role>) session.getAttribute("roles");
-                        if (roles != null && roles.contains(Role.USER)) {
+                        Role role = (Role) session.getAttribute("role");
+                        if (role != null && role.equals(Role.USER)) {
                     %>
                         <li class="nav-item">
                             <a href="calculate-reimbursement" class="btn btn-success px-4 py-2 me-2">
@@ -33,7 +36,7 @@
                         }
                     %>
                     <%
-                        if (roles != null && roles.contains(Role.ADMIN)) {
+                        if (role != null && role.equals(Role.ADMIN)) {
                     %>
                         <li class="nav-item">
                             <a href="admin-panel" class="btn btn-success px-4 py-2">

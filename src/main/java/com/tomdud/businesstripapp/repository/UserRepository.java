@@ -13,9 +13,9 @@ public class UserRepository {
 
     private UserRepository() {
         repository = new HashSet<>();
-        User user = new User(0L, "user", "user", new HashSet<>(Set.of(Role.USER)));
-        User user2 = new User(1L,"user2", "user2", new HashSet<>(Set.of(Role.USER)));
-        User admin = new User(2L, "admin", "admin", new HashSet<>(Set.of(Role.ADMIN)));
+        User user = new User(0L, "user", "user", Role.USER);
+        User user2 = new User(1L,"user2", "user2", Role.USER);
+        User admin = new User(2L, "admin", "admin", Role.ADMIN);
 
         repository.add(user);
         repository.add(user2);

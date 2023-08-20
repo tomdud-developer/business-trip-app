@@ -25,8 +25,8 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4>Reimbursement requests</h4>
                     <%
-                        Set<Role> roles = (Set<Role>) session.getAttribute("roles");
-                        if (roles != null && roles.contains(Role.USER)) {
+                        Role role = (Role) session.getAttribute("role");
+                        if (role != null && role.equals(Role.USER)) {
                     %>
                         <a href="calculate-reimbursement-new-calculation" class="btn btn-success">Add New Reimbursement</a>
                     <%
