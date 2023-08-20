@@ -78,6 +78,7 @@ public class CalculateReimbursementServlet extends HttpServlet {
         ReimbursementSummary reimbursementSummary = ReimbursementSummary.getInitialized(reimbursementDetailsService.getLeastDetails());
         reimbursementService.recalculateReimbursements(reimbursementSummary);
         request.getSession().setAttribute("reimbursementSummary", reimbursementSummary);
+        request.getSession().setAttribute("receiptTypes", receiptTypeService.getAllReceiptTypes());
     }
 
     private ReimbursementSummary retrieveModelOfReimbursementSummaryFromSession(HttpServletRequest request) {

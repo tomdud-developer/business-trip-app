@@ -33,11 +33,11 @@ public class UserRoleFilter implements Filter {
         logger.log(Level.INFO,"FilterUserRoleFilter::doFilter");
 
         HttpSession session = httpRequest.getSession(false);
-        if (session == null || session.getAttribute("roles") == null) {
+        if (session == null || session.getAttribute("role") == null) {
             httpResponse.sendRedirect("login");
         } else {
-            Role role = (Role) session.getAttribute("roles");
-            if (role.equals(Role.ADMIN)) {
+            Role role = (Role) session.getAttribute("role");
+            if (role.equals(Role.USER)) {
                 chain.doFilter(request, response);
             } else {
                 httpResponse.sendRedirect("login");

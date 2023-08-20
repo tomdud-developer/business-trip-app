@@ -1,5 +1,6 @@
 package com.tomdud.businesstripapp.servlet.calculator;
 
+import com.tomdud.businesstripapp.exception.FormValueNotCorrectException;
 import com.tomdud.businesstripapp.model.Receipt;
 import com.tomdud.businesstripapp.model.ReimbursementSummary;
 import com.tomdud.businesstripapp.service.ReceiptTypeService;
@@ -30,21 +31,20 @@ public class ReceiptServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getServletPath();
         logger.log(Level.INFO, "ReceiptServlet::doPost - action - {0}", action);
-
-        switch (action) {
-            case "/calculate-reimbursement/add-receipt":
-                try {
+        try {
+            switch (action) {
+                case "/calculate-reimbursement/add-receipt":
                     addReceipt(request);
-                } catch (NumberFormatException exception) {
-                    request.setAttribute("error", "Provide proper value for receipt");
-                    doGet(request, response);
-                }
-                break;
-            case "/calculate-reimbursement/delete-receipt":
-                removeReceipt(request);
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + action);
+                    break;
+                case "/calculate-reimbursement/delete-receipt":
+                    removeReceipt(request);
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + action);
+            }
+        } catch (Exception exception) {
+            response.sendRedirect(request.getContextPath() + "/calculate-reimbursement?error=true&errorMessage=" + exception.getMessage());
+            return;
         }
 
         response.sendRedirect(request.getContextPath() + "/calculate-reimbursement");
@@ -58,7 +58,7 @@ public class ReceiptServlet extends HttpServlet {
 
         String receiptValueString = request.getParameter("receiptValue");
         if ( receiptValueString == null || receiptValueString.length() == 0)
-            throw new IllegalArgumentException();
+            throw new FormValueNotCorrectException("Provide correct data for receipt");
 
         Double receiptValue = Double.parseDouble(receiptValueString);
 

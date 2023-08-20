@@ -32,7 +32,7 @@ public class AnyRoleFilter implements Filter {
         logger.log(Level.INFO,"AnyRoleFilter::doFilter");
 
         HttpSession session = httpRequest.getSession(false);
-        if (session == null || session.getAttribute("roles") == null) {
+        if (session == null || session.getAttribute("role") == null) {
             httpResponse.sendRedirect("login");
         } else {
             Role role = (Role) session.getAttribute("role");

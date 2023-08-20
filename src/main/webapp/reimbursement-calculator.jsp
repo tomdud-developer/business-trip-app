@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -13,7 +14,6 @@
 <body>
     <jsp:include page="navbar.jsp" />
         <div class="container border p-3" id="calculatorFormContainer">
-            <div class="alert-danger">${error}</div>
             <div class="text-center">
                 <h1>Calculator</h1>
             </div>
@@ -66,7 +66,8 @@
                 <div class="d-flex align-items-center">
                     <div class="flex-grow-1"></div>
                     <h5 class="mb-0 ms-3 pb-1 border-bottom">
-                        Total allowance = ${reimbursementSummary.totalAllowanceForTripDuration}$
+                        <fmt:formatNumber value="${reimbursementSummary.totalAllowanceForTripDuration}" pattern="0.00" var="formattedTotalAllowanceForTripDuration" />
+                        Total allowance = ${formattedTotalAllowanceForTripDuration}$
                     </h5>
                 </div>
             </div>
@@ -77,7 +78,7 @@
                     <form action="calculate-reimbursement/add-receipt" method="post">
                         <div class="input-group">
                                 <label for="receiptValue" class="input-group-text" >Receipt value</label>
-                                <input class="form-control" type="number" step="0.01" id="receiptValue" name="receiptValue" min="0.01">
+                                <input class="form-control" type="number" step="0.01" id="receiptValue" name="receiptValue" min="0.01" value="0.01">
                                 <label for="receiptValue" class="input-group-text">$</label>
                                 <select id="receiptType" name="receiptType" class="form-select" aria-label="taxi">
                                     <c:forEach items="${receiptTypes}" var="type">
@@ -135,7 +136,8 @@
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1"></div>
                         <h5 class="mb-0 ms-3 pb-1 border-bottom">
-                            Total expenses reimbursement = ${reimbursementSummary.totalAllowanceForTripExpenses}$
+                            <fmt:formatNumber value="${reimbursementSummary.totalAllowanceForTripExpenses}" pattern="0.00" var="formattedTotalAllowanceForTripExpenses" />
+                            Total expenses reimbursement = ${formattedTotalAllowanceForTripExpenses}$
                         </h5>
                     </div>
                 </div>
@@ -147,7 +149,7 @@
                     <form action="calculate-reimbursement/modify-car-usage" id="calculate-reimbursement/modify-car-usage" method="post">
                         <div class="input-group">
                             <span class="input-group-text">Distance</span>
-                            <input type="number" step="0.001" class="form-control" id="distance" name="distance" min="1" value="${carUsage.distance}">
+                            <input type="number" step="0.001" class="form-control" id="distance" name="distance" min="1" value="${reimbursementSummary.carUsage.distance}">
                             <span class="input-group-text">km</span>
                             <span class="input-group-text">
                                 Limit of distance:
@@ -167,7 +169,8 @@
                 <div class="d-flex align-items-center">
                     <div class="flex-grow-1"></div>
                     <h5 class="mb-0 ms-3 pb-1 border-bottom">
-                        Total car usage reimburse = ${reimbursementSummary.totalAllowanceForCarUsage}$
+                        <fmt:formatNumber value="${reimbursementSummary.totalAllowanceForCarUsage}" pattern="0.00" var="formattedTotalAllowanceForCarUsage" />
+                        Total car usage reimburse = ${formattedTotalAllowanceForCarUsage}$
                     </h5>
                 </div>
             </div>
@@ -189,7 +192,8 @@
             <div class="d-flex align-items-center">
                 <div class="flex-grow-1"></div>
                 <h2 class="mb-0 ms-3 pb-1 border-bottom">
-                    Total reimbursement = ${reimbursementSummary.totalAllowance}$
+                    <fmt:formatNumber value="${reimbursementSummary.totalAllowance}" pattern="0.00" var="formattedTotalAllowance" />
+                    Total reimbursement = ${formattedTotalAllowance}$
                 </h2>
             </div>
             <div class="d-flex align-items-center">

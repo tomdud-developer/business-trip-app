@@ -99,4 +99,15 @@ class DaysAllowanceServiceTest {
     void isDateBetweenOrEqualsEndDateBeforeStartShouldReturnFalse() {
         assertFalse(daysAllowanceService.isDateBetweenOrEquals(LocalDate.now().plusDays(-50), LocalDate.now(), LocalDate.now().plusDays(-100)));
     }
+
+    @Test
+    void clearDisabledDaysAfterModification() {
+        tripDuration.getDisabledDays().add(LocalDate.now().plusDays(2));
+        tripDuration.getDisabledDays().add(LocalDate.now().plusDays(3));
+        tripDuration.getDisabledDays().add(LocalDate.now().plusDays(4));
+
+        daysAllowanceService.modifyTripDurationBasedOnChangedEndDate(tripDuration, LocalDate.now().plusDays(2));
+
+        Assertions.assertEquals(1, tripDuration.getDisabledDays().size());
+    }
 }

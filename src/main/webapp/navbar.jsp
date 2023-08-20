@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.tomdud.businesstripapp.util.Role" %>
 <%@ page import="java.util.Set" %>
@@ -49,7 +50,7 @@
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <span class="nav-link">You are logged in as: ${username} and have ${roles} role</span>
+                        <span class="nav-link">You are logged in as: ${username} and have ${role} role</span>
                     </li>
                     <li class="nav-item">
                         <form action="logout" method="post">
@@ -60,5 +61,20 @@
             </div>
         </div>
     </nav>
+
+    <%
+        String error = request.getParameter("error");
+        String errorMessage = request.getParameter("errorMessage");
+        if ("true".equals(error)) {
+            %>
+                <div class="alert alert-danger text-center">
+                    Error:
+                    <%
+                        out.println(errorMessage);
+                    %>
+                </div>
+            <%
+        }
+    %>
 </body>
 </html>

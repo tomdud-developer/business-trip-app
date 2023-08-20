@@ -37,7 +37,7 @@ public class AdminRoleFilter implements Filter {
         logger.log(Level.INFO,"AdminRoleFilter::doFilter");
 
         HttpSession session = httpRequest.getSession(false);
-        if (session == null || session.getAttribute("roles") == null) {
+        if (session == null || session.getAttribute("role") == null) {
             httpResponse.sendRedirect("login");
         } else {
             Role role = (Role) session.getAttribute("role");

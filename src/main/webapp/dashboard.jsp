@@ -18,7 +18,7 @@
             <h1>Dashboard</h1>
         </div>
         <div class="text-center">
-            <h3>You are logged in as ${username} and have ${roles} role</h3>
+            <h3>You are logged in as ${username} and have ${role} role</h3>
         </div>
         <div class="border p-3">
             <div class="mb-3">

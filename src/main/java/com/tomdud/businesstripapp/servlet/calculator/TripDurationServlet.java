@@ -1,5 +1,6 @@
 package com.tomdud.businesstripapp.servlet.calculator;
 
+import com.tomdud.businesstripapp.exception.FormValueNotCorrectException;
 import com.tomdud.businesstripapp.model.ReimbursementSummary;
 import com.tomdud.businesstripapp.model.TripDuration;
 import com.tomdud.businesstripapp.service.DaysAllowanceService;
@@ -36,18 +37,23 @@ public class TripDurationServlet extends HttpServlet {
         String action = request.getServletPath();
         logger.log(Level.INFO, "TripDurationServlet::doPost - action - {0}", action);
 
-        switch (action) {
-            case "/calculate-reimbursement/modify-duration":
-                modifyDuration(request);
-                break;
-            case "/calculate-reimbursement/addDisabledDay":
-                addDisabledDay(request);
-                break;
-            case "/calculate-reimbursement/deleteDisabledDay":
-                deleteDisabledDay(request);
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + action);
+        try {
+            switch (action) {
+                case "/calculate-reimbursement/modify-duration":
+                    modifyDuration(request);
+                    break;
+                case "/calculate-reimbursement/addDisabledDay":
+                    addDisabledDay(request);
+                    break;
+                case "/calculate-reimbursement/deleteDisabledDay":
+                    deleteDisabledDay(request);
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + action);
+            }
+        } catch (Exception exception) {
+            response.sendRedirect(request.getContextPath() + "/calculate-reimbursement?error=true&errorMessage=" + exception.getMessage());
+            return;
         }
         response.sendRedirect(request.getContextPath() + "/calculate-reimbursement");
     }
@@ -61,9 +67,13 @@ public class TripDurationServlet extends HttpServlet {
 
         switch (tripFieldChanged) {
             case "numberOfDays":
+                String numberOfDaysString = request.getParameter("numberOfDays");
+                if (numberOfDaysString == null || numberOfDaysString.length() == 0)
+                    throw new FormValueNotCorrectException("Provide value number of days");
+
                 daysAllowanceService.modifyTripDurationBasedOnChangedDays(
                         tripDuration,
-                        Integer.parseInt(request.getParameter("numberOfDays"))
+                        Integer.parseInt(numberOfDaysString)
                 );
                 break;
             case "tripEndDate":
@@ -95,6 +105,7 @@ public class TripDurationServlet extends HttpServlet {
                 currentTripDuration.getStartDate(),
                 currentTripDuration.getEndDate())
         ) currentTripDuration.getDisabledDays().add(dateToDisable);
+        else throw new FormValueNotCorrectException("Date to disable out of start date and end date");
     }
 
     private void deleteDisabledDay(HttpServletRequest request) {
@@ -102,4 +113,6 @@ public class TripDurationServlet extends HttpServlet {
         LocalDate disabledDateToDelete = LocalDate.parse(request.getParameter("disabledDayDateToDelete"));
         currentTripDuration.getDisabledDays().remove(disabledDateToDelete);
     }
+
+
 }

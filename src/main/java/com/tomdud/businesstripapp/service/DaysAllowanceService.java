@@ -5,6 +5,8 @@ import com.tomdud.businesstripapp.model.TripDuration;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
+import java.util.Set;
 
 public class DaysAllowanceService {
 
@@ -31,6 +33,7 @@ public class DaysAllowanceService {
 
         tripDuration.setEndDate(newEndDate);
         tripDuration.setDuration(days);
+        clearDisabledDaysAfterModification(tripDuration);
     }
 
     public void modifyTripDurationBasedOnChangedEndDate(TripDuration tripDuration, LocalDate newEndDate) throws DaysAllowanceServiceException {
@@ -38,6 +41,7 @@ public class DaysAllowanceService {
 
         tripDuration.setEndDate(newEndDate);
         tripDuration.setDuration((int) ChronoUnit.DAYS.between(tripDuration.getStartDate(), newEndDate) + 1);
+        clearDisabledDaysAfterModification(tripDuration);
     }
 
     public void modifyTripDurationBasedOnChangedStartDate(TripDuration tripDuration, LocalDate newStartDate) throws DaysAllowanceServiceException {
@@ -45,6 +49,7 @@ public class DaysAllowanceService {
 
         tripDuration.setStartDate(newStartDate);
         tripDuration.setDuration((int)ChronoUnit.DAYS.between(newStartDate, tripDuration.getEndDate()) + 1);
+        clearDisabledDaysAfterModification(tripDuration);
     }
 
     public boolean isDateBetweenOrEquals(LocalDate date, LocalDate startDate, LocalDate endDate) throws DaysAllowanceServiceException {
@@ -52,8 +57,22 @@ public class DaysAllowanceService {
                 || date.isEqual(startDate) || date.isEqual(endDate);
     }
 
+    public void clearDisabledDaysAfterModification(TripDuration tripDuration) {
+        Set<LocalDate> newSet = new HashSet<>();
+
+        for (LocalDate date : tripDuration.getDisabledDays()) {
+            if (isDateBetweenOrEquals(date, tripDuration.getStartDate(), tripDuration.getEndDate())) {
+                newSet.add(date);
+            }
+        }
+
+        tripDuration.setDisabledDays(newSet);
+    }
+
     private void checkIsStartDateIsBeforeOrEqualEndDateIfNotThrowException(LocalDate startDate, LocalDate endDate) throws DaysAllowanceServiceException {
         if (startDate.isAfter(endDate) && !startDate.isEqual(endDate))
             throw new DaysAllowanceServiceException("Start date is after end date");
     }
+
+
 }
