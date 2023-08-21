@@ -1,7 +1,7 @@
 
 # Business Trip Reimbursement Calculation Application
 
-Java Application to manage the reimbursementDetails of expenses of a user after a business trip.
+Java Application to manage the reimbursement, expenses, car usage of a workers after a business trip.
 
 ## Link to application deployed on AWS EC2
 I deployed application on AWS EC2
